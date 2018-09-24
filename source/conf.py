@@ -24,7 +24,7 @@ copyright = '2018, Zhengjiang Shao'
 author = 'Zhengjiang Shao'
 
 # The short X.Y version
-version = '1.0.0'
+version = 'v1.0.0'
 # The full version, including alpha/beta/rc tags
 release = 'MiKiAC'
 
@@ -42,6 +42,12 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.coverage',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
