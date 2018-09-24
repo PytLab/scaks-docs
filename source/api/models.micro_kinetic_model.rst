@@ -1,8 +1,3 @@
-.. currentmodule:: MiKiAC
-
-API
-==========
-
 MicroKineticModel
 -----------------
 
