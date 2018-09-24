@@ -1,5 +1,5 @@
-MicroKineticModel
------------------
+models.MicroKineticModel
+-------------------------
 
 Interface
 ..........
