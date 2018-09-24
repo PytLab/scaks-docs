@@ -6,4 +6,5 @@ API
 
    models.kinetic_model
    models.micro_kinetic_model
+   parsers.rxn_parser
 
