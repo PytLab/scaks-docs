@@ -11,4 +11,5 @@ API
    parsers.absolute_energy_parser
    parsers.relative_energy_parser
    parsers.kmc_parser
+   solvers.solver_base
 
