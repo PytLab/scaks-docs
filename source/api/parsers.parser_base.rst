@@ -1,9 +1,6 @@
 parsers.parser_base
 ------------------------------
 
-Interface
-..........
-
 .. autoclass:: mikiac.parsers.parser_base.ParserBase
    :members:
    :inherited-members:

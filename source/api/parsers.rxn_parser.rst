@@ -1,9 +1,6 @@
 parsers.rxn_parser
 -------------------------
 
-Interface
-..........
-
 .. autoclass:: mikiac.parsers.rxn_parser.RxnEquation
    :members:
    :inherited-members:

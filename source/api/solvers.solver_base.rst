@@ -1,8 +1,5 @@
-parsers.solver_base
+solvers.solver_base
 -------------------------
-
-Interface
-..........
 
 .. autoclass:: mikiac.solvers.solver_base.SolverBase
    :members:
