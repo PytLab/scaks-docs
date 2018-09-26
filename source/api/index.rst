@@ -12,4 +12,5 @@ API
    parsers.relative_energy_parser
    parsers.kmc_parser
    solvers.solver_base
+   solvers.mean_field_solver
 
