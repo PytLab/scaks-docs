@@ -15,4 +15,5 @@ API
    solvers.mean_field_solver
    solvers.rootfinding_iterators
    solvers.steady_state_solver
+   correctors.thermodynamic_corrector
 
