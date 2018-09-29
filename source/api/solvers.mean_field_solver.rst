@@ -1,5 +1,5 @@
-solvers.mean_field_solver
--------------------------
+solvers.MeanFieldSolver
+-----------------------
 
 .. autoclass:: mikiac.solvers.mean_field_solver.MeanFieldSolver
    :members:

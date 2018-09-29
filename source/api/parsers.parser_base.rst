@@ -1,5 +1,5 @@
-parsers.parser_base
-------------------------------
+parsers.ParserBase
+------------------
 
 .. autoclass:: mikiac.parsers.parser_base.ParserBase
    :members:

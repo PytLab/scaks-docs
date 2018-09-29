@@ -1,5 +1,5 @@
-solvers.solver_base
--------------------------
+solvers.SolverBase
+------------------
 
 .. autoclass:: mikiac.solvers.solver_base.SolverBase
    :members:

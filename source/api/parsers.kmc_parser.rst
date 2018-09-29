@@ -1,4 +1,4 @@
-parsers.kmc_parser
+parsers.KMCParser
 ------------------------------
 
 

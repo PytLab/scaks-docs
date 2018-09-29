@@ -1,5 +1,5 @@
 parsers.rxn_parser
--------------------------
+------------------
 
 .. autoclass:: mikiac.parsers.rxn_parser.RxnEquation
    :members:
