@@ -80,5 +80,5 @@ visit http://localhost:5000
 
 |image0|
 
-.. |image0| image:: https://github.com/PytLab/mikiac-hub/blob/master/screenshot.png
+.. |image0| image:: ./_static/hub-screenshot.png
 
