@@ -11,5 +11,6 @@ Welcome to MiKiAC's documentation!
    :caption: Contents:
 
    intro
+   install
    api/index
 
