@@ -16,4 +16,5 @@ API
    solvers.rootfinding_iterators
    solvers.steady_state_solver
    correctors.thermodynamic_corrector
+   plotters.energy_profile_plotter
 
