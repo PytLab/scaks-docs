@@ -17,5 +17,5 @@ API
    solvers.steady_state_solver
    correctors.thermodynamic_corrector
    plotters.energy_profile_plotter
-   utilities.check_utilities
+   utilities
 
