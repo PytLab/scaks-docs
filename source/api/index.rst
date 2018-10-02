@@ -18,4 +18,5 @@ API
    correctors.thermodynamic_corrector
    plotters.energy_profile_plotter
    utilities
+   database.elements_data
 
