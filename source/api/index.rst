@@ -19,4 +19,6 @@ API
    plotters.energy_profile_plotter
    utilities
    database.elements_data
+   descriptors.descriptors
+   descriptors.component_descriptors
 
