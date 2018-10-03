@@ -21,4 +21,5 @@ API
    database.elements_data
    descriptors.descriptors
    descriptors.component_descriptors
+   mpicommons
 
