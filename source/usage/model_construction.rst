@@ -1,6 +1,3 @@
-Usage Examples
-==============
-
 Perhaps the easiest way to get started with your own Micro-kinetic modeling is to have a quick look at a few usage examples. We will take a look at few examples from the simplest CO Oxidation reaction on Pt100 surface using both MiKiAC API and web GUI.
 
 Construct micro-kinetic model
@@ -261,7 +258,7 @@ After the solving is finished, new output files are generated in current directo
 
 With ODE plotting script in MiKiAC package, the ODE integration trajectory can be visualized:
 
-.. figure:: _static/ode_integration.png
+.. figure:: ../_static/ode_integration.png
    :scale: 60 %
    :align: center
    :figwidth: 100 %
