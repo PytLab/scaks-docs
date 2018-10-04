@@ -15,8 +15,8 @@ As MiKiAC provides a higher level Message Passing Interfaces, you need
 to install an implementation of MPI on your machine before installing
 mpi4py.
 
-MPI implementations: - `MPICH <https://www.mpich.org/>`__ -
-`OpenMPI <https://www.open-mpi.org/>`__ - `Microsoft
+MPI implementations: 1. `MPICH <https://www.mpich.org/>`__ 2.
+`OpenMPI <https://www.open-mpi.org/>`__ 3. `Microsoft
 MPI <https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi>`__
 
 Via Pip (Recommended)

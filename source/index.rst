@@ -12,5 +12,6 @@ Welcome to MiKiAC's documentation!
 
    intro
    install
+   usage_examples
    api/index
 
