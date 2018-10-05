@@ -5,4 +5,5 @@ Usage Examples
    :maxdepth: 2
 
    model_construction
+   hub_job
 

@@ -1,6 +1,6 @@
 Perhaps the easiest way to get started with your own Micro-kinetic modeling is to have a quick look at a few usage examples. We will take a look at few examples from the simplest CO Oxidation reaction on Pt100 surface using both MiKiAC API and web GUI.
 
-Construct micro-kinetic model
+Solve a micro-kinetic model
 -----------------------------
 
 `mikiac.models` module provide different model classes for different kinetic model construction(only micro-kinetic model in current version). Model can constructed from either a setup dict data structure for running in interactive shell or a setup input file for submitting a computing job.
