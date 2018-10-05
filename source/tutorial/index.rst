@@ -1,9 +1,10 @@
-Usage Examples
-==============
+Tutorial
+========
 
 .. toctree::
    :maxdepth: 2
 
    model_construction
    hub_job
+   rxn_parsing
 
