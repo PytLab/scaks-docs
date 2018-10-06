@@ -1,3 +1,4 @@
 /build
 *.swp
 out.log
+.DS_Store
