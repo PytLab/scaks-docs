@@ -8,4 +8,5 @@ Tutorial
    hub_job
    rxn_parsing
    hub_model
+   hub_animation
 

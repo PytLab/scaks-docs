@@ -54,11 +54,6 @@ reversibilities and turnover frequencies.
 
 |image6|
 
-Animiation
-~~~~~~~~~~
-
-Here we use a animiation to show all operations above:
-
 .. |image0| image:: ../_static/file_system.png
 .. |image1| image:: ../_static/example_job.png
 .. |image2| image:: ../_static/model_panel.png
