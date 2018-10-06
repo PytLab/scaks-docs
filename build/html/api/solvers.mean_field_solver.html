@@ -1,0 +1,757 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>solvers.MeanFieldSolver &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="solvers.rootfinding_iterators" href="solvers.rootfinding_iterators.html" />
+    <link rel="prev" title="solvers.SolverBase" href="solvers.solver_base.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.rootfinding_iterators.html">solvers.rootfinding_iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>solvers.MeanFieldSolver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/solvers.mean_field_solver.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="solvers-meanfieldsolver">
+<h1>solvers.MeanFieldSolver<a class="headerlink" href="#solvers-meanfieldsolver" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver">
+<em class="property">class </em><code class="descclassname">mikiac.solvers.mean_field_solver.</code><code class="descname">MeanFieldSolver</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="solvers.solver_base.html#mikiac.solvers.solver_base.SolverBase" title="mikiac.solvers.solver_base.SolverBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.solvers.solver_base.SolverBase</span></code></a></p>
+<p>A class acts as a base class to be inherited by other solver classes,
+it is not functional on its own.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#mikiac.models.kinetic_model.KineticModel" title="mikiac.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.archive_data">
+<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.archive_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update data dict and dump it to data file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data_name</strong> (<em>str</em>) -- key in data dict</li>
+<li><strong>data</strong> (<em>any</em>) -- value in data dict</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.boltzmann_coverages">
+<code class="descname">boltzmann_coverages</code><span class="sig-paren">(</span><em>include_empty_site=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.boltzmann_coverages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.boltzmann_coverages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get boltzmann coverages according to the formation energy of each adsorbate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>include_empty_site</strong> (<em>bool</em>) -- If the empty sites are included in bolztmann 
+sum, Default value is True.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Coverages in order of adsorbates names.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple of float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.classified_numerical_jacobian">
+<code class="descname">classified_numerical_jacobian</code><span class="sig-paren">(</span><em>f</em>, <em>x</em>, <em>h=1e-10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.classified_numerical_jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.classified_numerical_jacobian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Jacobian matrix of a function at the point x0.
+Modified from numerial_jacobian() in 'functions.py'.</p>
+<p>Not a general-purpose method, just used for given model</p>
+<p>Use differences in opposite directions according to the type
+of G(intermediate or transition state) to avoid stagnated or
+diverging residual.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_TST_barrier_from_CT">
+<em class="property">static </em><code class="descname">get_TST_barrier_from_CT</code><span class="sig-paren">(</span><em>kCT</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_TST_barrier_from_CT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static method to get TST barrier from the rate constant calculated 
+by Collision Theory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>kCT</strong> (<em>float</em>) -- Rate constant calculated by Collision Theory</li>
+<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get data from model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data_symbols">
+<code class="descname">get_data_symbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_data_symbols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data_symbols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Sympy Symbol objects for P, G, coverage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Sympy Symbols for pressure, free energies and coverages</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of Sympy.Symbol</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_expression">
+<code class="descname">get_elementary_rate_expression</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_elementary_rate_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get the rate calculation expression for an elementary reaction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>elementary_rxn_list</strong> (<em>list of str</em>) -- An elementary reaction</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward and reverse reaction rate expressions</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple of str</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Example::</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rxn_list</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;O2_g&#39;</span><span class="p">,</span> <span class="s1">&#39;2*_s&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;2O_s&#39;</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solver</span><span class="o">.</span><span class="n">get_elementary_rate_expression</span><span class="p">(</span><span class="n">rxn_list</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="s2">&quot;kf[1]*p[&#39;O2_g&#39;]*theta[&#39;*_s&#39;]**2&quot;</span><span class="p">,</span> <span class="s2">&quot;kr[1]*theta[&#39;O_s&#39;]**2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_sym">
+<code class="descname">get_elementary_rate_sym</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_elementary_rate_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get rate expression for an elementary reaction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_expression</strong> (<em>str</em>) -- An elementary expression</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward and reverse rate expression</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple of Sympy.Symbol</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_equilibrium_constant_syms">
+<code class="descname">get_equilibrium_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_equilibrium_constant_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_equilibrium_constant_syms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get symbols of equilibrium constant.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">equilibrium constant symbols</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of Sympy.Symbol</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kCT">
+<em class="property">static </em><code class="descname">get_kCT</code><span class="sig-paren">(</span><em>Ea</em>, <em>Auc</em>, <em>act_ratio</em>, <em>m</em>, <em>T</em>, <em>p=101325</em>, <em>f=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kCT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static function to get rate constant/collision rate according to 
+Collision Theory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Ea</strong> (<em>float</em>) -- energy barrier( NOT free energy barrier )</li>
+<li><strong>Auc</strong> (<em>float</em>) -- area of unitcell (m^-2)</li>
+<li><strong>act_ratio</strong> (<em>float</em><em>(</em><em>&lt;=1.0</em><em>)</em>) -- area of active sites/area of unitcell</li>
+<li><strong>p</strong> (<em>float</em>) -- pressure of gas, default value is 101325 Pa (atm).</li>
+<li><strong>m</strong> (<em>float</em>) -- absolute mass of molecule (kg)</li>
+<li><strong>f</strong> (<em>float</em><em>(</em><em>&lt;= 1.0</em><em>)</em>) -- factor accounts for a further reduction in the sticking 
+probability, if particle with certain initial states are not 
+efficiently steered along the MEP, and reflected by a higher barrier</li>
+<li><strong>T</strong> (<em>float</em>) -- temperature (K)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kTST">
+<code class="descname">get_kTST</code><span class="sig-paren">(</span><em>Ga</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kTST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate rate constants according to Transition State Theory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Ga</strong> (<em>float</em>) -- Free energy barrier</li>
+<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_latex_strs">
+<em class="property">static </em><code class="descname">get_latex_strs</code><span class="sig-paren">(</span><em>part1</em>, <em>part2</em>, <em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_latex_strs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_latex_strs" title="Permalink to this definition">¶</a></dt>
+<dd><p>part1 and part2 are parts of left string in equation string,
+symbols is a iterable object e.g. list or tuple.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rate_syms">
+<code class="descname">get_net_rate_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rate_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rate_syms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get net rate symbols for all elementary expressions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates">
+<code class="descname">get_net_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get forward and reverse rates list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cvgs_tuple</strong> (<em>tuple of floats.</em>) -- coverages</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">keys <code class="xref py py-obj docutils literal notranslate"><span class="pre">Gaf</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">Gar</span></code> must be in relative energies dict.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">net rates for all elementary reactions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates_by_sym">
+<code class="descname">get_net_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rates_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates_by_sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get net rates for all elementary reactions by symbol derivation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constant_syms">
+<code class="descname">get_rate_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_constant_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constant_syms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fucntion to get rate constant expression symbols.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Rate constant symbols</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of Sympy.Symbol</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constants_by_sym">
+<code class="descname">get_rate_constants_by_sym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_constants_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constants_by_sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get rate constants values by back substitution to symbol expressions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_expressions">
+<code class="descname">get_rate_expressions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_expressions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_expressions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get rate expression for all elementary reactions in model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_syms">
+<code class="descname">get_rate_syms</code><span class="sig-paren">(</span><em>log_latex=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_syms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get all rate expressions for all elementary reactions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_latex</strong> (<em>bool</em>) -- If dump latex equations or not</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates">
+<code class="descname">get_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em>, <em>log=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get forward and reverse rates list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cvgs_tuple</strong> (<em>tuple of floats.</em>) -- coverages</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">keys <code class="xref py py-obj docutils literal notranslate"><span class="pre">Gaf</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">Gar</span></code> must be in relative energies dict.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log</strong> (<em>bool</em>) -- Output log info or not, false by default</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward rates and reverse rates</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple of float.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates_by_sym">
+<code class="descname">get_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rates_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates_by_sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get forward and reverse rates for all elementary reactions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cvgs_tuple</strong> (<em>tuple of float</em>) -- Coverages rate calculating</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward rates and reverse rates</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_reversibilities">
+<code class="descname">get_reversibilities</code><span class="sig-paren">(</span><em>rfs</em>, <em>rrs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_reversibilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_reversibilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get reversibilities of given rates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rfs</strong> (<em>list of float</em>) -- forward rates</li>
+<li><strong>rrs</strong> (<em>list of float</em>) -- reverse rates</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">reversibilities</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_CT">
+<code class="descname">get_rxn_rates_CT</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_CT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get rate constants for an elementary reaction using 
+Collision Theory wrt adsorption process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">(not the pressure of standard condition, 101325.0 Pa).
+The default value is False, meaning that we calculate the
+RATE CONSTANT by default.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_TST">
+<code class="descname">get_rxn_rates_TST</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_TST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get rate constants for an elementary reaction using 
+Transition State Theory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">(not the pressure of standard condition, 101325.0 Pa).
+The default value is False, meaning that we calculate the
+RATE CONSTANT by default.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_subs_dict">
+<code class="descname">get_subs_dict</code><span class="sig-paren">(</span><em>coverages=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_subs_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_subs_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get substitution dict for all symbols.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coverages</strong> (<em>tuple of float</em>) -- optional, adsorbate coverages</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Substitution dict whose keys are Sympy.Symbol object and values are float.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof">
+<code class="descname">get_tof</code><span class="sig-paren">(</span><em>cvgs</em>, <em>relative_energies=None</em>, <em>gas_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_tof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get the turnover frequencies(TOF) wrt all gas species.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cvgs</strong> (<em>tuple of float</em>) -- Coverages of adsorbates on surface</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">keys &quot;Gaf&quot; and &quot;Gar&quot; must be in relative energies dict.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gas_name</strong> (<em>str</em>) -- The gas whose TOF will be returned</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If gas name is not specified, a list of TOF for all gas species would be returned.
+If gas name is specified, the TOF of the gas would be returned.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of float or float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_by_sym">
+<code class="descname">get_tof_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_tof_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_by_sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get TOFs for all gas species.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cvgs_tuple</strong> (<em>tuple of float</em>) -- coverages for all adsorbates</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_syms">
+<code class="descname">get_tof_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_tof_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_syms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get TOF symbols for all elementary reactions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.log_latex">
+<code class="descname">log_latex</code><span class="sig-paren">(</span><em>latex_tup</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.log_latex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.log_latex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append latex strings to 'formulas.tex'</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="solvers.rootfinding_iterators.html" class="btn btn-neutral float-right" title="solvers.rootfinding_iterators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="solvers.solver_base.html" class="btn btn-neutral" title="solvers.SolverBase" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>descriptors.descriptors &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="descriptors.component_descriptors" href="descriptors.component_descriptors.html" />
+    <link rel="prev" title="datatabase.elements_data" href="database.elements_data.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.mean_field_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.rootfinding_iterators.html">solvers.rootfinding_iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">descriptors.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>descriptors.descriptors</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/descriptors.descriptors.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-mikiac.descriptors.descriptors">
+<span id="descriptors-descriptors"></span><h1>descriptors.descriptors<a class="headerlink" href="#module-mikiac.descriptors.descriptors" title="Permalink to this headline">¶</a></h1>
+<p>Definitions of attribute descriptors.</p>
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.AnalysisInterval">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">AnalysisInterval</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#AnalysisInterval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.AnalysisInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.AttrDescriptor" title="mikiac.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.AttrDescriptor</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.AttrDescriptor">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">AttrDescriptor</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#AttrDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.AttrDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base descriptor class for the attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- The flag for returning the deepcopy or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.Bool">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">Bool</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em>, <em>candidates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#Bool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.Bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.Type" title="mikiac.descriptors.descriptors.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.Type</span></code></a></p>
+<p>Descriptor for bool type attribute of kinetic model and components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.Dict">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">Dict</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em>, <em>candidates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#Dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.Dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.Type" title="mikiac.descriptors.descriptors.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.Type</span></code></a></p>
+<p>Descriptor for dictionary type attribute of kinetic model and components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.Float">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">Float</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em>, <em>candidates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#Float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.Float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.Type" title="mikiac.descriptors.descriptors.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.Type</span></code></a></p>
+<p>Descriptor for float type attribute of kinetic model and components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.FloatList2D">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">FloatList2D</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#FloatList2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.FloatList2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.AttrDescriptor" title="mikiac.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.AttrDescriptor</span></code></a></p>
+<p>Descriptor for 2D float list attributes of kinetic model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.HashableDict">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">HashableDict</code><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#HashableDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.fromkeys">
+<code class="descname">fromkeys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.fromkeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new dict with keys from iterable and values equal to value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.pop">
+<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.popitem">
+<code class="descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; (k, v), remove and return some (key, value) pair as a<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>2-tuple; but raise KeyError if D is empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.setdefault">
+<code class="descname">setdefault</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D.get(k,d), also set D[k]=d if k not in D<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.setdefault" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableDict.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableDict.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.HashableList">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">HashableList</code><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#HashableList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>object</em><span class="sig-paren">)</span> &#x2192; None -- append object to end<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.append" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None -- remove all items from L<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list -- a shallow copy of L<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.count">
+<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; integer -- return number of occurrences of value<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.extend">
+<code class="descname">extend</code><span class="sig-paren">(</span><em>iterable</em><span class="sig-paren">)</span> &#x2192; None -- extend list by appending elements from the iterable<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.extend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.index">
+<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; integer -- return first index of value.<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>L.insert(index, object) -- insert object before index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.pop">
+<code class="descname">pop</code><span class="sig-paren">(</span><span class="optional">[</span><em>index</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; item -- remove and return item at index (default last).<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises IndexError if list is empty or index is out of range.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &#x2192; None -- remove first occurrence of value.<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.reverse">
+<code class="descname">reverse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>L.reverse() -- reverse <em>IN PLACE</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.descriptors.descriptors.HashableList.sort">
+<code class="descname">sort</code><span class="sig-paren">(</span><em>key=None</em>, <em>reverse=False</em><span class="sig-paren">)</span> &#x2192; None -- stable sort *IN PLACE*<a class="headerlink" href="#mikiac.descriptors.descriptors.HashableList.sort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.Integer">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">Integer</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em>, <em>candidates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#Integer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.Integer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.Type" title="mikiac.descriptors.descriptors.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.Type</span></code></a></p>
+<p>Descriptor for integer type attribute of kinetic model and components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.Memoized">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">Memoized</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#Memoized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.Memoized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Descriptor for returned value memoization.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.RefEnergies">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">RefEnergies</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#RefEnergies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.RefEnergies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.AttrDescriptor" title="mikiac.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.AttrDescriptor</span></code></a></p>
+<p>Descriptor for reference energies of kinetic model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.Sequence">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">Sequence</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em>, <em>entry_type=None</em>, <em>candidates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#Sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.Sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.AttrDescriptor" title="mikiac.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.AttrDescriptor</span></code></a></p>
+<p>Descriptor for list type attributes of kinetic model and components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.SpaceVectors">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">SpaceVectors</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#SpaceVectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.SpaceVectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.FloatList2D" title="mikiac.descriptors.descriptors.FloatList2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.FloatList2D</span></code></a></p>
+<p>Descriptor for 3D space vectors list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.SpeciesDefinitions">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">SpeciesDefinitions</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#SpeciesDefinitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.SpeciesDefinitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.AttrDescriptor" title="mikiac.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.AttrDescriptor</span></code></a></p>
+<p>Descriptor for species definition of kinetic model and components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.String">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">String</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>deepcopy=False</em>, <em>candidates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.String" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.Type" title="mikiac.descriptors.descriptors.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.Type</span></code></a></p>
+<p>Descriptor for string type attribute of kinetic model and components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
+<li><strong>deepcopy</strong> (<em>bool</em>) -- Copy deeply or not</li>
+<li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.descriptors.descriptors.Type">
+<em class="property">class </em><code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">Type</code><span class="sig-paren">(</span><em>name</em>, <em>type</em>, <em>default</em>, <em>deepcopy=False</em>, <em>candidates=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#Type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mikiac.descriptors.descriptors.AttrDescriptor" title="mikiac.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.descriptors.descriptors.AttrDescriptor</span></code></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.descriptors.descriptors.make_hashable">
+<code class="descclassname">mikiac.descriptors.descriptors.</code><code class="descname">make_hashable</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/descriptors/descriptors.html#make_hashable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.descriptors.descriptors.make_hashable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to make a immutable variable hashable.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="descriptors.component_descriptors.html" class="btn btn-neutral float-right" title="descriptors.component_descriptors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="database.elements_data.html" class="btn btn-neutral" title="datatabase.elements_data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

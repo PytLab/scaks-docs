@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>solvers.rootfinding_iterators &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="solvers.MeanFieldSolver" href="solvers.steady_state_solver.html" />
+    <link rel="prev" title="solvers.MeanFieldSolver" href="solvers.mean_field_solver.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.mean_field_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">solvers.rootfinding_iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>solvers.rootfinding_iterators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/solvers.rootfinding_iterators.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="solvers-rootfinding-iterators">
+<h1>solvers.rootfinding_iterators<a class="headerlink" href="#solvers-rootfinding-iterators" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mikiac.solvers.rootfinding_iterators.ConstrainedNewton">
+<em class="property">class </em><code class="descclassname">mikiac.solvers.rootfinding_iterators.</code><code class="descname">ConstrainedNewton</code><span class="sig-paren">(</span><em>f</em>, <em>x0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/rootfinding_iterators.html#ConstrainedNewton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.rootfinding_iterators.ConstrainedNewton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.solvers.rootfinding_iterators.RootfindingIterator</span></code></p>
+<p>Hacked from MDNewton in mpmath/calculus/optimization.py in order
+to allow for constraints on the solution.
+Find the root of a vector function numerically using Newton's method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f</strong> (<em>function</em>) -- a vector function representing a nonlinear equation system</li>
+<li><strong>x0</strong> (<em>tuple of float</em>) -- Starting point close to the root</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>kwargs MUST contains:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>J</strong> (<em>function</em>) -- a function returning the Jacobian matrix for a point</li>
+<li><strong>constraint</strong> (<em>function</em>) -- a coverages tuple constraint function to set limit to x</li>
+<li><strong>norm</strong> (<em>function</em>) -- a function to get a norm</li>
+<li><strong>mpfloat</strong> (<em>type</em>) -- high-precision float type, e.g. mpmath.mpfloat</li>
+<li><strong>matrix</strong> (<em>type</em>) -- matrix type, e.g. mpmath.matrix</li>
+<li><strong>Axb_solver</strong> (<em>function</em>) -- a function to solve system of linear equations by solving Ax=b</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.solvers.rootfinding_iterators.MDNewton">
+<em class="property">class </em><code class="descclassname">mikiac.solvers.rootfinding_iterators.</code><code class="descname">MDNewton</code><span class="sig-paren">(</span><em>f</em>, <em>x0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/rootfinding_iterators.html#MDNewton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.rootfinding_iterators.MDNewton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.solvers.rootfinding_iterators.RootfindingIterator</span></code></p>
+<p>Find the root of a vector function numerically using Newton's method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>f</strong> (<em>function</em>) -- a vector function representing a nonlinear equation system</li>
+<li><strong>x0</strong> (<em>tuple of float</em>) -- Starting point close to the root</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>kwargs MUST contains:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>J</strong> (<em>function</em>) -- a function returning the Jacobian matrix for a point</li>
+<li><strong>constraint</strong> (<em>function</em>) -- a coverages tuple constraint function to set limit to x</li>
+<li><strong>norm</strong> (<em>function</em>) -- a function to get a norm</li>
+<li><strong>mpfloat</strong> (<em>type</em>) -- high-precision float type, e.g. mpmath.mpfloat</li>
+<li><strong>matrix</strong> (<em>type</em>) -- matrix type, e.g. mpmath.matrix</li>
+<li><strong>Axb_solver</strong> (<em>function</em>) -- a function to solve system of linear equations by solving Ax=b</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Supports overdetermined systems.</p>
+<p>Use the 'norm' keyword to specify which norm to use. Defaults to max-norm.
+The function to calculate the Jacobian matrix can be given using the
+keyword 'J'. Otherwise it will be calculated numerically.</p>
+<p>Please note that this method converges only locally. Especially for high-
+dimensional systems it is not trivial to find a good starting point being
+close enough to the root.</p>
+<p>It is recommended to use a faster, low-precision solver from SciPy [1] or
+OpenOpt [2] to get an initial guess. Afterwards you can use this method for
+root-polishing to any precision.</p>
+<p>[1] <a class="reference external" href="http://scipy.org">http://scipy.org</a></p>
+<p class="last">[2] <a class="reference external" href="http://openopt.org/Welcome">http://openopt.org/Welcome</a></p>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="solvers.steady_state_solver.html" class="btn btn-neutral float-right" title="solvers.MeanFieldSolver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="solvers.mean_field_solver.html" class="btn btn-neutral" title="solvers.MeanFieldSolver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

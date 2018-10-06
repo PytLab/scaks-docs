@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>models.KineticModel &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="models.MicroKineticModel" href="models.micro_kinetic_model.html" />
+    <link rel="prev" title="API" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">models.KineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.mean_field_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.rootfinding_iterators.html">solvers.rootfinding_iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>models.KineticModel</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/models.kinetic_model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="models-kineticmodel">
+<h1>models.KineticModel<a class="headerlink" href="#models-kineticmodel" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mikiac.models.kinetic_model.KineticModel">
+<em class="property">class </em><code class="descclassname">mikiac.models.kinetic_model.</code><code class="descname">KineticModel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The base class for kinetic models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>setup_file</strong> (<em>str</em>) -- kinetic model set up file</li>
+<li><strong>setup_dict</strong> (<em>dict</em>) -- A dictionary contains essential setup parameters for kinetic model</li>
+<li><strong>logger_level</strong> (<em>int</em>) -- logging level for logger</li>
+<li><strong>file_handler_level</strong> (<em>int</em>) -- logging level for file handler</li>
+<li><strong>console_handler_level</strong> (<em>int</em>) -- logging level for console handler</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mikiac.models</span> <span class="k">import</span> <span class="n">KineticModel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">KineticModel</span><span class="p">(</span><span class="n">setup_file</span><span class="o">=</span><span class="s2">&quot;setup.mkm&quot;</span><span class="p">,</span> <span class="n">logger_level</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">setup_file(<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): kinetic model setup file</p>
+<p>setup_dict(<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): A dictionary contains essnetial setup parameters for kinetic model</p>
+<p>logger_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for built-in logger</p>
+<p>file_handler_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for file handler</p>
+<p>console_handler_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for console handler</p>
+<p>parser(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model parser,
+possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.parsers.RelativeEnergyParser</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.parsers.AbsoluteEnergyParser</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.parsers.KMCParser</span></code></p>
+<p>solver(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model solver,
+possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.solvers.SteadyStateSolver</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.solvers.KMCSolver</span></code></p>
+<p>corrector(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model data corrector,
+possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">ThermodynamicCorrector</span></code></p>
+<p>temperature(<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Environment temperature in K, default is 298.0K</p>
+<p>rxn_expressions(<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Reaction expressions for elementary reactions,
+default is []</p>
+<p>species_definitions(<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): All species definition in kinetic model after parsing</p>
+<p class="last">rate_algo(<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Algorithm for rate calculation, could be 'TST' for
+transition state theory or 'CT' for collision theory, default value is 'TST'</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mikiac.models.kinetic_model.KineticModel.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.clear_handlers">
+<code class="descname">clear_handlers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.clear_handlers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.clear_handlers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all handlers in logger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.generate_absolute_energies_file">
+<code class="descname">generate_absolute_energies_file</code><span class="sig-paren">(</span><em>filename='abs_energy.py'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.generate_absolute_energies_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.generate_absolute_energies_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a energy input file containing absolute energies
+for all species(including sites).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.generate_relative_energies_file">
+<code class="descname">generate_relative_energies_file</code><span class="sig-paren">(</span><em>filename='rel_energy.py'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.generate_relative_energies_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.generate_relative_energies_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a energy input file containing relative energies for 
+all elementary reactions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>*kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Need implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.set_corrector">
+<code class="descname">set_corrector</code><span class="sig-paren">(</span><em>corrector</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_corrector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_corrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set corrector for current model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>corrector</strong> (<em>any</em>) -- Valid corrector object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.set_logger_level">
+<code class="descname">set_logger_level</code><span class="sig-paren">(</span><em>handler_type</em>, <em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_logger_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_logger_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the logging level of logger handler.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>handler_type</strong> (<em>str</em>) -- logger handler name</li>
+<li><strong>level</strong> (<em>int</em>) -- logging level</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Old logging level of the handler</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.set_plotter">
+<code class="descname">set_plotter</code><span class="sig-paren">(</span><em>plotter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_plotter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_plotter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set plotter for current model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plotter</strong> (<em>any</em>) -- Valid plotter object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.kinetic_model.KineticModel.set_solver">
+<code class="descname">set_solver</code><span class="sig-paren">(</span><em>solver</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set solver for current model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>solver</strong> (<em>any</em>) -- Valid solver object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="models.micro_kinetic_model.html" class="btn btn-neutral float-right" title="models.MicroKineticModel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

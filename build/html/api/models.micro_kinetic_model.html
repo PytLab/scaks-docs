@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>models.MicroKineticModel &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="parsers.rxn_parser" href="parsers.rxn_parser.html" />
+    <link rel="prev" title="models.KineticModel" href="models.kinetic_model.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">models.MicroKineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.mean_field_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.rootfinding_iterators.html">solvers.rootfinding_iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>models.MicroKineticModel</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/models.micro_kinetic_model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="models-microkineticmodel">
+<h1>models.MicroKineticModel<a class="headerlink" href="#models-microkineticmodel" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel">
+<em class="property">class </em><code class="descclassname">mikiac.models.micro_kinetic_model.</code><code class="descname">MicroKineticModel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/micro_kinetic_model.html#MicroKineticModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="models.kinetic_model.html#mikiac.models.kinetic_model.KineticModel" title="mikiac.models.kinetic_model.KineticModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.models.kinetic_model.KineticModel</span></code></a></p>
+<p>Class for micro-kinetic model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>setup_file</strong> (<em>int</em>) -- kinetic model set up file</li>
+<li><strong>setup_dict</strong> (<em>dict</em>) -- A dictionary contains essential setup parameters for kinetic model.</li>
+<li><strong>logger_level</strong> (<em>int</em>) -- logging level</li>
+<li><strong>file_handler_level</strong> (<em>int</em>) -- logging level for file handler</li>
+<li><strong>console_handler_level</strong> (<em>int</em>) -- logging level for console handler</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mikiac.models.kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">MicroKineticModel</span><span class="p">(</span><span class="n">setup_file</span><span class="o">=</span><span class="s2">&quot;setup.mkm&quot;</span><span class="p">,</span> <span class="n">logger_level</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">decimal_precision (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Data precision, default value is 100</p>
+<p>perturbation_size (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Perturbation size for numerical jacobian matrix,
+default value is 0.01</p>
+<p>perturbation_direction (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Direction of perturbation, <code class="xref py py-obj docutils literal notranslate"><span class="pre">left</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">right</span></code>,
+default is <code class="xref py py-obj docutils literal notranslate"><span class="pre">'right'</span></code></p>
+<p>archived_variables (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Archived variables. Possible values:
+'initial_guess', 'steady_state_coverages', 'steady_state_error', 'rates',
+'net_rates', 'reversibilities', 'tofs'</p>
+<p>numerical_representation (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Numerical representation method,
+value could be 'mpmath' or 'sympy'.</p>
+<p>rootfinding(<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Rootfinding iterator type, default value is 'MDNewton',
+possible value can be 'MDNewton' or 'ConstrainedNewton'</p>
+<p>tolerance (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Iteration tolerance, default is 1e-8</p>
+<p>max_rootfinding_iterations (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Max iteraction steps, default is 100</p>
+<p>ode_buffer_size (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Ode integration buffer size, default is 500</p>
+<p>ode_output_interval (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Ode ouptut interval, default is 200</p>
+<p>data_file (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Filename for data store, default is 'data.pkl'</p>
+<p>log_allowed (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): If log output is allowed, default is <cite>True</cite></p>
+<p>TOFs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Turnover frequencies calculated.</p>
+<p>reversibilities (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Reversibilities calculated.</p>
+<p class="last">error (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Residual errors after iterations.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.clear_handlers">
+<code class="descname">clear_handlers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.clear_handlers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all handlers in logger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.generate_absolute_energies_file">
+<code class="descname">generate_absolute_energies_file</code><span class="sig-paren">(</span><em>filename='abs_energy.py'</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.generate_absolute_energies_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a energy input file containing absolute energies
+for all species(including sites).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.generate_relative_energies_file">
+<code class="descname">generate_relative_energies_file</code><span class="sig-paren">(</span><em>filename='rel_energy.py'</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.generate_relative_energies_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a energy input file containing relative energies for 
+all elementary reactions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/micro_kinetic_model.html#MicroKineticModel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run function to solve Micro-kinetic model using Steady State Approxmiation
+to get steady state coverages and turnover frequencies (TOF).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>init_cvgs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) -- Initial guess for coverages</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative energies for all elementary reactions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">keys <code class="xref py py-obj docutils literal notranslate"><span class="pre">Gaf</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">Gar</span></code> must be in relative energies dict.
+e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">{&quot;Gaf&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;Gar&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;dG&quot;:</span> <span class="pre">[...]}</span></code></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fsolve</strong> (<em>bool</em>) -- use scipy.optimize.fsolve to get low-precision root or not</li>
+<li><strong>coarse_guess</strong> (<em>bool</em>) -- use fsolve to do initial coverages preprocessing or not</li>
+<li><strong>XRC</strong> (<em>bool</em>) -- calculate degree of rate control or nor</li>
+<li><strong>epsilon</strong> (<em>float</em>) -- the change of energy for XRC calculation, default is 10-5.</li>
+<li><strong>product_name</strong> (<em>str</em>) -- Production name of the model. e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">'CH3OH_g'</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.set_corrector">
+<code class="descname">set_corrector</code><span class="sig-paren">(</span><em>corrector</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.set_corrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set corrector for current model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>corrector</strong> (<em>any</em>) -- Valid corrector object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.set_logger_level">
+<code class="descname">set_logger_level</code><span class="sig-paren">(</span><em>handler_type</em>, <em>level</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.set_logger_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the logging level of logger handler.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>handler_type</strong> (<em>str</em>) -- logger handler name</li>
+<li><strong>level</strong> (<em>int</em>) -- logging level</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Old logging level of the handler</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.set_plotter">
+<code class="descname">set_plotter</code><span class="sig-paren">(</span><em>plotter</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.set_plotter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set plotter for current model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plotter</strong> (<em>any</em>) -- Valid plotter object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.models.micro_kinetic_model.MicroKineticModel.set_solver">
+<code class="descname">set_solver</code><span class="sig-paren">(</span><em>solver</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.models.micro_kinetic_model.MicroKineticModel.set_solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set solver for current model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>solver</strong> (<em>any</em>) -- Valid solver object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="parsers.rxn_parser.html" class="btn btn-neutral float-right" title="parsers.rxn_parser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="models.kinetic_model.html" class="btn btn-neutral" title="models.KineticModel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

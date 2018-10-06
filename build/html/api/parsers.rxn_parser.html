@@ -1,0 +1,564 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>parsers.rxn_parser &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="parsers.ParserBase" href="parsers.parser_base.html" />
+    <link rel="prev" title="models.MicroKineticModel" href="models.micro_kinetic_model.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">parsers.rxn_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.mean_field_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.rootfinding_iterators.html">solvers.rootfinding_iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>parsers.rxn_parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/parsers.rxn_parser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parsers-rxn-parser">
+<h1>parsers.rxn_parser<a class="headerlink" href="#parsers-rxn-parser" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation">
+<em class="property">class </em><code class="descclassname">mikiac.parsers.rxn_parser.</code><code class="descname">RxnEquation</code><span class="sig-paren">(</span><em>rxn_equation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to create reaction equation object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_equation</strong> (<em>str</em>) -- Elementary reaction expression that follows <em>MiKiAC</em> reaction
+expression conventions</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mikiac.parser.rxn_equation</span> <span class="k">import</span> <span class="n">RxnEquation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rxn</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="s1">&#39;O2_g + 2*_s &lt;-&gt; O-O_2s -&gt; 2O_s&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.adsorption_gases">
+<code class="descname">adsorption_gases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.adsorption_gases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.adsorption_gases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the gas formula objects in initial state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The gas species in initial state.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#mikiac.parsers.rxn_parser.ChemFormula" title="mikiac.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.check_conservation">
+<code class="descname">check_conservation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.check_conservation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.check_conservation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to check reaction equation conservation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Conservative or not</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.desorption_gases">
+<code class="descname">desorption_gases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.desorption_gases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.desorption_gases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the gas formula objects in final state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The gas species in final state</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#mikiac.parsers.rxn_parser.ChemFormula" title="mikiac.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.revert">
+<code class="descname">revert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.revert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.revert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revert the reaction to its reverse RxnEquation object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The reverse reaction equation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rxn_parser.RxnEquation</span></code> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.rxn_equation">
+<code class="descname">rxn_equation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.rxn_equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.rxn_equation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for reaction equation string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.texen">
+<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.texen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get tex string of a reaction equation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The LaTEX string for current reaction equation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.to_formula_list">
+<code class="descname">to_formula_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.to_formula_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.to_formula_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get list of formulas for the reaction equation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.RxnEquation.tolist">
+<code class="descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#RxnEquation.tolist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.RxnEquation.tolist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert rxn_equation string to rxn_list (chem_state objects).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of chemical states</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">rxn_equation.ChemState</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.parsers.rxn_parser.ChemState">
+<em class="property">class </em><code class="descclassname">mikiac.parsers.rxn_parser.</code><code class="descname">ChemState</code><span class="sig-paren">(</span><em>chem_state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to generate chemical state object.</p>
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.chem_state">
+<code class="descname">chem_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.chem_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.chem_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for state string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.conserve">
+<code class="descname">conserve</code><span class="sig-paren">(</span><em>another</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.conserve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.conserve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to check state conservation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Params another:</th><td class="field-body">Another chemical state.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Conservative or not</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.get_elements_dict">
+<code class="descname">get_elements_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.get_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.get_elements_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get element dictionary of the state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.get_sites_dict">
+<code class="descname">get_sites_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.get_sites_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.get_sites_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get sites dictionary of the state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.get_species_site_dict">
+<code class="descname">get_species_site_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.get_species_site_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.get_species_site_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get species_site dictionary of the state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.get_species_site_list">
+<code class="descname">get_species_site_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.get_species_site_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.get_species_site_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get species_site list of the state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.split">
+<code class="descname">split</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to split state to formula string list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.texen">
+<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.texen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get tex string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemState.tolist">
+<code class="descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemState.tolist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemState.tolist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to split state string to chemical formula list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula">
+<em class="property">class </em><code class="descclassname">mikiac.parsers.rxn_parser.</code><code class="descname">ChemFormula</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to generate chemical formula object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formula</strong> (<em>str</em>) -- A formula for a specific species</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.conserve">
+<code class="descname">conserve</code><span class="sig-paren">(</span><em>another</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.conserve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.conserve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to check conservation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>another</strong> (<a class="reference internal" href="#mikiac.parsers.rxn_parser.ChemFormula" title="mikiac.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a> instance.) -- Another chemical formula</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Conservative or not</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.formula">
+<code class="descname">formula</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.formula"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.formula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for formula string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.get_elements_dict">
+<code class="descname">get_elements_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.get_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.get_elements_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get elements dictionary of formula.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.get_sites_dict">
+<code class="descname">get_sites_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.get_sites_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.get_sites_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get site dictionary of formula.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.get_species_elements_dict">
+<code class="descname">get_species_elements_dict</code><span class="sig-paren">(</span><em>species=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.get_species_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.get_species_elements_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split elements of species to element dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>species</strong> (<em>str</em>) -- The species name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The element of the species.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.nsite">
+<code class="descname">nsite</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.nsite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.nsite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for sites number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.site">
+<code class="descname">site</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.site" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for sites type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.species">
+<code class="descname">species</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.species" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for species name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.species_site">
+<code class="descname">species_site</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.species_site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.species_site" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for string of species on site.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.stoichiometry">
+<code class="descname">stoichiometry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.stoichiometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.stoichiometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for stoichiometry number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.texen">
+<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.texen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get tex string of species.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.parsers.rxn_parser.ChemFormula.type">
+<code class="descname">type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/rxn_parser.html#ChemFormula.type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.rxn_parser.ChemFormula.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get species type:  'gas' | 'liquid' | 'adsorbate'</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="parsers.parser_base.html" class="btn btn-neutral float-right" title="parsers.ParserBase" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="models.micro_kinetic_model.html" class="btn btn-neutral" title="models.MicroKineticModel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

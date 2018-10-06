@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mikiac.parsers.rxn_parser &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../mikiac.html">mikiac</a> &raquo;</li>
+        
+      <li>mikiac.parsers.rxn_parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for mikiac.parsers.rxn_parser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding:utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="RxnEquation"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation">[docs]</a><span class="k">class</span> <span class="nc">RxnEquation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Class to create reaction equation object.</span>
+
+<span class="sd">    :param rxn_equation: Elementary reaction expression that follows *MiKiAC* reaction</span>
+<span class="sd">                         expression conventions</span>
+<span class="sd">    :type rxn_equation: str</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; from mikiac.parser.rxn_equation import RxnEquation</span>
+<span class="sd">        &gt;&gt;&gt; rxn = RxnEquation(&#39;O2_g + 2*_s &lt;-&gt; O-O_2s -&gt; 2O_s&#39;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rxn_equation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__rxn_equation</span> <span class="o">=</span> <span class="n">rxn_equation</span>
+
+<div class="viewcode-block" id="RxnEquation.tolist"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.tolist">[docs]</a>    <span class="k">def</span> <span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Convert rxn_equation string to rxn_list (chem_state objects).</span>
+
+<span class="sd">        :return: a list of chemical states</span>
+<span class="sd">        :rtype: :obj:`list` of :obj:`rxn_equation.ChemState`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">states_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([^\&lt;\&gt;]*)(?:\&lt;?\-\&gt;)&#39;</span> <span class="o">+</span>
+                                  <span class="sa">r</span><span class="s1">&#39;(?:([^\&lt;\&gt;]*)(?:\&lt;?\-\&gt;))?([^\&lt;\&gt;]*)&#39;</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">states_regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__rxn_equation</span><span class="p">)</span>
+        <span class="n">state_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+                <span class="n">chem_state_obj</span> <span class="o">=</span> <span class="n">ChemState</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">state_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chem_state_obj</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">state_list</span></div>
+
+<div class="viewcode-block" id="RxnEquation.to_formula_list"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.to_formula_list">[docs]</a>    <span class="k">def</span> <span class="nf">to_formula_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get list of formulas for the reaction equation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+            <span class="n">formula_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+                <span class="n">formula_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+            <span class="n">state_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">formula_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">state_list</span></div>
+
+<div class="viewcode-block" id="RxnEquation.check_conservation"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.check_conservation">[docs]</a>    <span class="k">def</span> <span class="nf">check_conservation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to check reaction equation conservation.</span>
+
+<span class="sd">        :return: Conservative or not</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="n">state_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">state_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">first</span><span class="o">.</span><span class="n">conserve</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+        <span class="c1"># If passed, return True.</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="RxnEquation.texen"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.texen">[docs]</a>    <span class="k">def</span> <span class="nf">texen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get tex string of a reaction equation.</span>
+
+<span class="sd">        :return: The LaTEX string for current reaction equation</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">tex_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">state_obj</span><span class="o">.</span><span class="n">texen</span><span class="p">()</span> <span class="k">for</span> <span class="n">state_obj</span> <span class="ow">in</span> <span class="n">state_list</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tex_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">tex_str</span> <span class="o">=</span> <span class="p">(</span><span class="n">tex_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39; \leftrightarrow &#39;</span> <span class="o">+</span> <span class="n">tex_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="sa">r</span><span class="s1">&#39; \rightarrow &#39;</span> <span class="o">+</span> <span class="n">tex_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">tex_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">tex_str</span> <span class="o">=</span> <span class="n">tex_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39; \rightarrow &#39;</span> <span class="o">+</span> <span class="n">tex_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">tex_str</span></div>
+
+<div class="viewcode-block" id="RxnEquation.revert"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.revert">[docs]</a>    <span class="k">def</span> <span class="nf">revert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Revert the reaction to its reverse RxnEquation object.</span>
+
+<span class="sd">        :return: The reverse reaction equation</span>
+<span class="sd">        :rtype: :obj:`rxn_parser.RxnEquation` object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># Get rxn_expression template.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">expression_template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">&quot;</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">state_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">expression_template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> &lt;-&gt; </span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">&quot;</span>
+
+        <span class="c1"># Revert.</span>
+        <span class="n">chem_states</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="o">.</span><span class="n">chem_state</span><span class="p">()</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">state_list</span><span class="p">]</span>
+        <span class="n">chem_states</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+        <span class="n">rxn_expression</span> <span class="o">=</span> <span class="n">expression_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">chem_states</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RxnEquation.adsorption_gases"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.adsorption_gases">[docs]</a>    <span class="k">def</span> <span class="nf">adsorption_gases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get the gas formula objects in initial state.</span>
+
+<span class="sd">        :return: The gas species in initial state.</span>
+<span class="sd">        :rtype: :obj:`list` of :obj:`ChemFormula`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">formula_lists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_formula_list</span><span class="p">()</span>
+        <span class="n">gases</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">formula_lists</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">sp</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;gas&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">gases</span></div>
+
+<div class="viewcode-block" id="RxnEquation.desorption_gases"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.desorption_gases">[docs]</a>    <span class="k">def</span> <span class="nf">desorption_gases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get the gas formula objects in final state.</span>
+
+<span class="sd">        :return: The gas species in final state</span>
+<span class="sd">        :rtype: :obj:`list` of :obj:`ChemFormula`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">formula_lists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_formula_list</span><span class="p">()</span>
+        <span class="n">gases</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">formula_lists</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">sp</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;gas&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">gases</span></div>
+
+    <span class="c1"># ----------------------------------------</span>
+    <span class="c1"># Query functions.</span>
+
+<div class="viewcode-block" id="RxnEquation.rxn_equation"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.RxnEquation.rxn_equation">[docs]</a>    <span class="k">def</span> <span class="nf">rxn_equation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Query function for reaction equation string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rxn_equation</span></div></div>
+
+
+<div class="viewcode-block" id="ChemState"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState">[docs]</a><span class="k">class</span> <span class="nc">ChemState</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to generate chemical state object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chem_state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__chem_state</span> <span class="o">=</span> <span class="n">chem_state</span>
+
+<div class="viewcode-block" id="ChemState.split"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to split state to formula string list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">sp</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__chem_state</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="ChemState.tolist"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.tolist">[docs]</a>    <span class="k">def</span> <span class="nf">tolist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to split state string to chemical formula list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">formula_str_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">ChemFormula</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span> <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_str_list</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">formula_list</span></div>
+
+<div class="viewcode-block" id="ChemState.get_species_site_list"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.get_species_site_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_species_site_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get species_site list of the state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="n">species_site_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span> <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">species_site_list</span></div>
+
+<div class="viewcode-block" id="ChemState.get_species_site_dict"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.get_species_site_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_species_site_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get species_site dictionary of the state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="n">species_site_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">():</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+                             <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">species_site_dict</span></div>
+
+<div class="viewcode-block" id="ChemState.get_elements_dict"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.get_elements_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_elements_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get element dictionary of the state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get elements dict of all species.</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">elements_dicts</span> <span class="o">=</span> <span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_elements_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">)</span>
+
+        <span class="c1"># Merge all elements dicts.</span>
+        <span class="n">merged_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">elements_dict</span> <span class="ow">in</span> <span class="n">elements_dicts</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">element</span><span class="p">,</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">elements_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">merged_dict</span><span class="p">:</span>
+                    <span class="n">merged_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">merged_dict</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">+=</span> <span class="n">number</span>
+
+        <span class="k">return</span> <span class="n">merged_dict</span></div>
+
+<div class="viewcode-block" id="ChemState.get_sites_dict"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.get_sites_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_sites_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get sites dictionary of the state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get sites dict of all formulas.</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">sites_dicts</span> <span class="o">=</span> <span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">get_sites_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">)</span>
+
+        <span class="c1"># Site types that are not included.</span>
+        <span class="n">exclusive_sites</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Merge all elements dicts.</span>
+        <span class="n">merged_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">sites_dict</span> <span class="ow">in</span> <span class="n">sites_dicts</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">site</span><span class="p">,</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">sites_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># If gas or liquid, pass.</span>
+                <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">exclusive_sites</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">site</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">merged_dict</span><span class="p">:</span>
+                    <span class="n">merged_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">site</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">merged_dict</span><span class="p">[</span><span class="n">site</span><span class="p">]</span> <span class="o">+=</span> <span class="n">number</span>
+
+        <span class="k">return</span> <span class="n">merged_dict</span></div>
+
+<div class="viewcode-block" id="ChemState.conserve"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.conserve">[docs]</a>    <span class="k">def</span> <span class="nf">conserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">another</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to check state conservation.</span>
+
+
+<span class="sd">        :params another: Another chemical state.</span>
+<span class="sd">        :type another: :obj:`ChemState` instance.</span>
+
+<span class="sd">        :return: Conservative or not</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check input parameter.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">another</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Parameter another must be instance of ChemState.&quot;</span>
+            <span class="k">return</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Check elements.</span>
+        <span class="n">dict1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elements_dict</span><span class="p">()</span>
+        <span class="n">dict2</span> <span class="o">=</span> <span class="n">another</span><span class="o">.</span><span class="n">get_elements_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">dict1</span> <span class="o">!=</span> <span class="n">dict2</span><span class="p">:</span>
+            <span class="n">msg_temp</span> <span class="o">=</span> <span class="s2">&quot;Mass of chemical states </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> are not conservative.&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg_temp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chem_state</span><span class="p">(),</span> <span class="n">another</span><span class="o">.</span><span class="n">chem_state</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Check sites.</span>
+        <span class="n">dict1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sites_dict</span><span class="p">()</span>
+        <span class="n">dict2</span> <span class="o">=</span> <span class="n">another</span><span class="o">.</span><span class="n">get_sites_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">dict1</span> <span class="o">!=</span> <span class="n">dict2</span><span class="p">:</span>
+            <span class="n">msg_temp</span> <span class="o">=</span> <span class="s2">&quot;Site of chemical states </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> are not conservatvie.&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg_temp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chem_state</span><span class="p">(),</span> <span class="n">another</span><span class="o">.</span><span class="n">chem_state</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># If all tests passed, return True.</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="ChemState.texen"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.texen">[docs]</a>    <span class="k">def</span> <span class="nf">texen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get tex string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">first_sp</span> <span class="o">=</span> <span class="n">formula_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">tex_str</span> <span class="o">=</span> <span class="n">first_sp</span><span class="o">.</span><span class="n">texen</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">tex_str</span> <span class="o">+=</span> <span class="sa">r</span><span class="s1">&#39; + &#39;</span> <span class="o">+</span> <span class="n">formula</span><span class="o">.</span><span class="n">texen</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">tex_str</span></div>
+
+    <span class="c1"># --------------------------------------</span>
+    <span class="c1"># Query functions.</span>
+
+<div class="viewcode-block" id="ChemState.chem_state"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemState.chem_state">[docs]</a>    <span class="k">def</span> <span class="nf">chem_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for state string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__chem_state</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">ChemFormulaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="s2">&quot;Exception raised for errors in the chemical formula.&quot;</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="ChemFormula"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula">[docs]</a><span class="k">class</span> <span class="nc">ChemFormula</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Class to generate chemical formula object.</span>
+
+<span class="sd">    :param formula: A formula for a specific species</span>
+<span class="sd">    :type formula: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span> <span class="o">=</span> <span class="n">formula</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__formula_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d*)(([\w\*-]*)_(\d*)([a-zA-Z\*]+))&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sp_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([a-zA-Z\*])(\d*)&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__split</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula_inst</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Overload + operation function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">chem_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formula</span> <span class="o">+</span> <span class="s1">&#39; + &#39;</span> <span class="o">+</span> <span class="n">formula_inst</span><span class="o">.</span><span class="n">formula</span>
+        <span class="k">return</span> <span class="n">ChemState</span><span class="p">(</span><span class="n">chem_state</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__split</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to split whole formual to</span>
+<span class="sd">        stoichiometry, species name, site number, site name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formula_regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__formula</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Unexpected chemical formula: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__formula</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ChemFormulaError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__stoich</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__species_site</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__species</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__site</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__nsite</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="ChemFormula.type"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.type">[docs]</a>    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get species type:  &#39;gas&#39; | &#39;liquid&#39; | &#39;adsorbate&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__site</span> <span class="o">==</span> <span class="s2">&quot;g&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;gas&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__site</span> <span class="o">==</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;liquid&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__species_site</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;site&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;adsorbate&quot;</span></div>
+
+<div class="viewcode-block" id="ChemFormula.get_elements_dict"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.get_elements_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_elements_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get elements dictionary of formula.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sp_elements_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_species_elements_dict</span><span class="p">()</span>
+
+        <span class="c1"># Get total elements dict.</span>
+        <span class="n">elements_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">elem</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stoich</span><span class="o">*</span><span class="n">num</span>
+                         <span class="k">for</span> <span class="n">elem</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">sp_elements_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="k">return</span> <span class="n">elements_dict</span></div>
+
+<div class="viewcode-block" id="ChemFormula.get_species_elements_dict"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.get_species_elements_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_species_elements_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Split elements of species to element dict.</span>
+
+<span class="sd">        :param species: The species name.</span>
+<span class="sd">        :type species: str</span>
+
+<span class="sd">        :return: The element of the species.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">species</span><span class="p">:</span>
+            <span class="n">species</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__species</span>
+
+        <span class="c1"># If it&#39;s a site, no element returned.</span>
+        <span class="k">if</span> <span class="n">species</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+
+        <span class="n">element_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sp_regex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">species</span><span class="p">)</span>
+
+        <span class="n">element_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">element</span><span class="p">,</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">element_list</span><span class="p">:</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="k">if</span> <span class="n">number</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">element_dict</span><span class="p">:</span>
+                <span class="n">element_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">element_dict</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">+=</span> <span class="n">number</span>
+
+        <span class="k">return</span> <span class="n">element_dict</span></div>
+
+<div class="viewcode-block" id="ChemFormula.get_sites_dict"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.get_sites_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_sites_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get site dictionary of formula.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">single_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">__site</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nsite</span><span class="p">)])</span>
+        <span class="n">sites_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">site</span><span class="p">:</span> <span class="n">num</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">__stoich</span> <span class="k">for</span> <span class="n">site</span><span class="p">,</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">single_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="k">return</span> <span class="n">sites_dict</span></div>
+
+<div class="viewcode-block" id="ChemFormula.conserve"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.conserve">[docs]</a>    <span class="k">def</span> <span class="nf">conserve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">another</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to check conservation.</span>
+
+<span class="sd">        :param another: Another chemical formula</span>
+<span class="sd">        :type another: :obj:`ChemFormula` instance.</span>
+
+<span class="sd">        :return: Conservative or not</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check parameter type.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">another</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Parameter another must be instance of ChemFormula.&quot;</span>
+            <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Check elements.</span>
+        <span class="n">dict1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elements_dict</span><span class="p">()</span>
+        <span class="n">dict2</span> <span class="o">=</span> <span class="n">another</span><span class="o">.</span><span class="n">get_elements_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">dict1</span> <span class="o">!=</span> <span class="n">dict2</span><span class="p">:</span>
+            <span class="n">msg_temp</span> <span class="o">=</span> <span class="s2">&quot;Mass of chemical formula </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> are not conservative.&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg_temp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formula</span><span class="p">(),</span> <span class="n">another</span><span class="o">.</span><span class="n">formula</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Check sites.</span>
+        <span class="n">dict1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sites_dict</span><span class="p">()</span>
+        <span class="n">dict2</span> <span class="o">=</span> <span class="n">another</span><span class="o">.</span><span class="n">get_sites_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">dict1</span> <span class="o">!=</span> <span class="n">dict2</span><span class="p">:</span>
+            <span class="n">msg_temp</span> <span class="o">=</span> <span class="s2">&quot;Site of chemical formula </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> are not conservatvie.&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg_temp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formula</span><span class="p">(),</span> <span class="n">another</span><span class="o">.</span><span class="n">formula</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># If all tests passed, return True.</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__sub_texen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_species</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to get tex string of sub-species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tex_str</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;</span>
+        <span class="n">splited_tuples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sp_regex</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">sub_species</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">element</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">splited_tuples</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">n</span><span class="p">:</span>
+                <span class="n">tex_str</span> <span class="o">+=</span> <span class="n">element</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;_{&#39;</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;}&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tex_str</span> <span class="o">+=</span> <span class="n">element</span>
+
+        <span class="k">return</span> <span class="n">tex_str</span>
+
+<div class="viewcode-block" id="ChemFormula.texen"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.texen">[docs]</a>    <span class="k">def</span> <span class="nf">texen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get tex string of species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tex_str</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;</span>
+        <span class="n">tex_str</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__stoich</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stoich</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="c1"># Get species tex string.</span>
+        <span class="k">if</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__species</span><span class="p">:</span>
+            <span class="n">sub_species_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__species</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+            <span class="n">tex_str</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__sub_texen</span><span class="p">(</span><span class="n">sub_sp</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub_sp</span> <span class="ow">in</span> <span class="n">sub_species_list</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tex_str</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sub_texen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__species</span><span class="p">)</span>
+
+        <span class="n">tex_str</span> <span class="o">+=</span> <span class="sa">r</span><span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__site</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;)&#39;</span>
+
+        <span class="k">return</span> <span class="n">tex_str</span></div>
+
+    <span class="c1"># -----------------------------------------------</span>
+    <span class="c1"># Query functions.</span>
+
+<div class="viewcode-block" id="ChemFormula.formula"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.formula">[docs]</a>    <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for formula string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__formula</span></div>
+
+<div class="viewcode-block" id="ChemFormula.stoichiometry"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.stoichiometry">[docs]</a>    <span class="k">def</span> <span class="nf">stoichiometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for stoichiometry number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stoich</span></div>
+
+<div class="viewcode-block" id="ChemFormula.species_site"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.species_site">[docs]</a>    <span class="k">def</span> <span class="nf">species_site</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for string of species on site.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__species_site</span></div>
+
+<div class="viewcode-block" id="ChemFormula.species"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.species">[docs]</a>    <span class="k">def</span> <span class="nf">species</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for species name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__species</span></div>
+
+<div class="viewcode-block" id="ChemFormula.nsite"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.nsite">[docs]</a>    <span class="k">def</span> <span class="nf">nsite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for sites number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nsite</span></div>
+
+<div class="viewcode-block" id="ChemFormula.site"><a class="viewcode-back" href="../../../api/parsers.rxn_parser.html#mikiac.parsers.rxn_parser.ChemFormula.site">[docs]</a>    <span class="k">def</span> <span class="nf">site</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for sites type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__site</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

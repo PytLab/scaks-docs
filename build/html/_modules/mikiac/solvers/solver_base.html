@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mikiac.solvers.solver_base &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../mikiac.html">mikiac</a> &raquo;</li>
+        
+      <li>mikiac.solvers.solver_base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for mikiac.solvers.solver_base</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">mul</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">ModelShell</span>
+<span class="kn">from</span> <span class="nn">..compatutil</span> <span class="k">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">..database.thermo_data</span> <span class="k">import</span> <span class="n">kB_J</span><span class="p">,</span> <span class="n">kB_eV</span><span class="p">,</span> <span class="n">h_eV</span><span class="p">,</span> <span class="n">P0</span>
+<span class="kn">from</span> <span class="nn">..functions</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..parsers.rxn_parser</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..parsers.parser_base</span> <span class="k">import</span> <span class="n">ParserBase</span>
+
+
+<div class="viewcode-block" id="SolverBase"><a class="viewcode-back" href="../../../api/solvers.solver_base.html#mikiac.solvers.mean_field_solver.SolverBase">[docs]</a><span class="k">class</span> <span class="nc">SolverBase</span><span class="p">(</span><span class="n">ModelShell</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Abstract base class to be herited by other solver classes.</span>
+
+<span class="sd">    :param owner: The kinetic model that own this solver</span>
+<span class="sd">    :type owner: KineticModel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SolverBase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+
+        <span class="c1"># Set logger.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;model.solver.SolverBase&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SolverBase.get_kTST"><a class="viewcode-back" href="../../../api/solvers.solver_base.html#mikiac.solvers.mean_field_solver.SolverBase.get_kTST">[docs]</a>    <span class="k">def</span> <span class="nf">get_kTST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ga</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate rate constants according to Transition State Theory.</span>
+
+<span class="sd">        :param Ga: Free energy barrier</span>
+<span class="sd">        :type Ga: float</span>
+
+<span class="sd">        :param T: Temperature(K)</span>
+<span class="sd">        :type T: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;SteadyStateSolver&quot;</span><span class="p">:</span>
+            <span class="c1"># Convert float numbers to mpfloat.</span>
+            <span class="n">kB_eV_mp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="n">kB_eV</span><span class="p">)</span>
+            <span class="n">T_mp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">h_eV_mp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="n">h_eV</span><span class="p">)</span>
+            <span class="n">Ga_mp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="n">Ga</span><span class="p">)</span>
+            <span class="n">kTST</span> <span class="o">=</span> <span class="n">kB_eV_mp</span><span class="o">*</span><span class="n">T_mp</span><span class="o">/</span><span class="n">h_eV_mp</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Ga_mp</span><span class="o">/</span><span class="p">(</span><span class="n">kB_eV_mp</span><span class="o">*</span><span class="n">T_mp</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kTST</span> <span class="o">=</span> <span class="n">kB_eV</span><span class="o">*</span><span class="n">T</span><span class="o">/</span><span class="n">h_eV</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Ga</span><span class="o">/</span><span class="p">(</span><span class="n">kB_eV</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">kTST</span></div>
+
+<div class="viewcode-block" id="SolverBase.get_kCT"><a class="viewcode-back" href="../../../api/solvers.solver_base.html#mikiac.solvers.mean_field_solver.SolverBase.get_kCT">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_kCT</span><span class="p">(</span><span class="n">Ea</span><span class="p">,</span> <span class="n">Auc</span><span class="p">,</span> <span class="n">act_ratio</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">P0</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Static function to get rate constant/collision rate according to </span>
+<span class="sd">        Collision Theory.</span>
+
+<span class="sd">        :param Ea: energy barrier( NOT free energy barrier )</span>
+<span class="sd">        :type Ea: float</span>
+
+<span class="sd">        :param Auc: area of unitcell (m^-2)</span>
+<span class="sd">        :type Auc: float</span>
+
+<span class="sd">        :param act_ratio: area of active sites/area of unitcell</span>
+<span class="sd">        :type act_ratio: float(&lt;=1.0)</span>
+
+<span class="sd">        :param p: pressure of gas, default value is 101325 Pa (atm).</span>
+<span class="sd">        :type p: float</span>
+
+<span class="sd">        :param m: absolute mass of molecule (kg)</span>
+<span class="sd">        :type m: float</span>
+
+<span class="sd">        :param f: factor accounts for a further reduction in the sticking </span>
+<span class="sd">            probability, if particle with certain initial states are not </span>
+<span class="sd">            efficiently steered along the MEP, and reflected by a higher barrier</span>
+<span class="sd">        :type f: float(&lt;= 1.0)</span>
+
+<span class="sd">        :param T: temperature (K)</span>
+<span class="sd">        :type T: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check parameters.</span>
+        <span class="k">if</span> <span class="n">act_ratio</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;active area ratio must be less than 1.0&quot;</span>
+            <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">f</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;factor f must be less than 1.0&quot;</span>
+            <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Sticking coefficient.</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">f</span><span class="o">*</span><span class="n">act_ratio</span><span class="o">*</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Ea</span><span class="o">/</span><span class="p">(</span><span class="n">kB_eV</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
+
+        <span class="c1"># Rate constant.</span>
+        <span class="n">kCT</span> <span class="o">=</span> <span class="n">S</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="n">Auc</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">kB_J</span><span class="o">*</span><span class="n">T</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">kCT</span></div>
+
+<div class="viewcode-block" id="SolverBase.get_TST_barrier_from_CT"><a class="viewcode-back" href="../../../api/solvers.solver_base.html#mikiac.solvers.mean_field_solver.SolverBase.get_TST_barrier_from_CT">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_TST_barrier_from_CT</span><span class="p">(</span><span class="n">kCT</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Static method to get TST barrier from the rate constant calculated </span>
+<span class="sd">        by Collision Theory.</span>
+
+<span class="sd">        :param kCT: Rate constant calculated by Collision Theory</span>
+<span class="sd">        :type kCT: float</span>
+
+<span class="sd">        :param T: Temperature(K)</span>
+<span class="sd">        :type T: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Ga</span> <span class="o">=</span> <span class="o">-</span><span class="n">log</span><span class="p">(</span><span class="n">kCT</span><span class="o">*</span><span class="n">h_eV</span><span class="o">/</span><span class="p">(</span><span class="n">kB_eV</span><span class="o">*</span><span class="n">T</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">kB_eV</span><span class="o">*</span><span class="n">T</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Ga</span></div>
+
+<div class="viewcode-block" id="SolverBase.get_rxn_rates_TST"><a class="viewcode-back" href="../../../api/solvers.solver_base.html#mikiac.solvers.mean_field_solver.SolverBase.get_rxn_rates_TST">[docs]</a>    <span class="k">def</span> <span class="nf">get_rxn_rates_TST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                          <span class="n">rxn_expression</span><span class="p">,</span>
+                          <span class="n">relative_energies</span><span class="p">,</span>
+                          <span class="n">include_pressure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get rate constants for an elementary reaction using </span>
+<span class="sd">        Transition State Theory.</span>
+
+<span class="sd">        :param rxn_expression: The expression of an elementary reaction</span>
+<span class="sd">        :type rxn_expression: str</span>
+
+<span class="sd">        :param relative_energies: The relative energies for all elementary reactions.</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        :param include_pressure: The flag for whether to include the actual gas pressure</span>
+<span class="sd">        :type include_pressure: bool</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">             (not the pressure of standard condition, 101325.0 Pa).</span>
+<span class="sd">             The default value is False, meaning that we calculate the</span>
+<span class="sd">             RATE CONSTANT by default.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Get the condition for log info output.</span>
+        <span class="n">cls_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">log_allowed</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span> <span class="ow">and</span> <span class="n">cls_name</span> <span class="o">==</span> <span class="s2">&quot;KMCSolver&quot;</span><span class="p">)</span>
+
+        <span class="n">Gaf</span><span class="p">,</span> <span class="n">Gar</span><span class="p">,</span> <span class="n">dG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_relative_energies</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (Gaf=</span><span class="si">{}</span><span class="s2">, Gar=</span><span class="si">{}</span><span class="s2">, dG=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">,</span> <span class="n">Gaf</span><span class="p">,</span> <span class="n">Gar</span><span class="p">,</span> <span class="n">dG</span><span class="p">))</span>
+
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">temperature</span>
+
+        <span class="c1"># Use Transition State Theory to get rate constants.</span>
+        <span class="n">rf</span><span class="p">,</span> <span class="n">rr</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kTST</span><span class="p">(</span><span class="n">Ga</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">Ga</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Gaf</span><span class="p">,</span> <span class="n">Gar</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Rates without partial pressure:&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(forward) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rf</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(reverse) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rr</span><span class="p">))</span>
+
+        <span class="c1"># Include pressures.</span>
+        <span class="k">if</span> <span class="n">include_pressure</span><span class="p">:</span>
+            <span class="n">rxn_equation</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gas</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">species_definitions</span><span class="p">[</span><span class="n">gas</span><span class="p">][</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span>
+
+            <span class="c1"># Forward rate.</span>
+            <span class="n">adsorption_gases</span> <span class="o">=</span> <span class="n">rxn_equation</span><span class="o">.</span><span class="n">adsorption_gases</span><span class="p">()</span>
+            <span class="n">pressures</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">gas</span><span class="o">.</span><span class="n">formula</span><span class="p">())</span> <span class="k">for</span> <span class="n">gas</span> <span class="ow">in</span> <span class="n">adsorption_gases</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">pressures</span><span class="p">)</span> <span class="k">if</span> <span class="n">pressures</span> <span class="k">else</span> <span class="mf">1.0</span>
+            <span class="n">rf</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="n">rf</span>
+
+            <span class="c1"># Reverse rate.</span>
+            <span class="n">desorption_gases</span> <span class="o">=</span> <span class="n">rxn_equation</span><span class="o">.</span><span class="n">desorption_gases</span><span class="p">()</span>
+            <span class="n">pressures</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">gas</span><span class="o">.</span><span class="n">formula</span><span class="p">())</span> <span class="k">for</span> <span class="n">gas</span> <span class="ow">in</span> <span class="n">desorption_gases</span><span class="p">]</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">pressures</span><span class="p">)</span> <span class="k">if</span> <span class="n">pressures</span> <span class="k">else</span> <span class="mf">1.0</span>
+            <span class="n">rr</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="n">rr</span>
+
+            <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Rates including partial pressure:&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(forward) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rf</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(reverse) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rr</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">rf</span><span class="p">,</span> <span class="n">rr</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SolverBase.get_rxn_rates_CT"><a class="viewcode-back" href="../../../api/solvers.solver_base.html#mikiac.solvers.mean_field_solver.SolverBase.get_rxn_rates_CT">[docs]</a>    <span class="k">def</span> <span class="nf">get_rxn_rates_CT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                         <span class="n">rxn_expression</span><span class="p">,</span>
+                         <span class="n">relative_energies</span><span class="p">,</span>
+                         <span class="n">include_pressure</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get rate constants for an elementary reaction using </span>
+<span class="sd">        Collision Theory wrt adsorption process.</span>
+
+<span class="sd">        :param rxn_expression: The expression of an elementary reaction</span>
+<span class="sd">        :type rxn_expression: str</span>
+
+<span class="sd">        :param relative_energies: The relative energies for all elementary reactions.</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        :param include_pressure: The flag for whether to include the actual gas pressure</span>
+<span class="sd">        :type include_pressure: bool</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">             (not the pressure of standard condition, 101325.0 Pa).</span>
+<span class="sd">             The default value is False, meaning that we calculate the</span>
+<span class="sd">             RATE CONSTANT by default.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Get the condition for log info output.</span>
+        <span class="n">cls_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">log_allowed</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span> <span class="ow">and</span> <span class="n">cls_name</span> <span class="o">==</span> <span class="s2">&quot;KMCSolver&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get raw relative energies.</span>
+        <span class="n">Gaf</span><span class="p">,</span> <span class="n">Gar</span><span class="p">,</span> <span class="n">dG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_relative_energies</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (Gaf=</span><span class="si">{}</span><span class="s2">, Gar=</span><span class="si">{}</span><span class="s2">, dG=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">,</span> <span class="n">Gaf</span><span class="p">,</span> <span class="n">Gar</span><span class="p">,</span> <span class="n">dG</span><span class="p">))</span>
+
+        <span class="c1"># Get reactants and product types.</span>
+        <span class="n">rxn_equation</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="n">rxn_equation</span><span class="o">.</span><span class="n">to_formula_list</span><span class="p">()</span>
+        <span class="n">istate</span><span class="p">,</span> <span class="n">fstate</span> <span class="o">=</span> <span class="n">formula_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">formula_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">is_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">formula</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">istate</span><span class="p">]</span>
+        <span class="n">fs_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">formula</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">fstate</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;species type: </span><span class="si">{}</span><span class="s2"> -&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">is_types</span><span class="p">,</span> <span class="n">fs_types</span><span class="p">))</span>
+
+        <span class="c1"># Get rate constant.</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">temperature</span>
+        <span class="n">Auc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">unitcell_area</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Auc</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Invalid unitcell area: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Auc</span><span class="p">))</span>
+
+        <span class="n">act_ratio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">active_ratio</span>
+
+        <span class="c1"># Get model corrector.</span>
+        <span class="n">corrector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">corrector</span>
+        <span class="c1"># Check.</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">corrector</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No instantialized corrector, try to modify &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">setup_file</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SetupError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Adsorption process.</span>
+        <span class="k">if</span> <span class="s2">&quot;gas&quot;</span> <span class="ow">in</span> <span class="n">is_types</span><span class="p">:</span>
+            <span class="c1"># Get gas pressure.</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">is_types</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;gas&quot;</span><span class="p">)</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">istate</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">gas_name</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">formula</span><span class="p">()</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">ParserBase</span><span class="o">.</span><span class="n">get_molecular_mass</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">species</span><span class="p">(),</span> <span class="n">absolute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">include_pressure</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">P0</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">species_definitions</span><span class="p">[</span><span class="n">gas_name</span><span class="p">][</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">P0</span>
+
+            <span class="c1"># Use Collision Theory to get forward rate.</span>
+            <span class="n">Ea</span> <span class="o">=</span> <span class="n">Gaf</span>
+            <span class="n">rf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kCT</span><span class="p">(</span><span class="n">Ea</span><span class="o">=</span><span class="n">Ea</span><span class="p">,</span> <span class="n">Auc</span><span class="o">=</span><span class="n">Auc</span><span class="p">,</span> <span class="n">act_ratio</span><span class="o">=</span><span class="n">act_ratio</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(forward) = </span><span class="si">{}</span><span class="s2"> s^-1 (Collision Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rf</span><span class="p">))</span>
+
+            <span class="c1"># Use equilibrium condition to get reverse rate.</span>
+<span class="c1">#            correction_energy = corrector.entropy_correction(gas_name, m, p, T)</span>
+<span class="c1">#            stoichiometry = formula.stoichiometry()</span>
+<span class="c1">#            dG -= stoichiometry*correction_energy</span>
+<span class="c1">#</span>
+<span class="c1">#            # Info output.</span>
+<span class="c1">#            if log_allowed:</span>
+<span class="c1">#                msg = &quot;Correct dG: {} -&gt; {}&quot;.format(dG+correction_energy, dG)</span>
+<span class="c1">#                self.__logger.info(msg)</span>
+
+<span class="c1">#            # Use Equilibrium condition to get reverse rate.</span>
+<span class="c1">#            K = exp(-dG/(kB_eV*T))</span>
+<span class="c1">#            rr = rf/K</span>
+<span class="c1">#            if log_allowed:</span>
+<span class="c1">#                self.__logger.info(&quot;R(reverse) = {} s^-1 (Equilibrium Condition)&quot;.format(rr))</span>
+
+            <span class="c1"># Use Transition State Theory to get reverse rate.</span>
+            <span class="c1"># Get equivalent free energy barrier for TST.</span>
+            <span class="n">Gaf_TST</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_TST_barrier_from_CT</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+            <span class="c1"># Correct the reaction energy dG.</span>
+            <span class="n">correction_energy</span> <span class="o">=</span> <span class="n">corrector</span><span class="o">.</span><span class="n">entropy_correction</span><span class="p">(</span><span class="n">gas_name</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+            <span class="n">stoichiometry</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+            <span class="n">dG</span> <span class="o">-=</span> <span class="n">stoichiometry</span><span class="o">*</span><span class="n">correction_energy</span>
+            <span class="n">Gar_TST</span> <span class="o">=</span> <span class="n">Gaf_TST</span> <span class="o">-</span> <span class="n">dG</span>
+
+            <span class="k">if</span> <span class="n">Gar_TST</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">Gar_TST</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+            <span class="n">rr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kTST</span><span class="p">(</span><span class="n">Gar_TST</span><span class="p">,</span> <span class="n">T</span><span class="p">);</span>
+            <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Get equivalent TST barrier from CT: </span><span class="si">{}</span><span class="s2"> eV&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Gaf_TST</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Get equivalent reverse barrier: </span><span class="si">{}</span><span class="s2"> eV&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Gar_TST</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(reverse) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rr</span><span class="p">))</span>
+
+        <span class="c1"># Desorption process.</span>
+        <span class="k">elif</span> <span class="s2">&quot;gas&quot;</span> <span class="ow">in</span> <span class="n">fs_types</span><span class="p">:</span>
+            <span class="c1"># Get gas pressure.</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">fs_types</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;gas&quot;</span><span class="p">)</span>
+            <span class="n">formula</span> <span class="o">=</span> <span class="n">fstate</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">gas_name</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">formula</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">include_pressure</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">P0</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">species_definitions</span><span class="p">[</span><span class="n">gas_name</span><span class="p">][</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">P0</span>
+
+            <span class="c1"># Use Collision Theory to get reverse rate.</span>
+<span class="c1">#            Ea = Gar</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">ParserBase</span><span class="o">.</span><span class="n">get_molecular_mass</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">species</span><span class="p">(),</span> <span class="n">absolute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#            rr = self.get_kCT(Ea=Ea, Auc=Auc, act_ratio=act_ratio, p=p, m=m, T=T)</span>
+<span class="c1">#            if log_allowed:</span>
+<span class="c1">#                self.__logger.info(&quot;R(reverse) = {} s^-1 (Collision Theory)&quot;.format(rr))</span>
+            <span class="n">correction_energy</span> <span class="o">=</span> <span class="n">corrector</span><span class="o">.</span><span class="n">entropy_correction</span><span class="p">(</span><span class="n">gas_name</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+            <span class="n">stoichiometry</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+            <span class="n">Gar</span> <span class="o">-=</span> <span class="n">stoichiometry</span><span class="o">*</span><span class="n">correction_energy</span>
+            <span class="n">rr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kTST</span><span class="p">(</span><span class="n">Gar</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+            <span class="c1"># Use Transition State theory to get forward rate.</span>
+<span class="c1">#            if Gar &lt; 1.0e-10:</span>
+<span class="c1">#                # NOTE: If the reverse barrier is 0, that means the</span>
+<span class="c1">#                #       forward barrier depends on the final state energy.</span>
+<span class="c1">#                correction_energy = corrector.entropy_correction(gas_name, m, p, T)</span>
+<span class="c1">#                stoichiometry = formula.stoichiometry()</span>
+<span class="c1">#                Gaf += stoichiometry*correction_energy</span>
+            <span class="n">rf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kTST</span><span class="p">(</span><span class="n">Gaf</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(forward) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rf</span><span class="p">))</span>
+
+<span class="c1">#            # Use equilibrium condition to get forward rate.</span>
+<span class="c1">#            correction_energy = corrector.entropy_correction(gas_name, m, p, T)</span>
+<span class="c1">#            stoichiometry = formula.stoichiometry()</span>
+<span class="c1">#            dG -= stoichiometry*correction_energy</span>
+<span class="c1">#</span>
+<span class="c1">#            # Info output.</span>
+<span class="c1">#            if log_allowed:</span>
+<span class="c1">#                msg = &quot;Correct dG: {} -&gt; {}&quot;.format(dG+correction_energy, dG)</span>
+<span class="c1">#                self.__logger.info(msg)</span>
+<span class="c1">#</span>
+<span class="c1">#            K = exp(dG/(kB_eV*T))</span>
+<span class="c1">#            rf = rr/K</span>
+<span class="c1">#</span>
+<span class="c1">#            if log_allowed:</span>
+<span class="c1">#                self.__logger.info(&quot;R(forward) = {} s^-1 (Equilibrium Condition)&quot;.format(rf))</span>
+
+        <span class="c1"># Reaction of intermediates.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use Transition State Theory.</span>
+            <span class="n">rf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kTST</span><span class="p">(</span><span class="n">Gaf</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+            <span class="n">rr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_kTST</span><span class="p">(</span><span class="n">Gar</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(forward) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rf</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;R(reverse) = </span><span class="si">{}</span><span class="s2"> s^-1 (Transition State Theory)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rr</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">rf</span><span class="p">,</span> <span class="n">rr</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">_get_relative_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rxn_expression</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to get relative energies for an elementary reaction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get raw relative energies.</span>
+        <span class="n">rxn_expressions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">rxn_expressions</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+
+        <span class="n">Gaf</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gaf&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">Gar</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gar&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">dG</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;dG&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">Gaf</span><span class="p">,</span> <span class="n">Gar</span><span class="p">,</span> <span class="n">dG</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

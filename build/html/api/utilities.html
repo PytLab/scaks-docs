@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>utilities.check_utilities &mdash; MiKiAC MiKiAC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="datatabase.elements_data" href="database.elements_data.html" />
+    <link rel="prev" title="plotters.EnergyProfilePlotter" href="plotters.energy_profile_plotter.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MiKiAC
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.mean_field_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.rootfinding_iterators.html">solvers.rootfinding_iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">utilities.check_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MiKiAC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>utilities.check_utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/utilities.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-mikiac.utilities.check_utilities">
+<span id="utilities-check-utilities"></span><h1>utilities.check_utilities<a class="headerlink" href="#module-mikiac.utilities.check_utilities" title="Permalink to this headline">¶</a></h1>
+<p>Module for holding common checking utility functions.</p>
+<dl class="function">
+<dt id="mikiac.utilities.check_utilities.check_analysis_interval">
+<code class="descclassname">mikiac.utilities.check_utilities.</code><code class="descname">check_analysis_interval</code><span class="sig-paren">(</span><em>analysis_interval</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/check_utilities.html#check_analysis_interval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.check_utilities.check_analysis_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the analysis_interval in setup file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The valid analysis interval</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.check_utilities.check_process_coordinates">
+<code class="descclassname">mikiac.utilities.check_utilities.</code><code class="descname">check_process_coordinates</code><span class="sig-paren">(</span><em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/check_utilities.html#check_process_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.check_utilities.check_process_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to check all coordinates in a process are different.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>coordinates</strong> (<em>2D list</em><em> or </em><em>array of float</em>) -- A list of coordinates</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A valid coordinates.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.check_utilities.check_process_dict">
+<code class="descclassname">mikiac.utilities.check_utilities.</code><code class="descname">check_process_dict</code><span class="sig-paren">(</span><em>process_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/check_utilities.html#check_process_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.check_utilities.check_process_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the process dict is correct.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The valid process dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.check_utilities.check_ref_energies">
+<code class="descclassname">mikiac.utilities.check_utilities.</code><code class="descname">check_ref_energies</code><span class="sig-paren">(</span><em>ref_energies</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/check_utilities.html#check_ref_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.check_utilities.check_ref_energies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the ref_energies in setup file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ref_energies</strong> (<em>type</em>) -- Reference energies</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The valid reference energies</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.check_utilities.check_sequence">
+<code class="descclassname">mikiac.utilities.check_utilities.</code><code class="descname">check_sequence</code><span class="sig-paren">(</span><em>sequence</em>, <em>entry_type=None</em>, <em>param_name='Tested object'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/check_utilities.html#check_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.check_utilities.check_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the given object is a list or tuple of a type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sequence</strong> (<em>any</em>) -- The sequence object to test</li>
+<li><strong>entry_type</strong> (<em>type</em>) -- The type of entry of list</li>
+<li><strong>param_name</strong> (<em>str</em>) -- The test parameter name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The valid sequence object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.check_utilities.check_species_definitions">
+<code class="descclassname">mikiac.utilities.check_utilities.</code><code class="descname">check_species_definitions</code><span class="sig-paren">(</span><em>species_definitions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/check_utilities.html#check_species_definitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.check_utilities.check_species_definitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the species definitions in setup file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>species_definitions</strong> (<em>dict</em>) -- Species information</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The valid species definitions</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.check_utilities.check_string">
+<code class="descclassname">mikiac.utilities.check_utilities.</code><code class="descname">check_string</code><span class="sig-paren">(</span><em>string</em>, <em>string_range=None</em>, <em>param_name='Tested object'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/check_utilities.html#check_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.check_utilities.check_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the string type and if it is in the given sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) -- The test string</li>
+<li><strong>string_range</strong> (<em>list</em><em> or </em><em>tuple</em>) -- All possible string</li>
+<li><strong>param_name</strong> (<em>str</em>) -- The test parameter name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The valid string object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mikiac.utilities.coordinate_utilities">
+<span id="utilities-coordinate-utilities"></span><h1>utilities.coordinate_utilities<a class="headerlink" href="#module-mikiac.utilities.coordinate_utilities" title="Permalink to this headline">¶</a></h1>
+<p>Module for doing coordinates group operation.</p>
+<dl class="class">
+<dt id="mikiac.utilities.coordinate_utilities.CoordsGroup">
+<em class="property">class </em><code class="descclassname">mikiac.utilities.coordinate_utilities.</code><code class="descname">CoordsGroup</code><span class="sig-paren">(</span><em>coordinates=None</em>, <em>elements=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/coordinate_utilities.html#CoordsGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.coordinate_utilities.CoordsGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for a group of coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coordinates</strong> (<em>list</em>) -- A list of coordinates, default value is [].</li>
+<li><strong>elements</strong> (<em>list of str</em>) -- A list of elements, default value is [&quot;V&quot;, ...].</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="mikiac.utilities.coordinate_utilities.CoordsGroup.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>coordinate</em>, <em>element=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/coordinate_utilities.html#CoordsGroup.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.coordinate_utilities.CoordsGroup.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to append a new coordinate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coordinate</strong> (<em>list of float</em>) -- Coordinate vector</li>
+<li><strong>element</strong> (<em>str</em>) -- element type, default value is &quot;V&quot;</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.utilities.coordinate_utilities.CoordsGroup.coordinates">
+<code class="descname">coordinates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/coordinate_utilities.html#CoordsGroup.coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.coordinate_utilities.CoordsGroup.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function to get coordinates.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.utilities.coordinate_utilities.CoordsGroup.elements">
+<code class="descname">elements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/coordinate_utilities.html#CoordsGroup.elements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.coordinate_utilities.CoordsGroup.elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query function for elements.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.utilities.coordinate_utilities.CoordsGroup.extend">
+<code class="descname">extend</code><span class="sig-paren">(</span><em>coordinates</em>, <em>elements=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/coordinate_utilities.html#CoordsGroup.extend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.coordinate_utilities.CoordsGroup.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to add new coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coordinates</strong> (<em>list</em>) -- A list of coordinates vector</li>
+<li><strong>elements</strong> (<em>list of str</em>) -- Element list, list of str, default value is [&quot;V&quot;, ...].</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mikiac.utilities.coordinate_utilities.CoordsGroup.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>move_vector=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/coordinate_utilities.html#CoordsGroup.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.coordinate_utilities.CoordsGroup.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to move all coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>move_vector</strong> (<em>list of float</em>) -- Move vector, list of 3 floats, default value is [0, 0, 0]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new moved CoordsGroup object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">C:obj:<cite>CoordsGroup</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mikiac.utilities.format_utilities">
+<span id="utilities-format-utilities"></span><h1>utilities.format_utilities<a class="headerlink" href="#module-mikiac.utilities.format_utilities" title="Permalink to this headline">¶</a></h1>
+<p>Module for holding common checking utility functions.</p>
+<dl class="function">
+<dt id="mikiac.utilities.format_utilities.convert_time">
+<code class="descclassname">mikiac.utilities.format_utilities.</code><code class="descname">convert_time</code><span class="sig-paren">(</span><em>sec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/format_utilities.html#convert_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.format_utilities.convert_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert format of time from seconds to h min sec.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sec</strong> (<em>int</em>) -- Number of seconds</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.format_utilities.get_dict_string">
+<code class="descclassname">mikiac.utilities.format_utilities.</code><code class="descname">get_dict_string</code><span class="sig-paren">(</span><em>var_name</em>, <em>dict_obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/format_utilities.html#get_dict_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.format_utilities.get_dict_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get string format of a list object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>var_name</strong> (<em>str</em>) -- name of variable</li>
+<li><strong>dict_obj</strong> (<em>dict</em>) -- the dict object whose string would be returned</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mikiac.utilities.format_utilities.get_list_string">
+<code class="descclassname">mikiac.utilities.format_utilities.</code><code class="descname">get_list_string</code><span class="sig-paren">(</span><em>var_name</em>, <em>list_obj</em>, <em>ncols=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/utilities/format_utilities.html#get_list_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.utilities.format_utilities.get_list_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get string format of a list object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>var_name</strong> (<em>str</em>) -- name of variable</li>
+<li><strong>list_obj</strong> (<em>list</em>) -- object of squence variable</li>
+<li><strong>ncols</strong> (<em>int</em>) -- number of columns, default is 5</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Example::</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_list_string</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;a = [</span><span class="se">\n</span><span class="s1">    (1, 2, 3),</span><span class="se">\n</span><span class="s1">    (2, 3, 4),</span><span class="se">\n</span><span class="s1">]</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="database.elements_data.html" class="btn btn-neutral float-right" title="datatabase.elements_data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="plotters.energy_profile_plotter.html" class="btn btn-neutral" title="plotters.EnergyProfilePlotter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'MiKiAC',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
