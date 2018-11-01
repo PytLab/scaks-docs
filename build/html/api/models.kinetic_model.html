@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>models.KineticModel &mdash; MiKiAC MiKiAC documentation</title>
+  <title>models.KineticModel &mdash; catynetics catynetics documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> MiKiAC
+            <a href="../index.html" class="icon icon-home"> catynetics
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">MiKiAC</a>
+          <a href="../index.html">catynetics</a>
         
       </nav>
 
@@ -181,8 +181,8 @@
   <div class="section" id="models-kineticmodel">
 <h1>models.KineticModel<a class="headerlink" href="#models-kineticmodel" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="mikiac.models.kinetic_model.KineticModel">
-<em class="property">class </em><code class="descclassname">mikiac.models.kinetic_model.</code><code class="descname">KineticModel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel">
+<em class="property">class </em><code class="descclassname">catynetics.models.kinetic_model.</code><code class="descname">KineticModel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>The base class for kinetic models.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -200,7 +200,7 @@
 </tbody>
 </table>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mikiac.models</span> <span class="k">import</span> <span class="n">KineticModel</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">catynetics.models</span> <span class="k">import</span> <span class="n">KineticModel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">KineticModel</span><span class="p">(</span><span class="n">setup_file</span><span class="o">=</span><span class="s2">&quot;setup.mkm&quot;</span><span class="p">,</span> <span class="n">logger_level</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -212,11 +212,11 @@
 <p>file_handler_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for file handler</p>
 <p>console_handler_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for console handler</p>
 <p>parser(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model parser,
-possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.parsers.RelativeEnergyParser</span></code>,
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.parsers.AbsoluteEnergyParser</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.parsers.KMCParser</span></code></p>
+possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">catynetics.parsers.RelativeEnergyParser</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">catynetics.parsers.AbsoluteEnergyParser</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">catynetics.parsers.KMCParser</span></code></p>
 <p>solver(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model solver,
-possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.solvers.SteadyStateSolver</span></code>,
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">mikiac.solvers.KMCSolver</span></code></p>
+possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">catynetics.solvers.SteadyStateSolver</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">catynetics.solvers.KMCSolver</span></code></p>
 <p>corrector(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model data corrector,
 possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">ThermodynamicCorrector</span></code></p>
 <p>temperature(<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Environment temperature in K, default is 298.0K</p>
@@ -228,26 +228,26 @@ transition state theory or 'CT' for collision theory, default value is 'TST'</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="mikiac.models.kinetic_model.KineticModel.__weakref__">
-<code class="descname">__weakref__</code><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.__weakref__" title="Permalink to this definition">¶</a></dt>
 <dd><p>list of weak references to the object (if defined)</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.clear_handlers">
-<code class="descname">clear_handlers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.clear_handlers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.clear_handlers" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.clear_handlers">
+<code class="descname">clear_handlers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.clear_handlers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.clear_handlers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear all handlers in logger.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.generate_absolute_energies_file">
-<code class="descname">generate_absolute_energies_file</code><span class="sig-paren">(</span><em>filename='abs_energy.py'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.generate_absolute_energies_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.generate_absolute_energies_file" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.generate_absolute_energies_file">
+<code class="descname">generate_absolute_energies_file</code><span class="sig-paren">(</span><em>filename='abs_energy.py'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.generate_absolute_energies_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.generate_absolute_energies_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a energy input file containing absolute energies
 for all species(including sites).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -261,8 +261,8 @@ for all species(including sites).</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.generate_relative_energies_file">
-<code class="descname">generate_relative_energies_file</code><span class="sig-paren">(</span><em>filename='rel_energy.py'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.generate_relative_energies_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.generate_relative_energies_file" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.generate_relative_energies_file">
+<code class="descname">generate_relative_energies_file</code><span class="sig-paren">(</span><em>filename='rel_energy.py'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.generate_relative_energies_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.generate_relative_energies_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a energy input file containing relative energies for 
 all elementary reactions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -276,14 +276,14 @@ all elementary reactions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>*kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.run" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>*kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Need implementation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.set_corrector">
-<code class="descname">set_corrector</code><span class="sig-paren">(</span><em>corrector</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_corrector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_corrector" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.set_corrector">
+<code class="descname">set_corrector</code><span class="sig-paren">(</span><em>corrector</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.set_corrector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.set_corrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set corrector for current model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -296,8 +296,8 @@ all elementary reactions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.set_logger_level">
-<code class="descname">set_logger_level</code><span class="sig-paren">(</span><em>handler_type</em>, <em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_logger_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_logger_level" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.set_logger_level">
+<code class="descname">set_logger_level</code><span class="sig-paren">(</span><em>handler_type</em>, <em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.set_logger_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.set_logger_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the logging level of logger handler.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -320,8 +320,8 @@ all elementary reactions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.set_plotter">
-<code class="descname">set_plotter</code><span class="sig-paren">(</span><em>plotter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_plotter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_plotter" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.set_plotter">
+<code class="descname">set_plotter</code><span class="sig-paren">(</span><em>plotter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.set_plotter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.set_plotter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set plotter for current model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -334,8 +334,8 @@ all elementary reactions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.models.kinetic_model.KineticModel.set_solver">
-<code class="descname">set_solver</code><span class="sig-paren">(</span><em>solver</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/models/kinetic_model.html#KineticModel.set_solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.models.kinetic_model.KineticModel.set_solver" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.models.kinetic_model.KineticModel.set_solver">
+<code class="descname">set_solver</code><span class="sig-paren">(</span><em>solver</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/kinetic_model.html#KineticModel.set_solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.kinetic_model.KineticModel.set_solver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set solver for current model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -393,7 +393,7 @@ all elementary reactions.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'MiKiAC',
+            VERSION:'catynetics',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

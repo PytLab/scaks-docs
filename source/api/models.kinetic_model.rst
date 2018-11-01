@@ -1,7 +1,7 @@
 models.KineticModel
 --------------------
 
-.. autoclass:: mikiac.models.kinetic_model.KineticModel
+.. autoclass:: catynetics.models.kinetic_model.KineticModel
    :members:
    :special-members:
 

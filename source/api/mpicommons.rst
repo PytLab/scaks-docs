@@ -1,7 +1,7 @@
 mpicommons
 ----------
 
-.. automodule:: mikiac.mpicommons
+.. automodule:: catynetics.mpicommons
    :members:
    :inherited-members:
    :show-inheritance:

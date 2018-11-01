@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>solvers.MeanFieldSolver &mdash; MiKiAC MiKiAC documentation</title>
+  <title>solvers.MeanFieldSolver &mdash; catynetics catynetics documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> MiKiAC
+            <a href="../index.html" class="icon icon-home"> catynetics
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">MiKiAC</a>
+          <a href="../index.html">catynetics</a>
         
       </nav>
 
@@ -181,22 +181,22 @@
   <div class="section" id="solvers-meanfieldsolver">
 <h1>solvers.MeanFieldSolver<a class="headerlink" href="#solvers-meanfieldsolver" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver">
-<em class="property">class </em><code class="descclassname">mikiac.solvers.mean_field_solver.</code><code class="descname">MeanFieldSolver</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="solvers.solver_base.html#mikiac.solvers.solver_base.SolverBase" title="mikiac.solvers.solver_base.SolverBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.solvers.solver_base.SolverBase</span></code></a></p>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver">
+<em class="property">class </em><code class="descclassname">catynetics.solvers.mean_field_solver.</code><code class="descname">MeanFieldSolver</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="solvers.solver_base.html#catynetics.solvers.solver_base.SolverBase" title="catynetics.solvers.solver_base.SolverBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">catynetics.solvers.solver_base.SolverBase</span></code></a></p>
 <p>A class acts as a base class to be inherited by other solver classes,
 it is not functional on its own.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#mikiac.models.kinetic_model.KineticModel" title="mikiac.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel" title="catynetics.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.archive_data">
-<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.archive_data" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.archive_data">
+<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.archive_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update data dict and dump it to data file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -213,8 +213,8 @@ it is not functional on its own.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.boltzmann_coverages">
-<code class="descname">boltzmann_coverages</code><span class="sig-paren">(</span><em>include_empty_site=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.boltzmann_coverages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.boltzmann_coverages" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.boltzmann_coverages">
+<code class="descname">boltzmann_coverages</code><span class="sig-paren">(</span><em>include_empty_site=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.boltzmann_coverages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.boltzmann_coverages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get boltzmann coverages according to the formation energy of each adsorbate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -232,8 +232,8 @@ sum, Default value is True.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.classified_numerical_jacobian">
-<code class="descname">classified_numerical_jacobian</code><span class="sig-paren">(</span><em>f</em>, <em>x</em>, <em>h=1e-10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.classified_numerical_jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.classified_numerical_jacobian" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.classified_numerical_jacobian">
+<code class="descname">classified_numerical_jacobian</code><span class="sig-paren">(</span><em>f</em>, <em>x</em>, <em>h=1e-10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.classified_numerical_jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.classified_numerical_jacobian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Jacobian matrix of a function at the point x0.
 Modified from numerial_jacobian() in 'functions.py'.</p>
 <p>Not a general-purpose method, just used for given model</p>
@@ -243,8 +243,8 @@ diverging residual.</p>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_TST_barrier_from_CT">
-<em class="property">static </em><code class="descname">get_TST_barrier_from_CT</code><span class="sig-paren">(</span><em>kCT</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_TST_barrier_from_CT" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_TST_barrier_from_CT">
+<em class="property">static </em><code class="descname">get_TST_barrier_from_CT</code><span class="sig-paren">(</span><em>kCT</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_TST_barrier_from_CT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static method to get TST barrier from the rate constant calculated 
 by Collision Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -262,14 +262,14 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data">
-<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get data from model.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data_symbols">
-<code class="descname">get_data_symbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_data_symbols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_data_symbols" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_data_symbols">
+<code class="descname">get_data_symbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_data_symbols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_data_symbols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Sympy Symbol objects for P, G, coverage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -284,8 +284,8 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_expression">
-<code class="descname">get_elementary_rate_expression</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_elementary_rate_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_expression" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_expression">
+<code class="descname">get_elementary_rate_expression</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_elementary_rate_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get the rate calculation expression for an elementary reaction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -311,8 +311,8 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_sym">
-<code class="descname">get_elementary_rate_sym</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_elementary_rate_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_sym">
+<code class="descname">get_elementary_rate_sym</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_elementary_rate_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_elementary_rate_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate expression for an elementary reaction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -329,8 +329,8 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_equilibrium_constant_syms">
-<code class="descname">get_equilibrium_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_equilibrium_constant_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_equilibrium_constant_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_equilibrium_constant_syms">
+<code class="descname">get_equilibrium_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_equilibrium_constant_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_equilibrium_constant_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get symbols of equilibrium constant.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -345,8 +345,8 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kCT">
-<em class="property">static </em><code class="descname">get_kCT</code><span class="sig-paren">(</span><em>Ea</em>, <em>Auc</em>, <em>act_ratio</em>, <em>m</em>, <em>T</em>, <em>p=101325</em>, <em>f=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kCT" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_kCT">
+<em class="property">static </em><code class="descname">get_kCT</code><span class="sig-paren">(</span><em>Ea</em>, <em>Auc</em>, <em>act_ratio</em>, <em>m</em>, <em>T</em>, <em>p=101325</em>, <em>f=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_kCT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static function to get rate constant/collision rate according to 
 Collision Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -371,8 +371,8 @@ efficiently steered along the MEP, and reflected by a higher barrier</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kTST">
-<code class="descname">get_kTST</code><span class="sig-paren">(</span><em>Ga</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_kTST" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_kTST">
+<code class="descname">get_kTST</code><span class="sig-paren">(</span><em>Ga</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_kTST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate rate constants according to Transition State Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -389,21 +389,21 @@ efficiently steered along the MEP, and reflected by a higher barrier</li>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_latex_strs">
-<em class="property">static </em><code class="descname">get_latex_strs</code><span class="sig-paren">(</span><em>part1</em>, <em>part2</em>, <em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_latex_strs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_latex_strs" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_latex_strs">
+<em class="property">static </em><code class="descname">get_latex_strs</code><span class="sig-paren">(</span><em>part1</em>, <em>part2</em>, <em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_latex_strs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_latex_strs" title="Permalink to this definition">¶</a></dt>
 <dd><p>part1 and part2 are parts of left string in equation string,
 symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rate_syms">
-<code class="descname">get_net_rate_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rate_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rate_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_net_rate_syms">
+<code class="descname">get_net_rate_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rate_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_net_rate_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get net rate symbols for all elementary expressions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates">
-<code class="descname">get_net_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_net_rates">
+<code class="descname">get_net_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_net_rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get forward and reverse rates list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -434,14 +434,14 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates_by_sym">
-<code class="descname">get_net_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rates_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_net_rates_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_net_rates_by_sym">
+<code class="descname">get_net_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_net_rates_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_net_rates_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get net rates for all elementary reactions by symbol derivation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constant_syms">
-<code class="descname">get_rate_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_constant_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constant_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_constant_syms">
+<code class="descname">get_rate_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_constant_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_constant_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fucntion to get rate constant expression symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -456,20 +456,20 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constants_by_sym">
-<code class="descname">get_rate_constants_by_sym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_constants_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_constants_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_constants_by_sym">
+<code class="descname">get_rate_constants_by_sym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_constants_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_constants_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants values by back substitution to symbol expressions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_expressions">
-<code class="descname">get_rate_expressions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_expressions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_expressions" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_expressions">
+<code class="descname">get_rate_expressions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_expressions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_expressions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get rate expression for all elementary reactions in model.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_syms">
-<code class="descname">get_rate_syms</code><span class="sig-paren">(</span><em>log_latex=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rate_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_syms">
+<code class="descname">get_rate_syms</code><span class="sig-paren">(</span><em>log_latex=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_rate_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rate_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get all rate expressions for all elementary reactions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -482,8 +482,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates">
-<code class="descname">get_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em>, <em>log=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rates">
+<code class="descname">get_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em>, <em>log=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get forward and reverse rates list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -516,8 +516,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates_by_sym">
-<code class="descname">get_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_rates_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rates_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rates_by_sym">
+<code class="descname">get_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_rates_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rates_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get forward and reverse rates for all elementary reactions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -532,8 +532,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_reversibilities">
-<code class="descname">get_reversibilities</code><span class="sig-paren">(</span><em>rfs</em>, <em>rrs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_reversibilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_reversibilities" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_reversibilities">
+<code class="descname">get_reversibilities</code><span class="sig-paren">(</span><em>rfs</em>, <em>rrs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_reversibilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_reversibilities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get reversibilities of given rates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -556,8 +556,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_CT">
-<code class="descname">get_rxn_rates_CT</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_CT" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_CT">
+<code class="descname">get_rxn_rates_CT</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_CT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants for an elementary reaction using 
 Collision Theory wrt adsorption process.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -582,8 +582,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_TST">
-<code class="descname">get_rxn_rates_TST</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_TST" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_TST">
+<code class="descname">get_rxn_rates_TST</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_rxn_rates_TST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants for an elementary reaction using 
 Transition State Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -608,8 +608,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_subs_dict">
-<code class="descname">get_subs_dict</code><span class="sig-paren">(</span><em>coverages=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_subs_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_subs_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_subs_dict">
+<code class="descname">get_subs_dict</code><span class="sig-paren">(</span><em>coverages=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_subs_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_subs_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get substitution dict for all symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -624,8 +624,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof">
-<code class="descname">get_tof</code><span class="sig-paren">(</span><em>cvgs</em>, <em>relative_energies=None</em>, <em>gas_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_tof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_tof">
+<code class="descname">get_tof</code><span class="sig-paren">(</span><em>cvgs</em>, <em>relative_energies=None</em>, <em>gas_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_tof"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_tof" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get the turnover frequencies(TOF) wrt all gas species.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -659,8 +659,8 @@ If gas name is specified, the TOF of the gas would be returned.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_by_sym">
-<code class="descname">get_tof_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_tof_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_tof_by_sym">
+<code class="descname">get_tof_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_tof_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_tof_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get TOFs for all gas species.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -673,14 +673,14 @@ If gas name is specified, the TOF of the gas would be returned.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_syms">
-<code class="descname">get_tof_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.get_tof_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.get_tof_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.get_tof_syms">
+<code class="descname">get_tof_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.get_tof_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.get_tof_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get TOF symbols for all elementary reactions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.solvers.mean_field_solver.MeanFieldSolver.log_latex">
-<code class="descname">log_latex</code><span class="sig-paren">(</span><em>latex_tup</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/solvers/mean_field_solver.html#MeanFieldSolver.log_latex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.solvers.mean_field_solver.MeanFieldSolver.log_latex" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.solvers.mean_field_solver.MeanFieldSolver.log_latex">
+<code class="descname">log_latex</code><span class="sig-paren">(</span><em>latex_tup</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/mean_field_solver.html#MeanFieldSolver.log_latex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.mean_field_solver.MeanFieldSolver.log_latex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append latex strings to 'formulas.tex'</p>
 </dd></dl>
 
@@ -730,7 +730,7 @@ If gas name is specified, the TOF of the gas would be returned.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'MiKiAC',
+            VERSION:'catynetics',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

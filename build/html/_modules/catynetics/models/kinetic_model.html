@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>catynetics.models.kinetic_model &mdash; catynetics catynetics documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> catynetics
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">catynetics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../catynetics.html">catynetics</a> &raquo;</li>
+        
+      <li>catynetics.models.kinetic_model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for catynetics.models.kinetic_model</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">add</span>
+
+
+<span class="kn">from</span> <span class="nn">..compatutil</span> <span class="k">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">..descriptors.descriptors</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..descriptors.component_descriptors</span> <span class="k">import</span> <span class="n">Component</span>
+<span class="kn">from</span> <span class="nn">..mpicommons</span> <span class="k">import</span> <span class="n">mpi</span>
+<span class="kn">from</span> <span class="nn">..database.thermo_data</span> <span class="k">import</span> <span class="n">kB_eV</span><span class="p">,</span> <span class="n">h_eV</span>
+<span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..functions</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..utilities.profiling_utitlities</span> <span class="k">import</span> <span class="n">do_cprofile</span>
+
+
+<div class="viewcode-block" id="KineticModel"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel">[docs]</a><span class="k">class</span> <span class="nc">KineticModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; The base class for kinetic models.</span>
+
+<span class="sd">    :param setup_file: kinetic model set up file</span>
+<span class="sd">    :type setup_file: str</span>
+
+<span class="sd">    :param setup_dict: A dictionary contains essential setup parameters for kinetic model</span>
+<span class="sd">    :type setup_dict: dict</span>
+<span class="sd">    </span>
+<span class="sd">    :param logger_level: logging level for logger</span>
+<span class="sd">    :type logger_level: int</span>
+
+<span class="sd">    :param file_handler_level: logging level for file handler</span>
+<span class="sd">    :type file_handler_level: int</span>
+
+<span class="sd">    :param console_handler_level: logging level for console handler</span>
+<span class="sd">    :type console_handler_level: int</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; from catynetics.models import KineticModel</span>
+<span class="sd">        &gt;&gt;&gt; model = KineticModel(setup_file=&quot;setup.mkm&quot;, logger_level=30)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        setup_file(:obj:`str`): kinetic model setup file</span>
+
+<span class="sd">        setup_dict(:obj:`dict`): A dictionary contains essnetial setup parameters for kinetic model</span>
+
+<span class="sd">        logger_level(:obj:`int`): The logging level for built-in logger</span>
+
+<span class="sd">        file_handler_level(:obj:`int`): The logging level for file handler</span>
+
+<span class="sd">        console_handler_level(:obj:`int`): The logging level for console handler</span>
+
+<span class="sd">        parser(:obj:`object`): Kinetic Model parser,</span>
+<span class="sd">        possible type could be :obj:`catynetics.parsers.RelativeEnergyParser`,</span>
+<span class="sd">        :obj:`catynetics.parsers.AbsoluteEnergyParser`, :obj:`catynetics.parsers.KMCParser`</span>
+
+<span class="sd">        solver(:obj:`object`): Kinetic Model solver,</span>
+<span class="sd">        possible type could be :obj:`catynetics.solvers.SteadyStateSolver`,</span>
+<span class="sd">        :obj:`catynetics.solvers.KMCSolver`</span>
+
+<span class="sd">        corrector(:obj:`object`): Kinetic Model data corrector,</span>
+<span class="sd">        possible type could be :obj:`ThermodynamicCorrector`</span>
+
+<span class="sd">        temperature(:obj:`float`): Environment temperature in K, default is 298.0K</span>
+
+<span class="sd">        rxn_expressions(:obj:`list` of :obj:`str`): Reaction expressions for elementary reactions,</span>
+<span class="sd">        default is []</span>
+
+<span class="sd">        species_definitions(:obj:`dict`): All species definition in kinetic model after parsing</span>
+
+<span class="sd">        rate_algo(:obj:`str`): Algorithm for rate calculation, could be &#39;TST&#39; for</span>
+<span class="sd">        transition state theory or &#39;CT&#39; for collision theory, default value is &#39;TST&#39;</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Attribute descriptors.</span>
+    <span class="c1"># {{{</span>
+    <span class="n">setup_file</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;setup_file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">setup_dict</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="s2">&quot;setup_dict&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+
+    <span class="n">logger_level</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;logger_level&quot;</span><span class="p">,</span>
+                              <span class="n">default</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                              <span class="n">candidates</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+    <span class="c1"># Logging level for file handler.</span>
+    <span class="n">file_handler_level</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;file_handler_level&quot;</span><span class="p">,</span>
+                                    <span class="n">default</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+                                    <span class="n">candidates</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+    <span class="c1"># Logging level for console handler.</span>
+    <span class="n">console_handler_level</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;console_handler_level&quot;</span><span class="p">,</span>
+                                       <span class="n">default</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                                       <span class="n">candidates</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">Component</span><span class="p">(</span><span class="s2">&quot;parser&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">candidates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;RelativeEnergyParser&quot;</span><span class="p">,</span>
+                                                           <span class="s2">&quot;AbsoluteEnergyParser&quot;</span><span class="p">,</span>
+                                                           <span class="s2">&quot;KMCParser&quot;</span><span class="p">])</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">Component</span><span class="p">(</span><span class="s2">&quot;solver&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">candidates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;KMCSolver&quot;</span><span class="p">,</span> <span class="s2">&quot;SteadyStateSolver&quot;</span><span class="p">])</span>
+
+    <span class="n">corrector</span> <span class="o">=</span> <span class="n">Component</span><span class="p">(</span><span class="s2">&quot;corrector&quot;</span><span class="p">,</span>
+                          <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">candidates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ThermodynamicCorrector&quot;</span><span class="p">])</span>
+
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">Component</span><span class="p">(</span><span class="s2">&quot;plotter&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">candidates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EnergyProfilePlotter&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Temperature.</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">298.0</span><span class="p">)</span>
+
+    <span class="c1"># Reaction expressions.</span>
+    <span class="n">rxn_expressions</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="s2">&quot;rxn_expressions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[],</span> <span class="n">entry_type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># Definition dict of species.</span>
+    <span class="n">species_definitions</span> <span class="o">=</span> <span class="n">SpeciesDefinitions</span><span class="p">(</span><span class="s2">&quot;species_definitions&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+
+    <span class="c1"># Algorithm for rate calculation.</span>
+    <span class="n">rate_algo</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;rate_algo&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;TST&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Model core components.</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="s2">&quot;components&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parser&quot;</span><span class="p">],</span> <span class="n">entry_type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># Area of unit cell (m^2).</span>
+    <span class="n">unitcell_area</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;unitcell_area&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="c1"># Ratio of active area.</span>
+    <span class="n">active_ratio</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;active_ratio&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="KineticModel.__init__"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># {{{</span>
+
+        <span class="c1"># Get all kwargs.</span>
+        <span class="n">setup_file</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;setup_file&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">setup_dict</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;setup_dict&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger_level</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;logger_level&quot;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_handler_level</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;file_handler_level&quot;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">console_handler_level</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;console_handler_level&quot;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="c1"># Physical constants.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kB</span> <span class="o">=</span> <span class="n">kB_eV</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_h</span> <span class="o">=</span> <span class="n">h_eV</span>
+
+        <span class="c1"># Get setup dict.</span>
+        <span class="k">if</span> <span class="n">setup_file</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">setup_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;setup_file or setup_dict must be supplied for kinetic model construction&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Setup dict has higher priority than setup file.</span>
+        <span class="k">if</span> <span class="n">setup_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_dict</span> <span class="o">=</span> <span class="n">setup_dict</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_file</span> <span class="o">=</span> <span class="n">setup_file</span>
+            <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+            <span class="n">exec</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_file</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_dict</span> <span class="o">=</span> <span class="n">locs</span>
+
+        <span class="c1"># Set logger.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_logger</span><span class="p">()</span>
+
+        <span class="c1"># Output MPI info.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;------------------------------------&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; Model is runing in MPI Environment &quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; Number of process: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mpi</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;------------------------------------&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+        <span class="c1"># Energy flags.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_absolute_energy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_relative_energy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_relative_energies</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Load setup file.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> creating...success!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">_set_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Private function to get logging.logger instance as logger of kinetic model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Create logger.</span>
+        <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logger_level</span><span class="p">)</span>
+
+        <span class="c1"># Set log file name.</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">mpi</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;out.log&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mpi</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;./log&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mpi</span><span class="o">.</span><span class="n">is_master</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;./log&quot;</span><span class="p">)</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;./log/out_</span><span class="si">{}</span><span class="s2">.log&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mpi</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+
+        <span class="c1"># Create handlers.</span>
+        <span class="n">std_hdlr</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">std_hdlr</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_handler_level</span><span class="p">)</span>
+        <span class="n">console_hdlr</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+        <span class="n">console_hdlr</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">console_handler_level</span><span class="p">)</span>
+
+        <span class="c1"># Create formatter and add it to the handlers.</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(name)s</span><span class="s1">   </span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">std_hdlr</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+        <span class="n">console_hdlr</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+
+        <span class="c1"># Add the handlers to logger.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">std_hdlr</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console_hdlr</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">logger</span>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="KineticModel.set_logger_level"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.set_logger_level">[docs]</a>    <span class="k">def</span> <span class="nf">set_logger_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler_type</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the logging level of logger handler.</span>
+
+<span class="sd">        :param handler_type: logger handler name</span>
+<span class="sd">        :type handler_type: str</span>
+
+<span class="sd">        :param level: logging level</span>
+<span class="sd">        :type level: int</span>
+
+<span class="sd">        :return: Old logging level of the handler</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Locate handler.</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="n">handler_type</span><span class="p">:</span>
+                <span class="n">handler</span> <span class="o">=</span> <span class="n">h</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown handler type &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler_type</span><span class="p">))</span>
+
+        <span class="c1"># Reset logging level.</span>
+        <span class="n">old_level</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">level</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">old_level</span></div>
+
+<div class="viewcode-block" id="KineticModel.clear_handlers"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.clear_handlers">[docs]</a>    <span class="k">def</span> <span class="nf">clear_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Clear all handlers in logger.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">handlers</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+    <span class="k">def</span> <span class="nf">__mro_class_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Private helper function to get all class attribute names(include father classes) .</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">:</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Load &#39;setup_file&#39; into kinetic model by exec setup file</span>
+<span class="sd">        and assigning all local variables as attrs of model.</span>
+<span class="sd">        For tools, create the instances of tool classes and</span>
+<span class="sd">        assign them as the attrs of model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading Kinetic Model...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;read in parameters...&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Set model attributes in setup file.</span>
+        <span class="n">class_attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mro_class_attrs</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">setup_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Check redundant parameter.</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">class_attrs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Found redundant parameter &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Parser &amp; solver will be set later.</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;parser&quot;</span><span class="p">,</span> <span class="s2">&quot;solver&quot;</span><span class="p">]:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Set parameters in setup dict as attiributes of model.</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+            <span class="c1"># Output info.</span>
+            <span class="n">specials</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;rxn_expressions&quot;</span><span class="p">,</span> <span class="s2">&quot;species_definitions&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">specials</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+
+            <span class="c1"># If it is a iterable, loop to output.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> =&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">setup_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;        </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;        </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+
+        <span class="c1"># Instantialize parser.</span>
+        <span class="k">if</span> <span class="s2">&quot;parser&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">setup_dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="s2">&quot;Parser is not set in kinetic model.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">setup_dict</span><span class="p">[</span><span class="s2">&quot;parser&quot;</span><span class="p">]</span>
+
+        <span class="c1"># use parser parse essential attrs for other tools</span>
+        <span class="c1"># Parse elementary rxns</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Parsing elementary rxns...&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">:</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__adsorbate_names</span><span class="p">,</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">__gas_names</span><span class="p">,</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">__liquid_names</span><span class="p">,</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">__site_names</span><span class="p">,</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">__transition_state_names</span><span class="p">,</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">__elementary_rxns_list</span><span class="p">)</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_elementary_rxns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">)</span>
+
+        <span class="c1"># Instantialize solver.</span>
+        <span class="k">if</span> <span class="s2">&quot;solver&quot;</span> <span class="ow">in</span> <span class="n">setup_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">setup_dict</span><span class="p">[</span><span class="s2">&quot;solver&quot;</span><span class="p">]</span>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="KineticModel.generate_relative_energies_file"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.generate_relative_energies_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_relative_energies_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;rel_energy.py&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Generate a energy input file containing relative energies for </span>
+<span class="sd">        all elementary reactions.</span>
+
+<span class="sd">        :param filename: The name of relative input file, default value is &#39;rel_energy.py&#39;.</span>
+<span class="sd">        :type filename: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;# Relative Energies for all elementary reactions.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;Ga, dG = [], []</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">rxn_expression</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">:</span>
+            <span class="n">rxn_content</span> <span class="o">=</span> <span class="s2">&quot;# </span><span class="si">{}</span><span class="se">\n</span><span class="s2">Ga.append()</span><span class="se">\n</span><span class="s2">dG.append()</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="n">rxn_content</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KineticModel.generate_absolute_energies_file"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.generate_absolute_energies_file">[docs]</a>    <span class="k">def</span> <span class="nf">generate_absolute_energies_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;abs_energy.py&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Generate a energy input file containing absolute energies</span>
+<span class="sd">        for all species(including sites).</span>
+
+<span class="sd">        :param filename: The name of absolute energy input file, default value is &#39;abs_energy.py&#39;.</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;# Absolute energies for all species.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;absolute_energies = {</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">all_species</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gas_names</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">liquid_names</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">transition_state_names</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">site_names</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">all_species</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;    &#39;</span><span class="si">{}</span><span class="s2">&#39;: 0.0, # eV</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KineticModel.run"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Need implementation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="KineticModel.set_solver"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.set_solver">[docs]</a>    <span class="k">def</span> <span class="nf">set_solver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Set solver for current model</span>
+
+<span class="sd">        :param solver: Valid solver object</span>
+<span class="sd">        :type solver: any</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mangled_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;solver&#39;</span><span class="p">),</span> <span class="n">solver</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KineticModel.set_plotter"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.set_plotter">[docs]</a>    <span class="k">def</span> <span class="nf">set_plotter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotter</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Set plotter for current model</span>
+
+<span class="sd">        :param plotter: Valid plotter object</span>
+<span class="sd">        :type plotter: any</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mangled_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;plotter&#39;</span><span class="p">),</span> <span class="n">solver</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KineticModel.set_corrector"><a class="viewcode-back" href="../../../api/models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel.set_corrector">[docs]</a>    <span class="k">def</span> <span class="nf">set_corrector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corrector</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Set corrector for current model</span>
+
+<span class="sd">        :param corrector: Valid corrector object</span>
+<span class="sd">        :type corrector: any</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mangled_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;corrector&#39;</span><span class="p">),</span> <span class="n">corrector</span><span class="p">)</span></div>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">log_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flag for if log output is allowed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This function should be overridden in sub-class.</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">kB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kB</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_h</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for model logger.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">elementary_rxns_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for elementary reactions list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__elementary_rxns_list</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">site_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for site names in model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__site_names</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">adsorbate_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for adsorbate names in model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__adsorbate_names</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">gas_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for gas names in model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gas_names</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">liquid_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for liquid names in model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__liquid_names</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">transition_state_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for transition state species names in model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__transition_state_names</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">has_relative_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for relative energy flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_relative_energy</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">has_absolute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for absolute energy flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_absolute_energy</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">relative_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for relative energy in data file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative_energies</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">absolute_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query function for absolute energy in data file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_absolute_energies</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'catynetics',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

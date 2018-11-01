@@ -1,7 +1,7 @@
 solvers.SolverBase
 ------------------
 
-.. autoclass:: mikiac.solvers.solver_base.SolverBase
+.. autoclass:: catynetics.solvers.solver_base.SolverBase
    :members:
    :inherited-members:
    :show-inheritance:

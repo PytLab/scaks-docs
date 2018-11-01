@@ -1,7 +1,7 @@
 descriptors.descriptors
 -----------------------
 
-.. automodule:: mikiac.descriptors.descriptors
+.. automodule:: catynetics.descriptors.descriptors
    :members:
    :inherited-members:
    :show-inheritance:

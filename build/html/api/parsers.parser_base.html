@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>parsers.ParserBase &mdash; MiKiAC MiKiAC documentation</title>
+  <title>parsers.ParserBase &mdash; catynetics catynetics documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> MiKiAC
+            <a href="../index.html" class="icon icon-home"> catynetics
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">MiKiAC</a>
+          <a href="../index.html">catynetics</a>
         
       </nav>
 
@@ -181,17 +181,17 @@
   <div class="section" id="parsers-parserbase">
 <h1>parsers.ParserBase<a class="headerlink" href="#parsers-parserbase" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="mikiac.parsers.parser_base.ParserBase">
-<em class="property">class </em><code class="descclassname">mikiac.parsers.parser_base.</code><code class="descname">ParserBase</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/parser_base.html#ParserBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.parser_base.ParserBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">mikiac.ModelShell</span></code></p>
+<dt id="catynetics.parsers.parser_base.ParserBase">
+<em class="property">class </em><code class="descclassname">catynetics.parsers.parser_base.</code><code class="descname">ParserBase</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/parser_base.html#ParserBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.parser_base.ParserBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">catynetics.ModelShell</span></code></p>
 <p>Base parser class to operate and analyse rxn equations and energy data.</p>
 <dl class="docutils">
 <dt>Attributes:</dt>
 <dd>species_definition(<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): Definition for all species in kinetic model</dd>
 </dl>
 <dl class="method">
-<dt id="mikiac.parsers.parser_base.ParserBase.archive_data">
-<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#mikiac.parsers.parser_base.ParserBase.archive_data" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.parsers.parser_base.ParserBase.archive_data">
+<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.parsers.parser_base.ParserBase.archive_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update data dict and dump it to data file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -208,8 +208,8 @@
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="mikiac.parsers.parser_base.ParserBase.get_molecular_mass">
-<em class="property">static </em><code class="descname">get_molecular_mass</code><span class="sig-paren">(</span><em>species_name</em>, <em>absolute=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/parser_base.html#ParserBase.get_molecular_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.parser_base.ParserBase.get_molecular_mass" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.parsers.parser_base.ParserBase.get_molecular_mass">
+<em class="property">static </em><code class="descname">get_molecular_mass</code><span class="sig-paren">(</span><em>species_name</em>, <em>absolute=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/parser_base.html#ParserBase.get_molecular_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.parser_base.ParserBase.get_molecular_mass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static function to get relative/absolute molecular mass.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -236,8 +236,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.parsers.parser_base.ParserBase.get_stoichiometry_matrices">
-<code class="descname">get_stoichiometry_matrices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/parser_base.html#ParserBase.get_stoichiometry_matrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.parser_base.ParserBase.get_stoichiometry_matrices" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.parsers.parser_base.ParserBase.get_stoichiometry_matrices">
+<code class="descname">get_stoichiometry_matrices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/parser_base.html#ParserBase.get_stoichiometry_matrices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.parser_base.ParserBase.get_stoichiometry_matrices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Go through elementary_rxns_list, return sites stoichiometry matrix,
 reactants and products stoichiometry matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -263,14 +263,14 @@ vice-versa.  row vector: <code class="xref py py-obj docutils literal notranslat
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.parsers.parser_base.ParserBase.get_total_rxn_equation">
-<code class="descname">get_total_rxn_equation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/parser_base.html#ParserBase.get_total_rxn_equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.parser_base.ParserBase.get_total_rxn_equation" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.parsers.parser_base.ParserBase.get_total_rxn_equation">
+<code class="descname">get_total_rxn_equation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/parser_base.html#ParserBase.get_total_rxn_equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.parser_base.ParserBase.get_total_rxn_equation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get total reaction expression of the kinetic model.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.parsers.parser_base.ParserBase.parse_elementary_rxns">
-<code class="descname">parse_elementary_rxns</code><span class="sig-paren">(</span><em>elementary_rxns</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/parser_base.html#ParserBase.parse_elementary_rxns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.parser_base.ParserBase.parse_elementary_rxns" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.parsers.parser_base.ParserBase.parse_elementary_rxns">
+<code class="descname">parse_elementary_rxns</code><span class="sig-paren">(</span><em>elementary_rxns</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/parser_base.html#ParserBase.parse_elementary_rxns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.parser_base.ParserBase.parse_elementary_rxns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse all elementary rxn equations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -297,8 +297,8 @@ elementary_rxns_list)</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.parsers.parser_base.ParserBase.regex_dict">
-<code class="descname">regex_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/parsers/parser_base.html#ParserBase.regex_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.parsers.parser_base.ParserBase.regex_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.parsers.parser_base.ParserBase.regex_dict">
+<code class="descname">regex_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/parser_base.html#ParserBase.regex_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.parser_base.ParserBase.regex_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for regress expression dictionary.</p>
 </dd></dl>
 
@@ -348,7 +348,7 @@ elementary_rxns_list)</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'MiKiAC',
+            VERSION:'catynetics',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

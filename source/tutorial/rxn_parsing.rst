@@ -1,21 +1,21 @@
 Parse reaction expressions
 --------------------------
 
-MiKiAC has built in a powerful reaction expression parser based on
+catynetics has built in a powerful reaction expression parser based on
 Python’s regular expression engines. With the help of reaction parser,
-you can check the site and mass conservation to make sure MiKiAC can
+you can check the site and mass conservation to make sure catynetics can
 receive correct reaction expressions and solve correctly.
 
-Species name convetions in MiKiAC
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Species name convetions in catynetics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-All species expressions in MiKiAC consist of two parts connected with a
-underline ``_``: species name and site name.
+All species expressions in catynetics consist of two parts connected
+with a underline ``_``: species name and site name.
 
 For example, a ``CO`` gas molecule adsorbed on a site named ``s`` can be
 written as ``CO_s``.
 
-For the transition state species in MiKiAC, it must have a ``-``
+For the transition state species in catynetics, it must have a ``-``
 character indicating a bond like ``O-O_2s``.
 
 Below are some common species expression examples:
@@ -24,8 +24,8 @@ Below are some common species expression examples:
 -  ``CO_b``: A CO (carbon dioxide molecule) adsorbed on one ``b`` site
 -  ``O-O_2t`` A transition state for O2 dissociation on two ``s`` sites
 
-Reaction expression conventions in MiKiAC
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Reaction expression conventions in catynetics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Each elementary reaction expression consists of different states:
 initial state, transition state(optional), final state.
@@ -55,21 +55,21 @@ written as:
 Parse an elementary reaction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``mikiac.parser.rxn_parser`` provide three main classes to represent
+``catynetics.parser.rxn_parser`` provide three main classes to represent
 different levels in a reaction expression: ``RxnEquation`` for reaction
 equation expression, ``ChemState``\ for chemical state and
 ``ChemFormula`` for chemical formula.
 
-In this section, we use mikiac reaction parser API to parse elementary
-reaction expression using a O2 dissociation adsorption process as an
-example.
+In this section, we use catynetics reaction parser API to parse
+elementary reaction expression using a O2 dissociation adsorption
+process as an example.
 
 Create reaction equation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
-   from mikiac.parsers.rxn_parser import RxnEquation
+   from catynetics.parsers.rxn_parser import RxnEquation
 
    rxn_expression = 'O2_g + 2*_s <-> O-O_2s -> 2O_s'
 
@@ -97,7 +97,7 @@ raised.
 Balance a set of elementary reactions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Reaction parser in MiKiAC can help researchers to balance a set of
+Reaction parser in catynetics can help researchers to balance a set of
 elementary reactions to obtain the total reaction equation.
 
 Here we take CO Oxidation as an example, the elementary reactions are

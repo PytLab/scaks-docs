@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>mpicommons &mdash; MiKiAC MiKiAC documentation</title>
+  <title>mpicommons &mdash; catynetics catynetics documentation</title>
   
 
   
@@ -47,7 +47,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> MiKiAC
+            <a href="../index.html" class="icon icon-home"> catynetics
           
 
           
@@ -101,11 +101,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-mikiac.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-mikiac.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">mpicommons</a></li>
@@ -125,7 +125,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">MiKiAC</a>
+          <a href="../index.html">catynetics</a>
         
       </nav>
 
@@ -177,17 +177,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-mikiac.mpicommons">
-<span id="mpicommons"></span><h1>mpicommons<a class="headerlink" href="#module-mikiac.mpicommons" title="Permalink to this headline">¶</a></h1>
-<p>Module for wrapped MPI interfaces used in MiKiAC.</p>
+  <div class="section" id="module-catynetics.mpicommons">
+<span id="mpicommons"></span><h1>mpicommons<a class="headerlink" href="#module-catynetics.mpicommons" title="Permalink to this headline">¶</a></h1>
+<p>Module for wrapped MPI interfaces used in catynetics.</p>
 <dl class="class">
-<dt id="mikiac.mpicommons.MPIUtil">
-<em class="property">class </em><code class="descclassname">mikiac.mpicommons.</code><code class="descname">MPIUtil</code><a class="reference internal" href="../_modules/mikiac/mpicommons.html#MPIUtil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.mpicommons.MPIUtil" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.mpicommons.MPIUtil">
+<em class="property">class </em><code class="descclassname">catynetics.mpicommons.</code><code class="descname">MPIUtil</code><a class="reference internal" href="../_modules/catynetics/mpicommons.html#MPIUtil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.mpicommons.MPIUtil" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Higher level wrapper for MPI interfaces</p>
 <dl class="method">
-<dt id="mikiac.mpicommons.MPIUtil.merge_seq">
-<code class="descname">merge_seq</code><span class="sig-paren">(</span><em>seq</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/mpicommons.html#MPIUtil.merge_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.mpicommons.MPIUtil.merge_seq" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.mpicommons.MPIUtil.merge_seq">
+<code class="descname">merge_seq</code><span class="sig-paren">(</span><em>seq</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/mpicommons.html#MPIUtil.merge_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.mpicommons.MPIUtil.merge_seq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gather data in sub-process to root process.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -200,8 +200,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.mpicommons.MPIUtil.split_seq">
-<code class="descname">split_seq</code><span class="sig-paren">(</span><em>sequence</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/mpicommons.html#MPIUtil.split_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.mpicommons.MPIUtil.split_seq" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.mpicommons.MPIUtil.split_seq">
+<code class="descname">split_seq</code><span class="sig-paren">(</span><em>sequence</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/mpicommons.html#MPIUtil.split_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.mpicommons.MPIUtil.split_seq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split the sequence according to rank and processor number.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -214,8 +214,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="mikiac.mpicommons.MPIUtil.split_size">
-<code class="descname">split_size</code><span class="sig-paren">(</span><em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/mpicommons.html#MPIUtil.split_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.mpicommons.MPIUtil.split_size" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.mpicommons.MPIUtil.split_size">
+<code class="descname">split_size</code><span class="sig-paren">(</span><em>size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/mpicommons.html#MPIUtil.split_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.mpicommons.MPIUtil.split_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a size number(int) to sub-size number.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -230,8 +230,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="mikiac.mpicommons.master_only">
-<code class="descclassname">mikiac.mpicommons.</code><code class="descname">master_only</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mikiac/mpicommons.html#master_only"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mikiac.mpicommons.master_only" title="Permalink to this definition">¶</a></dt>
+<dt id="catynetics.mpicommons.master_only">
+<code class="descclassname">catynetics.mpicommons.</code><code class="descname">master_only</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/mpicommons.html#master_only"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.mpicommons.master_only" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator to limit a function to be called only in master process in MPI env.</p>
 </dd></dl>
 
@@ -277,7 +277,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'MiKiAC',
+            VERSION:'catynetics',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

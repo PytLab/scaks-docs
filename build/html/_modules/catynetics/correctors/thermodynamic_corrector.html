@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>catynetics.correctors.thermodynamic_corrector &mdash; catynetics catynetics documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> catynetics
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">catynetics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../catynetics.html">catynetics</a> &raquo;</li>
+        
+      <li>catynetics.correctors.thermodynamic_corrector</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for catynetics.correctors.thermodynamic_corrector</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">mpmath</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="kn">from</span> <span class="nn">..compatutil</span> <span class="k">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">.corrector_base</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..database.thermo_data</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..parsers.rxn_parser</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<span class="c1"># Constants.</span>
+<span class="n">_kJmol2eV</span> <span class="o">=</span> <span class="mf">0.01036427</span>
+
+
+<div class="viewcode-block" id="ThermodynamicCorrector"><a class="viewcode-back" href="../../../api/correctors.thermodynamic_corrector.html#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector">[docs]</a><span class="k">class</span> <span class="nc">ThermodynamicCorrector</span><span class="p">(</span><span class="n">CorrectorBase</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Energy data corrector class</span>
+
+<span class="sd">    :param owner: The kinetic model that own this solver</span>
+<span class="sd">    :type owner: KineticModel</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ThermodynamicCorrector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zpe_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_enthalpy_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entropy_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># set logger object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;model.correctors.ThermodynamicCorrector&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ThermodynamicCorrector.shomate_correction"><a class="viewcode-back" href="../../../api/correctors.thermodynamic_corrector.html#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.shomate_correction">[docs]</a>    <span class="k">def</span> <span class="nf">shomate_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gas_name</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get energy correction dict for gas in model using Shomate equation.</span>
+
+<span class="sd">        :param gas_name: The species site name of gas species, e.g. :obj:`CO_g`</span>
+<span class="sd">        :type gas_name: str</span>
+
+<span class="sd">        :param T: Temperature(K)</span>
+<span class="sd">        :type T: float</span>
+
+<span class="sd">        :return: The correction energy value</span>
+<span class="sd">        :rtype: float</span>
+
+<span class="sd">        Example::</span>
+<span class="sd">            &gt;&gt;&gt; shomate_correction(&quot;CO_g&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Check gas name.</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">ChemFormula</span><span class="p">(</span><span class="n">gas_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;gas&quot;</span><span class="p">:</span>
+            <span class="c1"># If it&#39;s not a gas, no correction.</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="c1"># Set temperature.</span>
+        <span class="n">temperature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">temperature</span> <span class="k">if</span> <span class="n">T</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">T</span>
+        <span class="n">temperature_ref</span> <span class="o">=</span> <span class="mf">298.15</span>
+
+        <span class="c1"># Nested functions for thermodynamic parameters.</span>
+        <span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+            <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">params</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="o">/</span><span class="mf">1000.0</span>
+            <span class="n">H</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="p">(</span><span class="n">B</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">C</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="n">D</span><span class="o">/</span><span class="mf">4.0</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">4</span> <span class="o">-</span> <span class="n">E</span><span class="o">/</span><span class="n">t</span> <span class="o">+</span> <span class="n">F</span> <span class="o">-</span> <span class="n">H</span>
+            <span class="c1">#kJ/mol</span>
+            <span class="k">return</span> <span class="n">H</span>
+
+        <span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+            <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">params</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="o">/</span><span class="mf">1000.0</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="p">(</span><span class="n">C</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">D</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">E</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">G</span>  <span class="c1"># J/mol*K</span>
+            <span class="k">return</span> <span class="n">S</span>
+
+        <span class="k">def</span> <span class="nf">Cp</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+            <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="n">params</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="o">/</span><span class="mf">1000.0</span>
+            <span class="n">Cp</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">D</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">E</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Cp</span>
+
+        <span class="n">not_there</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">shomate_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">gas_key</span><span class="p">,</span> <span class="n">T_range</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+            <span class="n">T_min</span><span class="p">,</span> <span class="n">T_max</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">T_range</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)]</span>
+
+            <span class="c1"># Check.</span>
+            <span class="k">if</span> <span class="n">gas_key</span> <span class="o">!=</span> <span class="n">gas_name</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Set flag.</span>
+            <span class="n">not_there</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">temperature</span> <span class="o">&gt;=</span> <span class="n">T_min</span> <span class="ow">and</span> <span class="n">temperature</span> <span class="o">&lt;=</span> <span class="n">T_max</span><span class="p">:</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="n">shomate_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">Cp_ref</span> <span class="o">=</span> <span class="n">Cp</span><span class="p">(</span><span class="n">temperature_ref</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+                <span class="c1"># deltaH(298-T) = shomate(T) - shomate(298)</span>
+                <span class="n">dH</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="o">-</span> <span class="n">H</span><span class="p">(</span><span class="n">temperature_ref</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+                <span class="n">dS</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+                <span class="c1"># dH = 298*Cp(298) + dH(298-T)</span>
+                <span class="n">dH</span> <span class="o">=</span> <span class="p">(</span><span class="n">temperature_ref</span><span class="o">*</span><span class="n">Cp_ref</span><span class="o">/</span><span class="mf">1000.0</span> <span class="o">+</span> <span class="n">dH</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">_kJmol2eV</span><span class="p">)</span>  <span class="c1"># eV</span>
+                <span class="n">dS</span> <span class="o">=</span> <span class="n">dS</span><span class="o">*</span><span class="p">(</span><span class="n">_kJmol2eV</span><span class="o">/</span><span class="mf">1e3</span><span class="p">)</span>  <span class="c1"># eV/K</span>
+
+                <span class="c1">#ZPE = sum(self.frequencies[gas_name])/2.0</span>
+                <span class="c1">#free_energy = ZPE +  dH - temperature*dS</span>
+
+                <span class="n">free_energy</span> <span class="o">=</span> <span class="n">dH</span> <span class="o">-</span> <span class="n">temperature</span><span class="o">*</span><span class="n">dS</span>
+                <span class="n">enthalpy</span> <span class="o">=</span> <span class="n">dH</span>
+                <span class="n">entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">temperature</span><span class="o">*</span><span class="n">dS</span>
+
+            <span class="k">elif</span> <span class="n">temperature</span> <span class="o">&lt;</span> <span class="n">T_min</span> <span class="ow">and</span> <span class="n">T_min</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="n">shomate_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">Cp_ref</span> <span class="o">=</span> <span class="n">Cp</span><span class="p">(</span><span class="n">T_min</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+                <span class="n">dS</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="n">T_min</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+                <span class="n">dH</span> <span class="o">=</span> <span class="p">(</span><span class="n">temperature</span><span class="o">*</span><span class="n">Cp_ref</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">_kJmol2eV</span><span class="p">)</span>  <span class="c1"># eV</span>
+                <span class="n">dS</span> <span class="o">=</span> <span class="n">dS</span><span class="o">*</span><span class="p">(</span><span class="n">_kJmol2eV</span><span class="o">/</span><span class="mf">1e3</span><span class="p">)</span>  <span class="c1"># eV/K</span>
+
+                <span class="c1">#ZPE = sum(self.frequencies[gas_name])/2.0</span>
+                <span class="n">free_energy</span> <span class="o">=</span> <span class="n">dH</span> <span class="o">-</span> <span class="n">temperature</span><span class="o">*</span><span class="n">dS</span>
+                <span class="n">enthalpy</span> <span class="o">=</span> <span class="n">dH</span>
+                <span class="n">entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">temperature</span><span class="o">*</span><span class="n">dS</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">not_there</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">not_there</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">not_there</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No Shomate parameters specified for species &#39;</span><span class="si">{}</span><span class="s2">&#39; at </span><span class="si">{}</span><span class="s2">K&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gas_name</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="c1">#raise ValueError(msg)</span>
+            <span class="n">free_energy</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">return</span> <span class="n">free_energy</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="ThermodynamicCorrector.entropy_correction"><a class="viewcode-back" href="../../../api/correctors.thermodynamic_corrector.html#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.entropy_correction">[docs]</a>    <span class="k">def</span> <span class="nf">entropy_correction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gas_name</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get free energy constributions from translational and </span>
+<span class="sd">        internal modes of species in **GAS**.</span>
+
+<span class="sd">        :param gas_name: gas molecular formula</span>
+<span class="sd">        :type gas_name: str</span>
+
+<span class="sd">        :param m: absolute molecular mass, species mass by default</span>
+<span class="sd">        :type m: float</span>
+
+<span class="sd">        :param p: partial pressure (**bar**), model&#39;s pressure by default</span>
+<span class="sd">        :type p: float</span>
+
+<span class="sd">        :param T: temperature, model&#39;s temperature by default</span>
+<span class="sd">        :param T: float</span>
+
+<span class="sd">        Example::</span>
+<span class="sd">            &gt;&gt;&gt; m.corrector.entropy_correction(&#39;CO_g&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; -1.1538116935108251</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Check gas name.</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">ChemFormula</span><span class="p">(</span><span class="n">gas_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;gas&quot;</span><span class="p">:</span>
+            <span class="c1">#msg = &quot;A gas name is expected, &#39;{}&#39; is recieved.&quot;.format(gas_name)</span>
+            <span class="c1">#raise ParameterError(msg)</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="c1"># Extract species_site and species name.</span>
+        <span class="n">species_site</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span>
+        <span class="n">species_name</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species</span><span class="p">()</span>
+
+        <span class="c1"># Match species in database</span>
+        <span class="n">rotation_included</span> <span class="o">=</span> <span class="n">species_site</span> <span class="ow">in</span> <span class="n">rotation_temperatures</span>
+        <span class="n">vibration_included</span> <span class="o">=</span> <span class="n">species_site</span> <span class="ow">in</span> <span class="n">vibration_temperatures</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">rotation_included</span> <span class="ow">and</span> <span class="n">vibration_included</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is not in database (thermodynamic_corrector.py)&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="c1">#raise SpeciesError(msg)</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="c1"># Set default parameter values.</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">parser</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_molecular_mass</span><span class="p">(</span><span class="n">species_name</span><span class="p">,</span> <span class="n">absolute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">species_definitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">species_definitions</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">P0</span><span class="o">*</span><span class="n">species_definitions</span><span class="p">[</span><span class="n">species_site</span><span class="p">][</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">T</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">temperature</span>
+
+        <span class="c1"># Calculate partition functions.</span>
+
+        <span class="c1"># Translation partition functions.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">V</span> <span class="o">=</span> <span class="n">kB_J</span><span class="o">*</span><span class="n">T</span><span class="o">/</span><span class="n">p</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+            <span class="n">msg_template</span> <span class="o">=</span> <span class="s2">&quot;Pressure of &#39;</span><span class="si">{}</span><span class="s2">&#39; is 0.0, please check your input file.&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ZeroDivisionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">qt</span> <span class="o">=</span> <span class="n">V</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">kB_J</span><span class="o">*</span><span class="n">T</span><span class="o">/</span><span class="p">(</span><span class="n">h_J</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
+
+        <span class="c1"># Rotation partition function.</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">rotation_temperatures</span><span class="p">[</span><span class="n">species_site</span><span class="p">][</span><span class="s1">&#39;sigma&#39;</span><span class="p">]</span>
+        <span class="n">thetas</span> <span class="o">=</span> <span class="n">rotation_temperatures</span><span class="p">[</span><span class="n">species_site</span><span class="p">][</span><span class="s1">&#39;theta&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Linear molecule.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">theta</span><span class="p">,</span> <span class="o">=</span> <span class="n">thetas</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="n">theta</span><span class="o">/</span><span class="n">T</span>
+            <span class="k">if</span> <span class="n">ratio</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">:</span>
+                <span class="n">qr</span> <span class="o">=</span> <span class="n">T</span><span class="o">/</span><span class="p">(</span><span class="n">sigma</span><span class="o">*</span><span class="n">theta</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">qr</span> <span class="o">=</span> <span class="n">T</span><span class="o">/</span><span class="p">(</span><span class="n">sigma</span><span class="o">*</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">theta</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">T</span><span class="p">)</span> <span class="o">+</span> <span class="n">theta</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">15</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mf">0.3</span><span class="p">:</span>
+                    <span class="n">msg_template</span> <span class="o">=</span> <span class="s2">&quot;T/theta = </span><span class="si">{:.3e}</span><span class="s2"> is larger than 0.3, big error may be expected&quot;</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">msg_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="c1"># Nonlinear molecule.</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">product</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">thetas</span><span class="p">)</span>
+            <span class="n">qr</span> <span class="o">=</span> <span class="p">(</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="o">/</span><span class="n">sigma</span><span class="o">*</span><span class="p">(</span><span class="n">T</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">product</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span>
+
+        <span class="c1"># Vibration partition functions.</span>
+        <span class="n">thetas</span> <span class="o">=</span> <span class="n">vibration_temperatures</span><span class="p">[</span><span class="n">species_site</span><span class="p">]</span>
+
+        <span class="c1"># Linear molecule.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">theta</span><span class="p">,</span> <span class="o">=</span> <span class="n">thetas</span>
+            <span class="n">qv</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">T</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="o">/</span><span class="n">T</span><span class="p">))</span>
+        <span class="c1"># Nonlinear molecule.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp_list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="o">/</span><span class="n">T</span><span class="p">))</span> <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">thetas</span><span class="p">]</span>
+            <span class="n">qv</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">temp_list</span><span class="p">)</span>
+
+        <span class="c1"># Molecular partition function.</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">qt</span><span class="o">*</span><span class="n">qr</span><span class="o">*</span><span class="n">qv</span>
+
+        <span class="k">return</span> <span class="o">-</span><span class="n">kB_eV</span><span class="o">*</span><span class="n">T</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>  <span class="c1"># eV</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="ThermodynamicCorrector.correct_relative_energies"><a class="viewcode-back" href="../../../api/correctors.thermodynamic_corrector.html#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.correct_relative_energies">[docs]</a>    <span class="k">def</span> <span class="nf">correct_relative_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;shomate&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to correct given relative energies.</span>
+
+<span class="sd">        :param relative_energies: Relative energies to be corrected</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        :param method: Energy correctness method name, could be &#39;shomate&#39; or &#39;entropy&#39;</span>
+<span class="sd">        :type method: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;shomate&quot;</span><span class="p">:</span>
+            <span class="n">correct_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shomate_correction</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;entropy&quot;</span><span class="p">:</span>
+            <span class="n">correct_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entropy_correction</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown method: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+
+        <span class="c1"># Loop over all elementary reactions.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Use </span><span class="si">{}</span><span class="s2"> method to correct relative energies&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">rxn_expression</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">):</span>
+            <span class="c1"># Data used for info output.</span>
+            <span class="n">Gaf</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gaf&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">Gar</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gar&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">dG</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;dG&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__correct_single_relative_energies</span><span class="p">(</span><span class="n">relative_energies</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">correct_func</span><span class="p">)</span>
+
+            <span class="c1"># Data used for info output.</span>
+            <span class="n">Gaf_prime</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gaf&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">Gar_prime</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gar&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">dG_prime</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;dG&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: Gaf(</span><span class="si">{:.2f}</span><span class="s2"> -&gt; </span><span class="si">{:.2f}</span><span class="s2">), Gar(</span><span class="si">{:.2f}</span><span class="s2"> -&gt; </span><span class="si">{:.2f}</span><span class="s2">), &quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;dG(</span><span class="si">{:.2f}</span><span class="s2"> -&gt; </span><span class="si">{:.2f}</span><span class="s2">)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">,</span>
+                                                  <span class="n">Gaf</span><span class="p">,</span> <span class="n">Gaf_prime</span><span class="p">,</span>
+                                                  <span class="n">Gar</span><span class="p">,</span> <span class="n">Gar_prime</span><span class="p">,</span>
+                                                  <span class="n">dG</span><span class="p">,</span> <span class="n">dG_prime</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">relative_energies</span></div>
+
+    <span class="k">def</span> <span class="nf">__correct_single_relative_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">,</span> <span class="n">rxn_idx</span><span class="p">,</span> <span class="n">correct_func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to correct relative energies for a single elementary reaction.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        rxn_idx     : The index of the reaction expression, int.</span>
+<span class="sd">        correct_func: The function object to correct energy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">formula_lists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">elementary_rxns_list</span><span class="p">[</span><span class="n">rxn_idx</span><span class="p">]</span>
+        <span class="n">deltas</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># energy changes for IS, TS, FS</span>
+        <span class="k">for</span> <span class="n">formula_list</span> <span class="ow">in</span> <span class="n">formula_lists</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">:</span>
+                <span class="n">delta</span> <span class="o">+=</span> <span class="n">correct_func</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">formula</span><span class="p">())</span>
+            <span class="n">deltas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__change_relative_energies</span><span class="p">(</span><span class="n">relative_energies</span><span class="p">,</span> <span class="n">rxn_idx</span><span class="p">,</span> <span class="n">deltas</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__change_relative_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">,</span> <span class="n">rxn_idx</span><span class="p">,</span> <span class="n">deltas</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the relative energies of solver from the enegies changes of</span>
+<span class="sd">        a single elementary reaction.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        rxn_idx: The index of the reaction expression, int.</span>
+<span class="sd">        deltas : The energy change vector for the corresponding elementary reaction,</span>
+<span class="sd">                 float list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Gaf</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gaf&quot;</span><span class="p">][</span><span class="n">rxn_idx</span><span class="p">]</span>
+        <span class="n">Gar</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gar&quot;</span><span class="p">][</span><span class="n">rxn_idx</span><span class="p">]</span>
+        <span class="n">dG</span> <span class="o">=</span> <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;dG&quot;</span><span class="p">][</span><span class="n">rxn_idx</span><span class="p">]</span>
+
+        <span class="c1"># We have to treat adsorption and desorption particularly.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">deltas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">E_IS</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">E_FS</span> <span class="o">=</span> <span class="n">E_IS</span> <span class="o">+</span> <span class="n">dG</span>
+            <span class="n">delta_is</span><span class="p">,</span> <span class="n">delta_fs</span> <span class="o">=</span> <span class="n">deltas</span>
+            <span class="n">E_IS</span> <span class="o">+=</span> <span class="n">delta_is</span>
+            <span class="n">E_FS</span> <span class="o">+=</span> <span class="n">delta_fs</span>
+            <span class="n">E_TS</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">E_IS</span><span class="p">,</span> <span class="n">E_FS</span><span class="p">)</span>
+            <span class="c1"># Calculate relative energies again.</span>
+            <span class="n">Gaf</span> <span class="o">=</span> <span class="n">E_TS</span> <span class="o">-</span> <span class="n">E_IS</span>
+            <span class="n">Gar</span> <span class="o">=</span> <span class="n">E_TS</span> <span class="o">-</span> <span class="n">E_FS</span>
+            <span class="n">dG</span> <span class="o">=</span> <span class="n">E_FS</span> <span class="o">-</span> <span class="n">E_IS</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">deltas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># Correct relative energies.</span>
+            <span class="n">d_is</span><span class="p">,</span> <span class="n">d_ts</span><span class="p">,</span> <span class="n">d_fs</span> <span class="o">=</span> <span class="n">deltas</span>
+            <span class="n">d_Gaf</span> <span class="o">=</span> <span class="n">d_ts</span> <span class="o">-</span> <span class="n">d_is</span>
+            <span class="n">d_Gar</span> <span class="o">=</span> <span class="n">d_ts</span> <span class="o">-</span> <span class="n">d_fs</span>
+            <span class="n">d_dG</span> <span class="o">=</span> <span class="n">d_fs</span> <span class="o">-</span> <span class="n">d_is</span>
+            <span class="n">Gaf</span> <span class="o">+=</span> <span class="n">d_Gaf</span>
+            <span class="n">Gar</span> <span class="o">+=</span> <span class="n">d_Gar</span>
+            <span class="n">dG</span> <span class="o">+=</span> <span class="n">d_dG</span>
+
+        <span class="c1"># Update relative energies.</span>
+        <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gaf&quot;</span><span class="p">][</span><span class="n">rxn_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gaf</span>
+        <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;Gar&quot;</span><span class="p">][</span><span class="n">rxn_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gar</span>
+        <span class="n">relative_energies</span><span class="p">[</span><span class="s2">&quot;dG&quot;</span><span class="p">][</span><span class="n">rxn_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">dG</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'catynetics',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

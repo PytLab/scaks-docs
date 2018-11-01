@@ -1,10 +1,10 @@
-[Animation] Run a job in MiKiAC-Hub
------------------------------------
+[Animation] Run a job in catynetics-Hub
+---------------------------------------
 
 Here we use GIF animiation to show operations for running a job in
-MiKiAC-Hub.
+catynetics-Hub.
 
--  File system in MiKiAC-Hub
+-  File system in catynetics-Hub
 
 |image0|
 
@@ -16,7 +16,7 @@ MiKiAC-Hub.
 
 |image2|
 
--  Edit an existing reaction, MiKiAC-Hub can parse it and do
+-  Edit an existing reaction, catynetics-Hub can parse it and do
    conservation check
 
 |image3|

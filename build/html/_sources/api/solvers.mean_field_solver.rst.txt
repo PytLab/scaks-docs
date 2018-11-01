@@ -1,7 +1,7 @@
 solvers.MeanFieldSolver
 -----------------------
 
-.. autoclass:: mikiac.solvers.mean_field_solver.MeanFieldSolver
+.. autoclass:: catynetics.solvers.mean_field_solver.MeanFieldSolver
    :members:
    :inherited-members:
    :show-inheritance:

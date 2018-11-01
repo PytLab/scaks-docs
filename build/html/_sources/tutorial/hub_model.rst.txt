@@ -1,9 +1,10 @@
-Build a model in MiKiAC-Hub
----------------------------
+Build a model in catynetics-Hub
+-------------------------------
 
 In this section, we introduce how to build a micro-kinetic model in
-MiKiAC-Hub. All information needed for model construction are input in
-model panel of MiKiAC-Hub. There are two main sub-panel in model panel:
+catynetics-Hub. All information needed for model construction are input
+in model panel of catynetics-Hub. There are two main sub-panel in model
+panel:
 
 1. Reaction Definition panel: input reaction and energy information
 2. Kinetic Model Definition panel: input model conditions and parameters
@@ -25,7 +26,7 @@ would pop up for inputing elementary reaction information.
 
 |image1|
 
-MiKiAC-Hub also can check the correctness of the input reaction
+catynetics-Hub also can check the correctness of the input reaction
 expression and energy values.
 
 Energy barrier is less than reaction energy:

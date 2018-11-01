@@ -1,7 +1,7 @@
 plotters.EnergyProfilePlotter
 -----------------------------
 
-.. autoclass:: mikiac.plotters.energy_profile_plotter.EnergyProfilePlotter
+.. autoclass:: catynetics.plotters.energy_profile_plotter.EnergyProfilePlotter
    :members:
    :inherited-members:
    :show-inheritance:
