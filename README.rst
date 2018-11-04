@@ -1,8 +1,8 @@
 MiKiAC Documentation
 ====================
 
-Documentation for `MiKiAC`_ (powered by `Sphinx`_)
+Documentation for `Catynetics`_ (powered by `Sphinx`_)
 
-.. _MiKiAC: https://github.com/PytLab/mikiac
+.. _Catynetics: https://github.com/PytLab/catynetics
 .. _Sphinx: http://www.sphinx-doc.org
 
