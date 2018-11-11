@@ -46,12 +46,3 @@ application using catynetics as the back-end calculation core. Then we can run t
 microkinetic model application on both local and remote server and make it possible 
 for a scalable and large scaled cloud computing service.
 
-Other implementation codes
-...........................
-If you don't find `catynetics` suitable for your purpose, I strongly ecourage you to 
-consider any of the other available micro-kinetic model solving codes such as 
-`CatMAP`_, `CHEMKIN`_ and so on before implementing your own methods.
-
-.. _CatMAP: https://github.com/SUNCAT-Center/catmap
-.. _CHEMKIN: http://www.reactiondesign.com/products/chemkin
-
