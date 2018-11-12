@@ -1,7 +1,7 @@
 solvers.SolverBase
 ------------------
 
-.. autoclass:: catynetics.solvers.solver_base.SolverBase
+.. autoclass:: scaks.solvers.solver_base.SolverBase
    :members:
    :inherited-members:
    :show-inheritance:

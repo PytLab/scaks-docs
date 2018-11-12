@@ -1,0 +1,1576 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scaks.solvers.steady_state_solver &mdash; scaks scaks documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> scaks
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">scaks</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../scaks.html">scaks</a> &raquo;</li>
+        
+      <li>scaks.solvers.steady_state_solver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scaks.solvers.steady_state_solver</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="k">import</span> <span class="n">odeint</span><span class="p">,</span> <span class="n">ode</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">fsolve</span>
+
+<span class="kn">from</span> <span class="nn">..descriptors.descriptors</span> <span class="k">import</span> <span class="n">Memoized</span><span class="p">,</span> <span class="n">Property</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">file_header</span>
+<span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..utilities.format_utilities</span> <span class="k">import</span> <span class="n">get_list_string</span>
+<span class="kn">from</span> <span class="nn">..parsers.rxn_parser</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.rootfinding_iterators</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.mean_field_solver</span> <span class="k">import</span> <span class="n">MeanFieldSolver</span>
+
+
+<div class="viewcode-block" id="SteadyStateSolver"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver">[docs]</a><span class="k">class</span> <span class="nc">SteadyStateSolver</span><span class="p">(</span><span class="n">MeanFieldSolver</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; MicroKinetic model solver using steady state approximation.</span>
+
+<span class="sd">    :param owner: The kinetic model that own this solver</span>
+<span class="sd">    :type owner: KineticModel</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="c1"># {{{</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SteadyStateSolver</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+
+        <span class="c1"># set logger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;model.solvers.SteadyStateSolver&#39;</span><span class="p">)</span>
+
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__constrain_coverages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private function to constrain coverages of absorbates</span>
+<span class="sd">        between 0.0 and 1.0 or total number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">species_definitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">species_definitions</span>
+        <span class="n">adsorbate_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span>
+        <span class="n">site_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">site_names</span>
+
+        <span class="c1"># Convert tuple to dict</span>
+        <span class="n">cvgs_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cvg_tuple2dict</span><span class="p">(</span><span class="n">cvgs_tuple</span><span class="p">)</span>
+
+        <span class="c1"># Enforce explicit maxima, cannot be larger than 1.0, smaller than 0.0</span>
+        <span class="k">for</span> <span class="n">adsorbate_name</span> <span class="ow">in</span> <span class="n">adsorbate_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">adsorbate_name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">adsorbate_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">adsorbate_name</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">adsorbate_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="s1">&#39;0.0&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Enforce explicit maxima, cannot be larger than site&#39;s total number</span>
+        <span class="k">for</span> <span class="n">site_name</span> <span class="ow">in</span> <span class="n">site_names</span><span class="p">:</span>
+            <span class="n">total_cvg</span> <span class="o">=</span> <span class="n">species_definitions</span><span class="p">[</span><span class="n">site_name</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">adsorbate_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classified_adsorbates</span><span class="p">[</span><span class="n">site_name</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">adsorbate_name</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">total_cvg</span><span class="p">:</span>
+                    <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">adsorbate_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="n">total_cvg</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">constrain_in_total</span><span class="p">(</span><span class="n">cvgs_dict</span><span class="p">,</span> <span class="n">max_cvg</span><span class="p">):</span>
+            <span class="s2">&quot;Make sure sum of cvgs in cvgs_dict is not larger than max_cvg&quot;</span>
+            <span class="n">total_cvg</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cvgs_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">total_cvg</span> <span class="o">&gt;</span> <span class="n">max_cvg</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">cvgs_dict</span><span class="p">:</span>
+                    <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="n">total_cvg</span><span class="o">*</span><span class="n">max_cvg</span>
+            <span class="k">return</span> <span class="n">cvgs_dict</span>
+
+        <span class="c1"># Sum of cvgs on one type of surface &lt;= site total e.g 1.0</span>
+        <span class="k">for</span> <span class="n">site_name</span> <span class="ow">in</span> <span class="n">site_names</span><span class="p">:</span>
+            <span class="n">max_cvg</span> <span class="o">=</span> <span class="n">species_definitions</span><span class="p">[</span><span class="n">site_name</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">]</span>
+            <span class="n">sub_cvgs_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c1"># Add cvgs of the site to sub_cvgs_dict</span>
+            <span class="k">for</span> <span class="n">adsorbate_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classified_adsorbates</span><span class="p">[</span><span class="n">site_name</span><span class="p">]:</span>
+                <span class="n">sub_cvgs_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span>
+                                         <span class="n">cvgs_dict</span><span class="p">[</span><span class="n">adsorbate_name</span><span class="p">])</span>
+            <span class="c1"># Add free site coverage</span>
+            <span class="n">sub_cvgs_dict</span> <span class="o">=</span> <span class="n">constrain_in_total</span><span class="p">(</span><span class="n">sub_cvgs_dict</span><span class="p">,</span> <span class="n">max_cvg</span><span class="p">)</span>
+            <span class="n">cvgs_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sub_cvgs_dict</span><span class="p">)</span>
+        <span class="c1"># Convert dict to tuple, and return</span>
+        <span class="n">constrained_cvgs_tuple</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cvg_dict2tuple</span><span class="p">(</span><span class="n">cvgs_dict</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">compare_cvgs</span><span class="p">(</span><span class="n">cvgs1</span><span class="p">,</span> <span class="n">cvgs2</span><span class="p">):</span>
+            <span class="s2">&quot;Compare two coverage tuples.&quot;</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cvgs1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cvgs2</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;coverage length inconsistency is detected.&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">cvg1</span><span class="p">,</span> <span class="n">cvg2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cvgs1</span><span class="p">,</span> <span class="n">cvgs2</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cvg1</span> <span class="o">-</span> <span class="n">cvg2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">10e-20</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">consistant</span> <span class="o">=</span> <span class="n">compare_cvgs</span><span class="p">(</span><span class="n">constrained_cvgs_tuple</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">)</span>
+        <span class="c1"># log if constraint has been carried out</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">consistant</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;coverage constraining...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;    initial coverage: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">cvg</span><span class="p">)</span> <span class="k">for</span> <span class="n">cvg</span> <span class="ow">in</span> <span class="n">cvgs_tuple</span><span class="p">]))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;constrained coverage: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+                                    <span class="nb">str</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">cvg</span><span class="p">)</span> <span class="k">for</span> <span class="n">cvg</span> <span class="ow">in</span> <span class="n">constrained_cvgs_tuple</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">constrained_cvgs_tuple</span>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_elementary_dtheta_dt_expression"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_expression">[docs]</a>    <span class="k">def</span> <span class="nf">get_elementary_dtheta_dt_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                            <span class="n">adsorbate_name</span><span class="p">,</span>
+                                            <span class="n">rxn_expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get dtheta_dt of the corresponding adsorbate in single </span>
+<span class="sd">        elementary equation.</span>
+
+<span class="sd">        :param adsorbate_name: The adsorbate name whose coverage is derived wrt time, str.</span>
+<span class="sd">        :type adsorbate_name: str</span>
+
+<span class="sd">        :param rxn_expression: Elementary reaction expression</span>
+<span class="sd">        :type rxn_expression: str</span>
+
+<span class="sd">        :return: The dtheta/dt expression</span>
+<span class="sd">        :rtype: str.</span>
+
+<span class="sd">        Example::</span>
+<span class="sd">            &gt;&gt;&gt; s.get_elementary_dtheta_dt_expression(&quot;O_s&quot;, &#39;O2_g + 2*_s -&gt; 2O_s&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; &quot;2*kf[1]*p[&#39;O2_g&#39;]*theta[&#39;*_s&#39;]**2 - 2*kr[1]*theta[&#39;O_s&#39;]**2&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Check adsorbate name.</span>
+        <span class="k">if</span> <span class="n">adsorbate_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is not an adsorbate!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">))</span>
+
+        <span class="c1"># Get formula object list of the rxn_expression.</span>
+        <span class="n">rxn_equation</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+        <span class="n">elementary_rxn_list</span> <span class="o">=</span> <span class="n">rxn_equation</span><span class="o">.</span><span class="n">to_formula_list</span><span class="p">()</span>
+
+        <span class="c1"># Find formula list index.</span>
+        <span class="k">for</span> <span class="n">formula_list</span> <span class="ow">in</span> <span class="n">elementary_rxn_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">:</span>
+                <span class="n">stoichiometry</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+                <span class="n">current_species</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">current_species</span> <span class="o">==</span> <span class="n">adsorbate_name</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">current_species</span> <span class="o">==</span> <span class="n">adsorbate_name</span><span class="p">:</span>
+                <span class="c1"># Get state idx to get direction info.</span>
+                <span class="n">state_idx</span> <span class="o">=</span> <span class="n">elementary_rxn_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">formula_list</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="c1"># If adsorbate name not in reaction, stop.</span>
+        <span class="k">if</span> <span class="n">current_species</span> <span class="o">!=</span> <span class="n">adsorbate_name</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Get rate expression of the elementary equation.</span>
+        <span class="n">f_expr</span><span class="p">,</span> <span class="n">r_expr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elementary_rate_expression</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+
+        <span class="c1"># Adsorbate is consumed</span>
+        <span class="k">if</span> <span class="n">state_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stoichiometry</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">increase_rate</span><span class="p">,</span> <span class="n">decrease_rate</span> <span class="o">=</span> <span class="n">r_expr</span><span class="p">,</span> <span class="n">f_expr</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">increase_rate</span><span class="p">,</span> <span class="n">decrease_rate</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">stoichiometry</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">rate_expr</span>
+                                                <span class="k">for</span> <span class="n">rate_expr</span> <span class="ow">in</span> <span class="p">[</span><span class="n">r_expr</span><span class="p">,</span> <span class="n">f_expr</span><span class="p">]]</span>
+        <span class="c1"># Adsorbate is produced.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stoichiometry</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">increase_rate</span><span class="p">,</span> <span class="n">decrease_rate</span> <span class="o">=</span> <span class="n">f_expr</span><span class="p">,</span> <span class="n">r_expr</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">increase_rate</span><span class="p">,</span> <span class="n">decrease_rate</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">stoichiometry</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">rate_expr</span>
+                                                <span class="k">for</span> <span class="n">rate_expr</span> <span class="ow">in</span> <span class="p">[</span><span class="n">f_expr</span><span class="p">,</span> <span class="n">r_expr</span><span class="p">]]</span>
+
+        <span class="c1"># Return.</span>
+        <span class="k">return</span> <span class="n">increase_rate</span> <span class="o">+</span> <span class="s1">&#39; - &#39;</span> <span class="o">+</span> <span class="n">decrease_rate</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_adsorbate_dtheta_dt_expression"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_expression">[docs]</a>    <span class="k">def</span> <span class="nf">get_adsorbate_dtheta_dt_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adsorbate_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get dtheta/dt expression over all elementary reactions wrt an adsorbate.</span>
+
+<span class="sd">        :param adsorbate_name: The name of the adsorbate whose dtheta/dt expression would be returned.</span>
+<span class="sd">        :type adsorbate_name: str</span>
+
+<span class="sd">        :param dtheta_dt_expression: dtheta/dt expression</span>
+<span class="sd">        :type dtheta_dt_expression: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Collect all dtheta/dt exprression for an elementary reaction.</span>
+        <span class="n">dtheta_dt_expression_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">rxn_expression</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">:</span>
+            <span class="n">single_dtheta_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elementary_dtheta_dt_expression</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span>
+                                                                        <span class="n">rxn_expression</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">single_dtheta_dt</span><span class="p">:</span>
+                <span class="n">dtheta_dt_expression_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">single_dtheta_dt</span><span class="p">)</span>
+
+        <span class="c1"># Join the expressions.</span>
+        <span class="n">dtheta_dt_expression</span> <span class="o">=</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dtheta_dt_expression_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dtheta_dt_expression</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_dtheta_dt_expressions"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_expressions">[docs]</a>    <span class="k">def</span> <span class="nf">get_dtheta_dt_expressions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get dtheta/dt expression strings for all adsorbatets.</span>
+
+<span class="sd">        :return: dtheta/dt expressions for all adsorbates</span>
+<span class="sd">        :rtype: list of str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dtheta_dt_expressions</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">dtheta_dt_expressions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">adsorbate_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">):</span>
+                <span class="n">dtheta_dt_expression</span> <span class="o">=</span> <span class="s2">&quot;dtheta_dt[&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;] = &quot;</span>
+                <span class="n">dtheta_dt_expression</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_adsorbate_dtheta_dt_expression</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">)</span>
+                <span class="n">dtheta_dt_expressions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dtheta_dt_expression</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dtheta_dt_expressions</span> <span class="o">=</span> <span class="n">dtheta_dt_expressions</span>
+
+            <span class="k">return</span> <span class="n">dtheta_dt_expressions</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.steady_state_function"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.steady_state_function">[docs]</a>    <span class="k">def</span> <span class="nf">steady_state_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recieve a coverages tuple containing coverages of adsorbates, calculate </span>
+<span class="sd">        dtheta_dts of corresponding adsorbates.</span>
+
+<span class="sd">        :param cvgs_tuple: adsorbate coverages</span>
+<span class="sd">        :type cvgs_tuple: tuple of float</span>
+
+<span class="sd">        :param relative_energies: Relative energies for calculation, if not provided, use model&#39;s relative energies, default is None</span>
+<span class="sd">        :type relative_energies: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Set theta, kf, kr, p, dtheta_dt</span>
+        <span class="c1"># Coverages(theta).</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cvg_tuple2dict</span><span class="p">(</span><span class="n">cvgs_tuple</span><span class="p">)</span>
+
+        <span class="c1"># Rate constants(kf, kr).</span>
+        <span class="n">kf</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rate_constants</span><span class="p">(</span><span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+
+        <span class="c1"># Pressure.</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span>
+
+        <span class="c1"># Concentration.</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span>
+
+        <span class="c1"># Rate of coverage change(dtheta_dt).</span>
+        <span class="n">dtheta_dt</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">)</span>
+
+        <span class="n">dtheta_dt_expressions</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dtheta_dt_expressions</span><span class="p">())</span>
+        <span class="n">exec</span><span class="p">(</span><span class="n">dtheta_dt_expressions</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dtheta_dt</span><span class="p">)</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__term_adsorbate_derivation</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expect a single expression and an adsorbate_name</span>
+<span class="sd">        e.g. &quot;kf[2]*theta[&#39;CO_s&#39;]*theta[&#39;*_s&#39;]&quot; &#39;CO_s&#39;,</span>
+<span class="sd">        return a derivation expression wrt adsorbate_name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Escape.</span>
+        <span class="k">if</span> <span class="s1">&#39;*&#39;</span> <span class="ow">in</span> <span class="n">adsorbate_name</span><span class="p">:</span>
+            <span class="n">adsorbate_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">adsorbate_name</span>
+
+        <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;((.*)\*|)(theta\[&#39;&quot;</span> <span class="o">+</span> <span class="n">adsorbate_name</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&#39;\])(\*</span><span class="si">{2}</span><span class="s2">(\d)|)(\*(.*)|)&quot;</span>
+        <span class="c1">#r&quot;(.*)\*(theta\[&#39;CO_s&#39;\])(\*\*(\d)|)(\*(.*)|)&quot;</span>
+        <span class="c1">###########################################################</span>
+        <span class="c1"># group(1) -&gt; ((.*)\*|), group(2) -&gt; (.*)                 #</span>
+        <span class="c1"># group(3) -&gt; (theta\[&#39;&quot;+adsorbate_name+&quot;&#39;\])             #</span>
+        <span class="c1"># group(4) -&gt; (\*{2}(\d)|), group(5) -&gt; \*{2}(\d) or None #</span>
+        <span class="c1"># group(6) -&gt; (\*(.*)|), group(7) -&gt; (.*) or None         #</span>
+        <span class="c1">###########################################################</span>
+
+        <span class="c1"># Coefficient</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">coefficient</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">coefficient</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+            <span class="n">coefficient</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">coefficient</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="c1"># Power of cvg</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">power</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">power</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">power</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># e.g. &quot;kf[2]*theta[&#39;CO_s&#39;]*theta[&#39;*_s&#39;]&quot;</span>
+            <span class="n">derivation_expression</span> <span class="o">=</span> <span class="n">coefficient</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">coefficient</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                <span class="n">coefficient</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">power</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">coefficient</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">power</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">coefficient</span>
+            <span class="n">cvg_expression</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;**&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">power</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">derivation_expression</span> <span class="o">=</span> <span class="n">coefficient</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">cvg_expression</span>
+<span class="c1">#        else:</span>
+<span class="c1">#            derivation_expression = &#39;0&#39;</span>
+
+        <span class="k">return</span> <span class="n">derivation_expression</span>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__total_term_adsorbate_derivation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                          <span class="n">adsorbate_name</span><span class="p">,</span>
+                                          <span class="n">term_expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private function to get derivation expression taking FREE SITE into consideration.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            the coverage of free site can be expressed as (1 - theta_CO_s - ...),</span>
+<span class="sd">            so the derivation must take coverages of free site into consideration.</span>
+
+<span class="sd">        :param adsorbate_name: The adsorbate name which derivation expression wrt would be returned</span>
+<span class="sd">        :type adsorbate_name: str</span>
+
+<span class="sd">        :param term_expression: The string of term expression</span>
+<span class="sd">        :type term_expression: str</span>
+
+<span class="sd">        :return: The derivation expression</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="k">if</span> <span class="n">adsorbate_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">adsorbate_name</span> <span class="o">+</span> <span class="s2">&quot;&#39; is not in adsorbate_names&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">theta</span><span class="p">(</span><span class="n">sp_name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;theta[&#39;</span><span class="si">{}</span><span class="s2">&#39;]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sp_name</span><span class="p">)</span>
+
+        <span class="c1"># Get all sites in term_expression.</span>
+        <span class="n">site_cvg_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;theta\[&#39;(\*_\w*)&#39;\]&quot;</span>
+        <span class="n">sites_list</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">site_cvg_regex</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">)</span>
+
+        <span class="c1"># Get site info of adsorbate.</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">ChemFormula</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">)</span>
+        <span class="n">site_name</span> <span class="o">=</span> <span class="s2">&quot;*_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">formula</span><span class="o">.</span><span class="n">site</span><span class="p">())</span>
+        <span class="n">site_cvg_expr</span> <span class="o">=</span> <span class="n">theta</span><span class="p">(</span><span class="n">site_name</span><span class="p">)</span>
+        <span class="n">site_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">species_definitions</span><span class="p">[</span><span class="n">site_name</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Get derivation expression wrt free site.</span>
+        <span class="k">def</span> <span class="nf">deriv_site_part</span><span class="p">(</span><span class="n">site_name</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">):</span>
+            <span class="n">initial_expr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__term_adsorbate_derivation</span><span class="p">(</span><span class="n">site_name</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">)</span>
+
+            <span class="c1"># Convert site expression to adsobate expression.</span>
+            <span class="k">if</span> <span class="n">site_cvg_expr</span> <span class="ow">in</span> <span class="n">initial_expr</span><span class="p">:</span>
+                <span class="c1"># Get substitute expression.</span>
+                <span class="n">substitute_expr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">site_total</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">adsorbate_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_classified_adsorbates</span><span class="p">[</span><span class="n">site_name</span><span class="p">]:</span>
+                    <span class="n">substitute_expr</span> <span class="o">+=</span> <span class="s1">&#39; - &#39;</span> <span class="o">+</span> <span class="n">theta</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">)</span>
+                <span class="n">substitute_expr</span> <span class="o">=</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="n">substitute_expr</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+
+                <span class="c1"># Do substitution</span>
+                <span class="n">site_cvg_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;theta\[&#39;\*_&quot;</span> <span class="o">+</span> <span class="n">site_name</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&#39;\]&quot;</span>
+                <span class="n">final_expr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">site_cvg_regex</span><span class="p">,</span> <span class="n">substitute_expr</span><span class="p">,</span> <span class="n">initial_expr</span><span class="p">)</span>
+
+                <span class="c1"># Add minus.</span>
+                <span class="n">final_expr</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">final_expr</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Just add a minus before expression.</span>
+                <span class="n">final_expr</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">initial_expr</span>
+
+            <span class="k">return</span> <span class="n">final_expr</span>
+
+        <span class="c1"># Get derivation expression wrt adsorbate.</span>
+        <span class="k">def</span> <span class="nf">deriv_adsorbate_part</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__term_adsorbate_derivation</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">)</span>
+
+        <span class="c1"># If contains both.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">site_name</span> <span class="ow">in</span> <span class="n">sites_list</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">term_expression</span><span class="p">):</span>
+            <span class="c1">#split two parts</span>
+            <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(.*)\*(theta\[&#39;&quot;</span> <span class="o">+</span> <span class="n">adsorbate_name</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;&#39;\])(\*</span><span class="si">{2}</span><span class="s2">(\d)|)(\*(.*)|)&quot;</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+                <span class="n">site_part</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">site_part</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">adsorbate_part</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="c1"># Get derivation expression</span>
+            <span class="n">derivation_expression</span> <span class="o">=</span> <span class="p">(</span><span class="n">deriv_adsorbate_part</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span> <span class="n">adsorbate_part</span><span class="p">)</span> <span class="o">+</span>
+                                     <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">site_part</span> <span class="o">+</span> <span class="s1">&#39; + &#39;</span> <span class="o">+</span>
+                                     <span class="n">deriv_site_part</span><span class="p">(</span><span class="n">site_name</span><span class="p">,</span> <span class="n">site_part</span><span class="p">)</span> <span class="o">+</span>
+                                     <span class="s1">&#39;*&#39;</span> <span class="o">+</span> <span class="n">adsorbate_part</span><span class="p">)</span>
+        <span class="c1"># Derive empty site coverage only.</span>
+        <span class="k">elif</span> <span class="n">site_name</span> <span class="ow">in</span> <span class="n">sites_list</span><span class="p">:</span>
+            <span class="n">derivation_expression</span> <span class="o">=</span> <span class="n">deriv_site_part</span><span class="p">(</span><span class="n">site_name</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">)</span>
+        <span class="c1"># Derive adsorbate coverage only.</span>
+        <span class="k">elif</span> <span class="n">theta</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">term_expression</span><span class="p">:</span>
+            <span class="n">derivation_expression</span> <span class="o">=</span> <span class="n">deriv_adsorbate_part</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span> <span class="n">term_expression</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">derivation_expression</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+
+        <span class="k">return</span> <span class="n">derivation_expression</span>
+        <span class="c1"># }}}</span>
+
+    <span class="nd">@Memoized</span>
+    <span class="k">def</span> <span class="nf">poly_adsorbate_derivation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adsorbate_name</span><span class="p">,</span> <span class="n">poly_expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expect a polynomial expression of dtheta_dt and an adsorbate_name,</span>
+<span class="sd">        return a derivation expression about the adsorbate.</span>
+<span class="sd">        Function to the derivation expression wrt an adsorbate.</span>
+
+<span class="sd">        :param adsorbate_name: The adsorbate name</span>
+<span class="sd">        :type adsorbate_name: str</span>
+
+<span class="sd">        :param poly_expression: A polynomial expression of dtheta/dt</span>
+<span class="sd">        :type poly_expression: str</span>
+
+<span class="sd">        :return: The derivation expression</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        Example::</span>
+<span class="sd">            &gt;&gt;&gt; adsorbate = &quot;CO_s&quot;</span>
+<span class="sd">            &gt;&gt;&gt; poly_expression = &quot;dtheta_dt[0] = kf[0]*p[&#39;CO_g&#39;]*theta[&#39;*_s&#39;] - kr[0]*theta[&#39;CO_s&#39;]&quot;</span>
+<span class="sd">            &gt;&gt;&gt; solver.poly_adsorbate_derivation(adsorbate, poly_expression)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Split poly_expression.</span>
+        <span class="n">poly_list</span> <span class="o">=</span> <span class="n">poly_expression</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">operators</span><span class="p">,</span> <span class="n">terms</span> <span class="o">=</span> <span class="n">poly_list</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">poly_list</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># Generate derived term expressions.</span>
+        <span class="n">derived_terms</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__total_term_adsorbate_derivation</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span>
+                                                                <span class="n">term_expression</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">term_expression</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">]</span>
+
+        <span class="c1"># Combine 2 lists.</span>
+        <span class="n">derived_poly_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">combination</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">derived_terms</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+            <span class="n">derived_poly_list</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">combination</span><span class="p">)</span>
+        <span class="n">derived_poly_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">derived_terms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Join and return.</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">derived_poly_list</span><span class="p">)</span>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.analytical_jacobian"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">analytical_jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get analytical Jacobian matrix of the nonlinear equation system.</span>
+
+<span class="sd">        :param cvgs_tuple: Adsorbate coverages</span>
+<span class="sd">        :type cvgs_tuple: tuple of float</span>
+
+<span class="sd">        :param relative_energies: Relative eneriges of elementary reactions.</span>
+<span class="sd">        :rtype relative_energies: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            keys &quot;:obj:`Gaf` and G:obj:`Gar` must be in relative energies dict</span>
+
+<span class="sd">        :return: The analytical Jacobian matrix, N x N matrix of float, N is the number of adsorbates.</span>
+<span class="sd">        :rtype: numpy.matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Check input parameter.</span>
+        <span class="n">dtheta_dt_expressions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dtheta_dt_expressions</span><span class="p">()</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dtheta_dt_expressions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">cvgs_tuple</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> coverages are expected, but </span><span class="si">{}</span><span class="s2"> are provided.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Set theta, kf, kr, p, dtheta_dt</span>
+        <span class="c1"># Coverages(theta).</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cvg_tuple2dict</span><span class="p">(</span><span class="n">cvgs_tuple</span><span class="p">)</span>
+
+        <span class="c1"># Rate constants(kf, kr).</span>
+        <span class="n">kf</span><span class="p">,</span> <span class="n">kr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rate_constants</span><span class="p">(</span><span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+
+        <span class="c1"># Pressure.</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span>
+
+        <span class="c1"># Concentration.</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c</span>
+
+        <span class="c1"># Generate Jacobian matrix.</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">adsorbate_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span>
+
+        <span class="c1"># Fill matrix.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">poly_expression</span> <span class="o">=</span> <span class="n">dtheta_dt_expressions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="c1"># Get adsorbate_name.</span>
+                <span class="n">adsorbate_name</span> <span class="o">=</span> <span class="n">adsorbate_names</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="c1"># Fill the matrix</span>
+                <span class="n">derivation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">poly_adsorbate_derivation</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="o">=</span><span class="n">adsorbate_name</span><span class="p">,</span>
+                                                            <span class="n">poly_expression</span><span class="o">=</span><span class="n">poly_expression</span><span class="p">)</span>
+                <span class="n">J</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">derivation</span><span class="p">)</span>
+
+        <span class="c1"># Return Jacobian matrix.</span>
+        <span class="k">return</span> <span class="n">J</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="c1">######################################################</span>
+    <span class="c1">######                                          ######</span>
+    <span class="c1">###### calculate micro kinetic model with Sympy ######</span>
+    <span class="c1">######                                          ######</span>
+    <span class="c1">######################################################</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_elementary_dtheta_dt_sym"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_sym">[docs]</a>    <span class="k">def</span> <span class="nf">get_elementary_dtheta_dt_sym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adsorbate_name</span><span class="p">,</span> <span class="n">rxn_expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get dtheta/dt expression symbol for an adsorbate and an elementary reaction.</span>
+
+<span class="sd">        :param adsorbate_name: Name of adsorbate for calculating dtheta/dt</span>
+<span class="sd">        :type adsorbate_name: str</span>
+
+<span class="sd">        :param rxn_expression: Elementary reaction expression</span>
+<span class="sd">        :type rxn_expression: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Check adsorbate name.</span>
+        <span class="k">if</span> <span class="n">adsorbate_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is not an adsorbate&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Check rxn expression.</span>
+        <span class="k">if</span> <span class="n">rxn_expression</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; not in model&#39;s rxn_expressions.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Get formula list.</span>
+        <span class="n">rxn_equation</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+        <span class="n">elementary_rxn_list</span> <span class="o">=</span> <span class="n">rxn_equation</span><span class="o">.</span><span class="n">to_formula_list</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">state_list</span> <span class="ow">in</span> <span class="n">elementary_rxn_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">state_list</span><span class="p">:</span>
+                <span class="n">stoichiometry</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+                <span class="n">species_site</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span>
+
+                <span class="c1"># If find it, jump out.</span>
+                <span class="k">if</span> <span class="n">species_site</span> <span class="o">==</span> <span class="n">adsorbate_name</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># Get state idx to get direction info.</span>
+            <span class="k">if</span> <span class="n">species_site</span> <span class="o">==</span> <span class="n">adsorbate_name</span><span class="p">:</span>
+                <span class="n">state_idx</span> <span class="o">=</span> <span class="n">elementary_rxn_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">state_list</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="c1"># If adsorbate name not in elementary_rxn list, stop.</span>
+        <span class="k">if</span> <span class="n">species_site</span> <span class="o">!=</span> <span class="n">adsorbate_name</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Get dtheta_dt sym according rate symbols.</span>
+        <span class="n">rf_sym</span><span class="p">,</span> <span class="n">rr_sym</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elementary_rate_sym</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">state_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">dtheta_dt_sym</span> <span class="o">=</span> <span class="o">-</span><span class="n">rf_sym</span> <span class="o">+</span> <span class="n">rr_sym</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dtheta_dt_sym</span> <span class="o">=</span> <span class="n">rf_sym</span> <span class="o">-</span> <span class="n">rr_sym</span>
+
+        <span class="k">return</span> <span class="n">dtheta_dt_sym</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_adsorbate_dtheta_dt_sym"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_sym">[docs]</a>    <span class="k">def</span> <span class="nf">get_adsorbate_dtheta_dt_sym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adsorbate_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get dtheta/dt for an adsorbate.</span>
+
+<span class="sd">        :param adsorbate_name: The adsorbate name</span>
+<span class="sd">        :type adsorbate_name: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_dtheta_dt_sym</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Loop over all elementary reactions.</span>
+        <span class="k">for</span> <span class="n">rxn_expression</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">:</span>
+            <span class="n">dtheta_dt_sym</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_elementary_dtheta_dt_sym</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">,</span>
+                                                              <span class="n">rxn_expression</span><span class="p">)</span>
+            <span class="c1"># Adsorbate not in this reaction expression.</span>
+            <span class="k">if</span> <span class="n">dtheta_dt_sym</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">total_dtheta_dt_sym</span> <span class="o">+=</span> <span class="n">dtheta_dt_sym</span>
+
+        <span class="k">return</span> <span class="n">total_dtheta_dt_sym</span></div>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_dtheta_dt_syms"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_syms">[docs]</a>    <span class="k">def</span> <span class="nf">get_dtheta_dt_syms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_latex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get dtheta/dt expressions for all adsorbates.</span>
+
+<span class="sd">        :param log_latex: Dump LaTEX log or not</span>
+<span class="sd">        :type log_latex: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dtheta_dt_syms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">adsorbate_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">:</span>
+            <span class="n">dtheta_dt_sym</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_adsorbate_dtheta_dt_sym</span><span class="p">(</span><span class="n">adsorbate_name</span><span class="p">)</span>
+            <span class="n">dtheta_dt_syms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dtheta_dt_sym</span><span class="p">)</span>
+
+        <span class="n">dtheta_dt_syms</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dtheta_dt_syms</span><span class="p">)</span>
+
+        <span class="c1"># Latex strings.</span>
+        <span class="n">dtheta_dt_latexs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_latex_strs</span><span class="p">(</span><span class="n">part1</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\frac{d\theta_{&#39;</span><span class="p">,</span> <span class="n">part2</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;}}</span><span class="si">{dt}</span><span class="s1">} &#39;</span><span class="p">,</span>
+                                               <span class="n">symbols</span><span class="o">=</span><span class="n">dtheta_dt_syms</span><span class="p">)</span>
+
+        <span class="c1"># Log it.</span>
+        <span class="k">if</span> <span class="n">log_latex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_latex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtheta_dt_latex</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dtheta_dt_syms</span></div>
+
+<div class="viewcode-block" id="SteadyStateSolver.steady_state_function_by_sym"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.steady_state_function_by_sym">[docs]</a>    <span class="k">def</span> <span class="nf">steady_state_function_by_sym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Recieve a coverages tuple containing coverages of adsorbates, return a tuple of dtheta_dts of corresponding adsorbates.</span>
+
+<span class="sd">        :param cvgs_tuple: adsorbate coverages</span>
+<span class="sd">        :type cvgs_tuple: tuple of float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get dtheta/dt expressions.</span>
+        <span class="n">dtheta_dt_syms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dtheta_dt_syms</span><span class="p">()</span>
+
+        <span class="c1"># Get substitution dict.</span>
+        <span class="n">subs_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subs_dict</span><span class="p">(</span><span class="n">coverages</span><span class="o">=</span><span class="n">cvgs_tuple</span><span class="p">)</span>
+
+        <span class="c1"># Loop to get values of dtheta/dt.</span>
+        <span class="n">dtheta_dts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dtheta_dt_sym</span> <span class="ow">in</span> <span class="n">dtheta_dt_syms</span><span class="p">:</span>
+            <span class="n">dtheta_dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="n">dtheta_dt_sym</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">subs</span><span class="o">=</span><span class="n">subs_dict</span><span class="p">))</span>
+            <span class="n">dtheta_dts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dtheta_dt</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dtheta_dts</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SteadyStateSolver.analytical_jacobian_sym"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_sym">[docs]</a>    <span class="k">def</span> <span class="nf">analytical_jacobian_sym</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get the jacobian matrix symbol expressions of the dtheta/dt nonlinear equations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get dtheta/dt expressions.</span>
+        <span class="n">dtheta_dt_syms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dtheta_dt_syms</span><span class="p">()</span>
+
+        <span class="c1"># Allocate memories for jacobian matrix.</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dtheta_dt_syms</span><span class="p">)</span>
+        <span class="n">sym_jacobian</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">]</span>
+
+        <span class="c1"># dtheta/dt (row).</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">dthe_dt_sym</span> <span class="o">=</span> <span class="n">dtheta_dt_syms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c1"># adsorbate (column).</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">ads_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">theta_sym</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_symbol</span><span class="p">(</span><span class="n">ads_name</span><span class="p">,</span> <span class="s1">&#39;ads_cvg&#39;</span><span class="p">)</span>
+                <span class="n">sym_jacobian</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">sym</span><span class="o">.</span><span class="n">Derivative</span><span class="p">(</span><span class="n">dthe_dt_sym</span><span class="p">,</span> <span class="n">theta_sym</span><span class="p">)</span><span class="o">.</span><span class="n">doit</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">sym_jacobian</span></div>
+
+<div class="viewcode-block" id="SteadyStateSolver.analytical_jacobian_by_sym"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_by_sym">[docs]</a>    <span class="k">def</span> <span class="nf">analytical_jacobian_by_sym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get the jacobian matrix of the dtheta/dt nonlinear equations.</span>
+
+<span class="sd">        :param cvgs_tuple: adsorbate coverages</span>
+<span class="sd">        :type cvgs_tuple: tuple of float</span>
+
+<span class="sd">        :return: A jacobian matrix(in self._matrix form).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># NOTE: precision may lose here.</span>
+
+        <span class="c1"># Get substitution dicts.</span>
+        <span class="n">subs_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subs_dict</span><span class="p">(</span><span class="n">coverages</span><span class="o">=</span><span class="n">cvgs_tuple</span><span class="p">)</span>
+
+        <span class="c1"># Get symbol jacobian matrix.</span>
+        <span class="n">sym_jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analytical_jacobian_sym</span><span class="p">()</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sym_jacobian</span><span class="p">)</span>
+        <span class="n">num_jacobian</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">entry_value</span> <span class="o">=</span> <span class="n">sym_jacobian</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">subs</span><span class="o">=</span><span class="n">subs_dict</span><span class="p">)</span>
+                <span class="n">num_jacobian</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="n">entry_value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="p">(</span><span class="n">num_jacobian</span><span class="p">)</span></div>
+
+<span class="c1">#    def get_rate_control_by_sym(self, RDS):</span>
+<span class="c1">#        &quot;&quot;&quot;</span>
+<span class="c1">#        RDS: int, Rate Determining Step number.</span>
+<span class="c1">#        &quot;&quot;&quot;</span>
+<span class="c1">#        #get quasi_quilibrium_solver instance</span>
+<span class="c1">#        _temp = __import__(&#39;quasi_equilibrium_solver&#39;,</span>
+<span class="c1">#                           globals(), locals(), [&#39;QuasiEquilibriumSolver&#39;])</span>
+<span class="c1">#        qe_solver = _temp.QuasiEquilibriumSolver(owner=self._owner)</span>
+<span class="c1">#        qe_solver.RDS = RDS  # set Rate Determining Step</span>
+<span class="c1">#        XTRCs = qe_solver.get_XTRCs()</span>
+<span class="c1">#        self.qe_solver = qe_solver</span>
+<span class="c1">#</span>
+<span class="c1">#        return XTRCs</span>
+
+    <span class="c1">##########################################################</span>
+    <span class="c1">###### calculate micro kinetic model with Sympy END ######</span>
+    <span class="c1">##########################################################</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_residual"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_residual">[docs]</a>    <span class="k">def</span> <span class="nf">get_residual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get residual value of equations(the max value of dthe/dt).</span>
+
+<span class="sd">        :param cvgs_tuple: Adsorbate coverages</span>
+<span class="sd">        :type cvgs_tuple: tuple of float</span>
+
+<span class="sd">        :param relative_energies: Relative eneriges of elementary reactions.</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            keys &quot;:obj:`Gaf` and &quot;:obj:`Gar` must be in relative energies dict</span>
+
+<span class="sd">        :return: The max value of dtheta/dt wrt the coverages.</span>
+<span class="sd">        :rtype: list of float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#constrain cvgs</span>
+        <span class="c1">#cvgs_tuple = self.__constrain_coverages(cvgs_tuple)</span>
+        <span class="n">dtheta_dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">steady_state_function</span><span class="p">(</span><span class="n">cvgs_tuple</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">)</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">dtheta_dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">dtheta_dt</span> <span class="ow">in</span> <span class="n">dtheta_dts</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">residual</span></div>
+
+    <span class="c1"># -- Use scipy.optimize.fsolve function to solve equations --</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.coarse_steady_state_cvgs"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.coarse_steady_state_cvgs">[docs]</a>    <span class="k">def</span> <span class="nf">coarse_steady_state_cvgs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Use scipy.optimize.fsolve to solve non-linear equations with fast speed and low-precison.</span>
+
+<span class="sd">        :param c0: initial coverages</span>
+<span class="sd">        :type c0: list of float</span>
+
+<span class="sd">        :param relative_energies: Relative eneriges of elementary reactions.</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            keys &quot;:obj:`Gaf` and &quot;:obj:`Gar` must be in relative energies dict</span>
+
+<span class="sd">        :return steady_state_coverages: final steady state coverages</span>
+<span class="sd">        :rtype: tuple of float, in the order of :obj:`self._owner.adsorbate_names`</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">def</span> <span class="nf">get_jacobian</span><span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Jacobian matrix.</span>
+            <span class="n">jm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analytical_jacobian</span><span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="c1"># Convert to floats.</span>
+            <span class="n">jm</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">dfs</span><span class="p">]</span> <span class="k">for</span> <span class="n">dfs</span> <span class="ow">in</span> <span class="n">jm</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">jm</span>
+
+        <span class="c1">#fprime = lambda x: get_jacobian(c0, relative_energies=relative_energies)</span>
+
+        <span class="c1"># Main hotpot.</span>
+        <span class="n">c0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c0</span><span class="p">]</span>
+        <span class="n">converged_cvgs</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steady_state_function</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span>
+                                <span class="p">(</span><span class="n">relative_energies</span><span class="p">,</span> <span class="p">),</span>
+                                <span class="n">fprime</span><span class="o">=</span><span class="n">get_jacobian</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">converged_cvgs</span></div>
+
+<div class="viewcode-block" id="SteadyStateSolver.fsolve_steady_state_cvgs"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.fsolve_steady_state_cvgs">[docs]</a>    <span class="k">def</span> <span class="nf">fsolve_steady_state_cvgs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Use scipy.optimize.fsolve to get steady state coverages.</span>
+
+<span class="sd">        :param c0: initial coverages</span>
+<span class="sd">        :type c0: list of float</span>
+
+<span class="sd">        :param relative_energies: Relative eneriges of elementary reactions.</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            keys &quot;:obj:`Gaf` and &quot;:obj:`Gar` must be in relative energies dict</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_steady_state_cvgs</span><span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_steady_state_cvgs"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_steady_state_cvgs">[docs]</a>    <span class="k">def</span> <span class="nf">get_steady_state_cvgs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">single_pt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get steady state coverages.</span>
+
+<span class="sd">        Expect an inital coverages tuple, use Newton Method to solving nonlinear equations, return steady state coverages, if converged.</span>
+
+<span class="sd">        :param c0: initial coverages</span>
+<span class="sd">        :type c0: tuple of float</span>
+
+<span class="sd">        :param single_pt : if True, no initial guess check will be done</span>
+<span class="sd">        :type single_pt: bool</span>
+
+<span class="sd">        :param relative_energies: Relative eneriges of elementary reactions.</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            keys &quot;:obj:`Gaf` and &quot;:obj:`Gar` must be in relative energies dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Intial coverage must have physical meaning.</span>
+        <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__constrain_coverages</span><span class="p">(</span><span class="n">c0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__initial_guess</span> <span class="o">=</span> <span class="n">c0</span>
+
+        <span class="c1"># Start root finding algorithm.</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">steady_state_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+        <span class="n">f_resid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_residual</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+        <span class="n">constraint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__constrain_coverages</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">analytical_jacobian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+
+        <span class="c1">############    Main Loop with changed initial guess   ##############</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Entering main loop...&#39;</span><span class="p">)</span>
+        <span class="n">icvg_counter</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># initial coverage counter, outer</span>
+        <span class="n">cancel</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">converged</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Flag for convergence.</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">cancel</span><span class="p">:</span>  <span class="c1"># outer loop</span>
+            <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># {{{</span>
+                <span class="c1"># Good initial coverages.</span>
+                <span class="k">if</span> <span class="n">f_resid</span><span class="p">(</span><span class="n">c0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">tolerance</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">single_pt</span><span class="p">:</span>
+                    <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span> <span class="o">=</span> <span class="n">c0</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Good initial guess: </span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c0</span><span class="p">]))</span>
+
+                    <span class="c1"># log steady state coverages</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__log_sscvg</span><span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">)</span>
+
+                    <span class="c1"># Get error.</span>
+                    <span class="n">fx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">steady_state_function</span><span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">)</span>  <span class="c1"># dtheta/dts</span>
+                    <span class="n">norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_norm</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span>
+                    <span class="n">resid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_residual</span><span class="p">(</span><span class="n">c0</span><span class="p">)</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="n">resid</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error</span> <span class="o">=</span> <span class="n">error</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;error = </span><span class="si">%e</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+                <span class="c1"># Instantiate rootfinding iterator</span>
+                <span class="c1"># ConstrainedNewton iterator</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rootfinding</span> <span class="o">==</span> <span class="s1">&#39;ConstrainedNewton&#39;</span><span class="p">:</span>
+                    <span class="n">iterator_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">J</span><span class="o">=</span><span class="n">J</span><span class="p">,</span>
+                                               <span class="n">constraint</span><span class="o">=</span><span class="n">constraint</span><span class="p">,</span>
+                                               <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm</span><span class="p">,</span>
+                                               <span class="n">mpfloat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">,</span>
+                                               <span class="n">matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="p">,</span>
+                                               <span class="n">Axb_solver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_Axb_solver</span><span class="p">)</span>
+                    <span class="n">newton_iterator</span> <span class="o">=</span> <span class="n">ConstrainedNewton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="o">**</span><span class="n">iterator_parameters</span><span class="p">)</span>
+                <span class="c1"># MDNewton iterator</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rootfinding</span> <span class="o">==</span> <span class="s1">&#39;MDNewton&#39;</span><span class="p">:</span>
+                    <span class="n">iterator_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">J</span><span class="o">=</span><span class="n">J</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">newton_iterator</span> <span class="o">=</span> <span class="n">MDNewton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="o">**</span><span class="n">iterator_parameters</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">msg</span><span class="o">=</span><span class="s1">&#39;Unrecognized rootfinding iterator name [</span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rootfinding</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> Iterator instantiation - success!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rootfinding</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+                <span class="n">x</span> <span class="o">=</span> <span class="n">c0</span>
+                <span class="n">old_error</span> <span class="o">=</span> <span class="mf">1e99</span>
+                <span class="k">if</span> <span class="n">c0</span><span class="p">:</span>
+                    <span class="c1"># log initial guess</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;initial guess coverage - success&#39;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="nb">str</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c0</span><span class="p">]))</span>
+
+                <span class="c1">#####    Sub LOOP for a c0    #####</span>
+
+                <span class="n">nt_counter</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c1"># newton loop counter, inner</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;entering Newton Iteration( </span><span class="si">%d</span><span class="s1"> )...&#39;</span><span class="p">,</span> <span class="n">icvg_counter</span><span class="p">)</span>
+                    <span class="c1"># log title</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">%-10s</span><span class="s1">   </span><span class="si">%5s</span><span class="s1">  </span><span class="si">%18s</span><span class="s1">  </span><span class="si">%18s</span><span class="s1">&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;residual&#39;</span><span class="p">,</span> <span class="s1">&#39;norm&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">fx</span> <span class="ow">in</span> <span class="n">newton_iterator</span><span class="p">:</span>  <span class="c1"># inner loop</span>
+                    <span class="n">nt_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">resid</span> <span class="o">=</span> <span class="n">f_resid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%-10s%10d%23.10e%23.10e</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;in_process&#39;</span><span class="p">,</span>
+                                           <span class="n">nt_counter</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">resid</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+
+                    <span class="c1"># Reach the max iteraction time or not.</span>
+                    <span class="n">reach_max_iter</span> <span class="o">=</span> <span class="n">nt_counter</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">max_rootfinding_iterations</span>
+
+                    <span class="c1"># Less than tolerance</span>
+                    <span class="k">if</span> <span class="p">((</span><span class="ow">not</span> <span class="n">reach_max_iter</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">error</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">tolerance</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">resid</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">tolerance</span><span class="p">:</span>
+                            <span class="c1"># Check whether there is minus value in x</span>
+                            <span class="k">for</span> <span class="n">cvg</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">cvg</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                                    <span class="n">lt_zero</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># less than 0</span>
+                                    <span class="k">break</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">lt_zero</span> <span class="o">=</span> <span class="kc">False</span>
+                            <span class="c1"># check END #</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">lt_zero</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%-10s%10d%23.10e%23.10e</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;success&#39;</span><span class="p">,</span>
+                                                       <span class="n">nt_counter</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">resid</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+                                <span class="c1"># log steady state coverages</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__log_sscvg</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">)</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span> <span class="o">=</span> <span class="n">x</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_error</span> <span class="o">=</span> <span class="n">error</span>
+                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;error = </span><span class="si">%e</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">resid</span><span class="p">))</span>
+
+                                <span class="c1"># Update flags.</span>
+                                <span class="n">cancel</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="k">break</span>
+                            <span class="k">else</span><span class="p">:</span>  <span class="c1"># bad root, iteration continue...</span>
+                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;bad root: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]))</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;root finding continue...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">error</span> <span class="o">=</span> <span class="n">f_resid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># use residual as error and continue</span>
+
+                    <span class="c1"># Reach the max iteration limit.</span>
+                    <span class="k">elif</span> <span class="n">reach_max_iter</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%-10s%10d%23.10e%23.10e</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;break&#39;</span><span class="p">,</span>
+                                               <span class="n">nt_counter</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">resid</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Max rootfinding iteration number reached!&#39;</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;root finding break for this initial guess...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="c1"># Jump out of loop for this c0</span>
+                        <span class="n">cancel</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">break</span>
+
+                    <span class="c1"># residual is almost stagnated</span>
+<span class="c1">#                     elif abs(error - old_error) &lt; self._stable_criterion:</span>
+<span class="c1">#                         if self._owner.log_allowed:</span>
+<span class="c1">#                             self.__logger.info(&#39;%-10s%10d%23.10e%23.10e&#39;, &#39;stable&#39;,</span>
+<span class="c1">#                                                nt_counter, float(resid), float(error))</span>
+<span class="c1">#                             self.__logger.warning(&#39;stable root: %s&#39;, str(map(float, x)))</span>
+<span class="c1">#                             self.__logger.debug(&#39; difference: %-24.16e&#39;, abs(error - old_error))</span>
+<span class="c1">#                         # Jump out of loop for this c0.</span>
+<span class="c1">#                         cancel = False</span>
+<span class="c1">#                         break</span>
+
+                    <span class="n">old_error</span> <span class="o">=</span> <span class="n">error</span>  <span class="c1"># set old error to be compared in next loop</span>
+                    <span class="c1">#self._coverage = x</span>
+                    <span class="c1">#self._error = error</span>
+
+                    <span class="c1"># archive data every 100 steps</span>
+<span class="c1">#                    if nt_counter % 100 == 0:</span>
+<span class="c1">#                        self.archive_data(&#39;iter_coverage&#39;, x)</span>
+<span class="c1">#                        self.archive_data(&#39;iter_error&#39;, error)</span>
+                <span class="c1">#####    Sub loop for a c0 END    #####</span>
+
+                <span class="c1"># Change the initial guess(c0).</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cancel</span><span class="p">:</span>
+                    <span class="c1"># get a new initial guess coverage</span>
+                    <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modify_init_guess</span><span class="p">()</span>
+                    <span class="n">icvg_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># }}}</span>
+            <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;ZeroDivisionError is catched !&quot;</span><span class="p">)</span>
+                <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modify_init_guess</span><span class="p">()</span>
+                <span class="n">icvg_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1">##############    main loop end   #################</span>
+
+        <span class="k">if</span> <span class="n">converged</span><span class="p">:</span>
+            <span class="c1"># Archive converged root and error.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data</span><span class="p">(</span><span class="s1">&#39;steady_state_coverages&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data</span><span class="p">(</span><span class="s1">&#39;steady_state_error&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_good_guess</span> <span class="o">=</span> <span class="n">c0</span>
+
+            <span class="c1"># Archive initial guess.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data</span><span class="p">(</span><span class="s1">&#39;initial_guess&#39;</span><span class="p">,</span> <span class="n">c0</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span></div>
+    <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__log_sscvg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">,</span> <span class="n">ads_names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to log steady state coverage of every species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="si">{:&lt;10s}{:&lt;25s}{:&lt;30s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
+                                                       <span class="s2">&quot;intermediate name&quot;</span><span class="p">,</span>
+                                                       <span class="s2">&quot;steady state coverage&quot;</span><span class="p">)</span>
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;Steady State Coverages:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">head_str</span>
+        <span class="n">line_str</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="n">all_data</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">head_str</span> <span class="o">+</span> <span class="n">line_str</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">ads_name</span><span class="p">,</span> <span class="n">cvg</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ads_names</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">)):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{:&lt;10s}{:&lt;25s}{:&lt;30.16e}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">ads_name</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">cvg</span><span class="p">))</span>
+            <span class="n">all_data</span> <span class="o">+=</span> <span class="n">data</span>
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">line_str</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_data</span>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__log_single_XTRC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XTRCs</span><span class="p">,</span> <span class="n">gas_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to log XTRC for a gas species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="si">{:&lt;10s}{:&lt;25s}{:&lt;30s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;intermediate&quot;</span><span class="p">,</span> <span class="s2">&quot;XTRC&quot;</span><span class="p">)</span>
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;Degree of Rate Control for </span><span class="si">{}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gas_name</span><span class="p">)</span> <span class="o">+</span> <span class="n">head_str</span>
+        <span class="n">line_str</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">60</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="n">all_data</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">head_str</span> <span class="o">+</span> <span class="n">line_str</span>
+        <span class="n">intermediates</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span> <span class="o">+</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">transition_state_names</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">intermediate</span><span class="p">,</span> <span class="n">XTRC</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">intermediates</span><span class="p">,</span> <span class="n">XTRCs</span><span class="p">)):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{:&lt;10s}{:&lt;25s}{:&lt;30.16e}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">intermediate</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">XTRC</span><span class="p">))</span>
+            <span class="n">all_data</span> <span class="o">+=</span> <span class="n">data</span>
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">line_str</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_data</span>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__log_XTRC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XTRC_matrix</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to log XTRC for all gas species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">gas_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">gas_names</span>
+        <span class="n">intermediate_names</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span> <span class="o">+</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">transition_state_names</span><span class="p">)</span>
+
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="si">{:&lt;15s}{:&lt;30s}{:&lt;30s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span> <span class="s2">&quot;intermediate&quot;</span><span class="p">,</span> <span class="s2">&quot;XTRC&quot;</span><span class="p">)</span>
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;Degree of Thermodynamic Rate Control:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">head_str</span>
+        <span class="n">line_str</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">70</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="n">all_data</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">head_str</span> <span class="o">+</span> <span class="n">line_str</span>
+
+        <span class="k">for</span> <span class="n">gas_name</span><span class="p">,</span> <span class="n">XTRC_vect</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gas_names</span><span class="p">,</span> <span class="n">XTRC_matrix</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">intermediate</span><span class="p">,</span> <span class="n">XTRC</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">intermediate_names</span><span class="p">,</span> <span class="n">XTRC_vect</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:&lt;15s}{:&lt;30s}{:&lt;30.16e}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gas_name</span><span class="p">,</span> <span class="n">intermediate</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">XTRC</span><span class="p">))</span>
+                <span class="n">all_data</span> <span class="o">+=</span> <span class="n">data</span>
+
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">line_str</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_data</span>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.get_single_XRC"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_single_XRC">[docs]</a>    <span class="k">def</span> <span class="nf">get_single_XRC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gas_name</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get XRC for one gas species.</span>
+
+<span class="sd">        :param gas_name: The gas name whose XTRC would be calculated</span>
+<span class="sd">        :type gas_name: str</span>
+
+<span class="sd">        :param epsilon: The perturbation size for numerical jacobian matrix</span>
+<span class="sd">        :type epsilon: float</span>
+
+<span class="sd">        :param relative_energies: Relative energies for calculation, if not provided, use model&#39;s relative energies, default is None</span>
+<span class="sd">        :type relative_energies: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Get correct relative energies.</span>
+        <span class="k">if</span> <span class="n">relative_energies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">relative_energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">relative_energies</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating Degree of Rate Control(XRC)...&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">55</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get original TOF for the gas speices.</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_coverage&quot;</span><span class="p">):</span>
+            <span class="n">init_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Converged coverages are needed to calculate XRC, &quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;so try to get steady state coverages first.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tof</span><span class="p">(</span><span class="n">cvgs</span><span class="o">=</span><span class="n">init_guess</span><span class="p">,</span>
+                         <span class="n">gas_name</span><span class="o">=</span><span class="n">gas_name</span><span class="p">,</span>
+                         <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+
+        <span class="c1"># Original rate constants.</span>
+        <span class="n">kfs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rate_constants</span><span class="p">(</span><span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+
+        <span class="c1"># Get perturbation size.</span>
+        <span class="k">if</span> <span class="n">epsilon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mpf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">perturbation_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;epsilon = </span><span class="si">{:.2e}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)))</span>
+
+        <span class="c1"># Loop over all elementary reactions.</span>
+        <span class="n">rxn_expressions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span>
+        <span class="n">n_rxns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rxn_expressions</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">get_XRCi</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Nested function to calculate XRC for a single elementary reaction.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Add epsilon to relative energies.</span>
+            <span class="n">relative_energies_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">relative_energies</span><span class="p">)</span>
+            <span class="n">relative_energies_copy</span><span class="p">[</span><span class="s2">&quot;Gaf&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">epsilon</span>
+            <span class="n">relative_energies_copy</span><span class="p">[</span><span class="s2">&quot;Gar&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">epsilon</span>
+
+            <span class="c1"># Rate constants change.</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">kfs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">ks_prime</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rate_constants</span><span class="p">(</span><span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies_copy</span><span class="p">)</span>
+            <span class="n">k_prime</span> <span class="o">=</span> <span class="n">ks_prime</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">dk</span> <span class="o">=</span> <span class="n">k_prime</span> <span class="o">-</span> <span class="n">k</span>
+
+            <span class="c1"># Get steady state coverages.</span>
+            <span class="n">steady_cvgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_steady_state_cvgs</span><span class="p">(</span><span class="n">c0</span><span class="o">=</span><span class="n">init_guess</span><span class="p">,</span>
+                                                     <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies_copy</span><span class="p">)</span>
+            <span class="n">r_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tof</span><span class="p">(</span><span class="n">cvgs</span><span class="o">=</span><span class="n">steady_cvgs</span><span class="p">,</span>
+                                   <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies_copy</span><span class="p">,</span>
+                                   <span class="n">gas_name</span><span class="o">=</span><span class="n">gas_name</span><span class="p">)</span>
+            <span class="n">dr</span> <span class="o">=</span> <span class="n">r_prime</span> <span class="o">-</span> <span class="n">r</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">XRCi</span> <span class="o">=</span> <span class="n">k</span><span class="o">/</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">dr</span><span class="o">/</span><span class="n">dk</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ZeroDivisionError exception detected when&quot;</span> <span class="o">+</span>
+                                    <span class="s2">&quot;calculating XRC, the XRC is set to inf&quot;</span><span class="p">)</span>
+                <span class="n">XRCi</span> <span class="o">=</span> <span class="s1">&#39;inf&#39;</span>
+
+            <span class="k">return</span> <span class="n">XRCi</span>
+
+        <span class="n">XRCs</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="n">n_rxns</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_rxns</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Calculating XRC for </span><span class="si">{}</span><span class="s2"> ...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rxn_expressions</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+            <span class="c1"># Get XRC for that elementary reaction.</span>
+            <span class="n">XRC</span> <span class="o">=</span> <span class="n">get_XRCi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">XRCs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">XRC</span>
+
+            <span class="c1"># Ouput log info.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;XRC(</span><span class="si">{}</span><span class="s2">) = </span><span class="si">{:.2e}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rxn_expressions</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">XRC</span><span class="p">)))</span>
+
+        <span class="c1"># Ouput log info.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_single_XRC</span><span class="p">(</span><span class="n">XRCs</span><span class="o">=</span><span class="n">XRCs</span><span class="p">,</span> <span class="n">gas_name</span><span class="o">=</span><span class="n">gas_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">XRCs</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__log_single_XRC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">XRCs</span><span class="p">,</span> <span class="n">gas_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to log XRC for a gas species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> </span><span class="si">{:&lt;10s}{:&lt;70s}{:&lt;30s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;elementary reaction&quot;</span><span class="p">,</span> <span class="s2">&quot;XRC&quot;</span><span class="p">)</span>
+        <span class="n">head_str</span> <span class="o">=</span> <span class="s2">&quot;Degree of Rate Control for </span><span class="si">{}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gas_name</span><span class="p">)</span> <span class="o">+</span> <span class="n">head_str</span>
+        <span class="n">line_str</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="n">all_data</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">head_str</span> <span class="o">+</span> <span class="n">line_str</span>
+        <span class="n">rxn_expressions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">rxn_expression</span><span class="p">,</span> <span class="n">XRC</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">rxn_expressions</span><span class="p">,</span> <span class="n">XRCs</span><span class="p">)):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{:&lt;10s}{:&lt;70s}{:&lt;30.16e}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">rxn_expression</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">XRC</span><span class="p">))</span>
+            <span class="n">all_data</span> <span class="o">+=</span> <span class="n">data</span>
+        <span class="n">all_data</span> <span class="o">+=</span> <span class="n">line_str</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_data</span>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.modify_init_guess"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.modify_init_guess">[docs]</a>    <span class="k">def</span> <span class="nf">modify_init_guess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Use ODE integration to get new initial coverages guess.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Use ODE integration to get new initial coverages...&quot;</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">time_span</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+        <span class="n">new_cvgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve_ode</span><span class="p">(</span><span class="n">time_end</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span> <span class="n">time_span</span><span class="o">=</span><span class="n">time_span</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;modify initial coverage - success&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_cvgs</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">new_cvgs</span></div>
+
+    <span class="c1">####################################</span>
+    <span class="c1">## solve model by ODE integration ##</span>
+    <span class="c1">####################################</span>
+
+<div class="viewcode-block" id="SteadyStateSolver.solve_ode"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.solve_ode">[docs]</a>    <span class="k">def</span> <span class="nf">solve_ode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s1">&#39;lsoda&#39;</span><span class="p">,</span> <span class="n">time_start</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">time_end</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+                  <span class="n">time_span</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">initial_cvgs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">traj_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Solve the steady state equations using ODE integration.</span>
+
+<span class="sd">        :param algo: algorithm for ODE solving, optional,</span>
+<span class="sd">             possible values: &#39;vode&#39; | &#39;zvode&#39; | &#39;lsoda&#39; | &#39;dopri5&#39; | &#39;dop853&#39;</span>
+<span class="sd">        :type algo: str</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">             for more details of integration algorithm, see:</span>
+<span class="sd">             https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html</span>
+
+<span class="sd">        :param time_span: time span for each step, default to be 0.1</span>
+<span class="sd">        :type time_span: float</span>
+
+<span class="sd">        :param time_start: time when begin integration</span>
+<span class="sd">        :type time_start: float</span>
+
+<span class="sd">        :param time_end: time when stop integration</span>
+<span class="sd">        :type time_end: float</span>
+
+<span class="sd">        :param initial_cvgs: initial coverages at time_start</span>
+<span class="sd">        :type initial_cvgs: tuple of float</span>
+
+<span class="sd">        :param relative_energies: Relative energies for calculation, if not provided, use model&#39;s relative energies, default is None</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            keys &quot;:obj:`Gaf` and G:obj:`Gar` must be in relative energies dict</span>
+
+<span class="sd">        :param traj_output: output ODE integration trajectory or not, default value is False.</span>
+<span class="sd">        :type traj_output: bool</span>
+
+<span class="sd">        :return: the integrated time</span>
+<span class="sd">        :rtype: float</span>
+
+<span class="sd">        :return: integrated function values</span>
+<span class="sd">        :rtype: list of float</span>
+
+<span class="sd">        Examples::</span>
+<span class="sd">            &gt;&gt;&gt; m.solver.solve_ode(initial_cvgs=(0.0, 0.0))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># set timr variables</span>
+        <span class="n">t_start</span> <span class="o">=</span> <span class="n">time_start</span>
+        <span class="n">t_end</span> <span class="o">=</span> <span class="n">time_end</span>
+        <span class="n">t_step</span> <span class="o">=</span> <span class="n">time_span</span>
+
+        <span class="n">adsorbate_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span>
+        <span class="n">nads</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">adsorbate_names</span><span class="p">)</span>
+
+        <span class="c1"># set initial points</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">initial_cvgs</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">initial_cvgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boltzmann_coverages</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="n">initial_cvgs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="n">nads</span>
+
+        <span class="c1"># differential equation, solve over t for initial coverages cvgs_tuple</span>
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steady_state_function</span><span class="p">(</span><span class="n">cvgs_tuple</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">))</span>
+
+        <span class="c1"># ode solver object</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">ode</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">set_integrator</span><span class="p">(</span><span class="n">algo</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bdf&#39;</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">set_initial_value</span><span class="p">(</span><span class="n">initial_cvgs</span><span class="p">,</span> <span class="n">t_start</span><span class="p">)</span>
+
+        <span class="n">ts</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="c1"># integration loop</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;entering </span><span class="si">{}</span><span class="s1"> ODE integration loop...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">algo</span><span class="p">))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;start = </span><span class="si">{:.2f}</span><span class="s2">  end = </span><span class="si">{:.2f}</span><span class="s2">  step = </span><span class="si">{:f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">t_step</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s%20s</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">%20s</span><span class="s1">&#39;</span><span class="o">*</span><span class="n">nads</span><span class="p">,</span> <span class="s1">&#39;process&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;time(s)&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">adsorbate_names</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="n">nads</span> <span class="o">+</span> <span class="mi">30</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Write file header.</span>
+            <span class="k">if</span> <span class="n">traj_output</span><span class="p">:</span>
+                <span class="n">flush_counter</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;auto_ode_coverages.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">time_str</span> <span class="o">=</span> <span class="s2">&quot;times = []</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="n">coverages_str</span> <span class="o">=</span> <span class="s2">&quot;coverages = []</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file_header</span> <span class="o">+</span> <span class="n">time_str</span> <span class="o">+</span> <span class="n">coverages_str</span><span class="p">)</span>
+
+            <span class="n">nstep</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">while</span> <span class="n">r</span><span class="o">.</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">t_end</span><span class="p">:</span>
+                <span class="n">nstep</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">output_allowed</span> <span class="o">=</span> <span class="p">(</span><span class="n">nstep</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">ode_output_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+                <span class="c1"># Integrate.</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">t</span> <span class="o">+</span> <span class="n">t_step</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">traj_output</span> <span class="ow">and</span> <span class="n">output_allowed</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+                <span class="c1"># Info output.</span>
+                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span> <span class="ow">and</span>
+                        <span class="n">nstep</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">ode_output_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:10.2f}</span><span class="s2">%</span><span class="si">{:20f}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{:20.8e}</span><span class="s2">&quot;</span><span class="o">*</span><span class="n">nads</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">t</span><span class="o">/</span><span class="n">t_end</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">r</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+                <span class="c1"># Flush time coverages to file.</span>
+                <span class="k">if</span> <span class="n">traj_output</span> <span class="ow">and</span> <span class="n">output_allowed</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">ts</span> <span class="ow">and</span> <span class="n">ys</span><span class="p">:</span>
+                        <span class="n">last_time</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">last_coverages</span> <span class="o">=</span> <span class="n">ys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">ts</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ode_flush</span><span class="p">(</span><span class="n">flush_counter</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+                    <span class="n">flush_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%10s</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;finish&#39;</span><span class="p">)</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">last_time</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">t</span>
+            <span class="n">last_coverages</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+            <span class="c1"># Flush all data left.</span>
+            <span class="k">if</span> <span class="n">traj_output</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__ode_flush</span><span class="p">(</span><span class="n">flush_counter</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;ODE integration trajectory is written&#39;</span> <span class="o">+</span>
+                                   <span class="s1">&#39; to auto_ode_coverages.py.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">last_time</span><span class="p">,</span> <span class="n">last_coverages</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__ode_flush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flush_counter</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">coverages</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Private helper function to flush ode intergration data to file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Get times extension strings.</span>
+        <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;times_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flush_counter</span><span class="p">)</span>
+        <span class="n">list_str</span> <span class="o">=</span> <span class="n">get_list_string</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+        <span class="n">extend_str</span> <span class="o">=</span> <span class="s2">&quot;times.extend(</span><span class="si">{}</span><span class="s2">)</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        <span class="n">times_str</span> <span class="o">=</span> <span class="n">list_str</span> <span class="o">+</span> <span class="n">extend_str</span>
+
+        <span class="c1"># Get coverages extesnion strings.</span>
+        <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;coverages_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flush_counter</span><span class="p">)</span>
+        <span class="n">list_str</span> <span class="o">=</span> <span class="n">get_list_string</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">coverages</span><span class="p">)</span>
+        <span class="n">extend_str</span> <span class="o">=</span> <span class="s2">&quot;coverages.extend(</span><span class="si">{}</span><span class="s2">)</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+        <span class="n">coverages_str</span> <span class="o">=</span> <span class="n">list_str</span> <span class="o">+</span> <span class="n">extend_str</span>
+
+        <span class="c1"># Get all content to be flushed.</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"># -------------------- flush </span><span class="si">{}</span><span class="s2"> &quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;---------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flush_counter</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">comment</span> <span class="o">+</span> <span class="n">times_str</span> <span class="o">+</span> <span class="n">coverages_str</span>
+
+        <span class="c1"># Flush to file.</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;auto_ode_coverages.py&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+        <span class="c1"># Free buffer.</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">coverages</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="n">times</span><span class="p">,</span> <span class="n">coverages</span>
+        <span class="c1"># }}}</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Query function for converged error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">coverages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Query function for converaged coverages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">good_guess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Query function for good initial coverages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_good_guess</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'scaks',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

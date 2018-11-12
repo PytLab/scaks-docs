@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>models.MicroKineticModel &mdash; catynetics catynetics documentation</title>
+  <title>models.MicroKineticModel &mdash; scaks scaks documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -181,97 +181,97 @@
   <div class="section" id="models-microkineticmodel">
 <h1>models.MicroKineticModel<a class="headerlink" href="#models-microkineticmodel" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel">
-<em class="property">class </em><code class="descclassname">catynetics.models.micro_kinetic_model.</code><code class="descname">MicroKineticModel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/micro_kinetic_model.html#MicroKineticModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel" title="catynetics.models.kinetic_model.KineticModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">catynetics.models.kinetic_model.KineticModel</span></code></a></p>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel">
+<em class="property">class </em><code class="descclassname">scaks.models.micro_kinetic_model.</code><code class="descname">MicroKineticModel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/models/micro_kinetic_model.html#MicroKineticModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="models.kinetic_model.html#scaks.models.kinetic_model.KineticModel" title="scaks.models.kinetic_model.KineticModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">scaks.models.kinetic_model.KineticModel</span></code></a></p>
 <p>Class for micro-kinetic model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>setup_file</strong> (<em>int</em>) -- kinetic model set up file</li>
-<li><strong>setup_dict</strong> (<em>dict</em>) -- A dictionary contains essential setup parameters for kinetic model.</li>
-<li><strong>logger_level</strong> (<em>int</em>) -- logging level</li>
-<li><strong>file_handler_level</strong> (<em>int</em>) -- logging level for file handler</li>
-<li><strong>console_handler_level</strong> (<em>int</em>) -- logging level for console handler</li>
+<li><strong>setup_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- kinetic model set up file</li>
+<li><strong>setup_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- A dictionary contains essential setup parameters for kinetic model.</li>
+<li><strong>logger_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level</li>
+<li><strong>file_handler_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level for file handler</li>
+<li><strong>console_handler_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level for console handler</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </td>
 </tr>
 </tbody>
 </table>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">catynetics.models.kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scaks.models.kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">MicroKineticModel</span><span class="p">(</span><span class="n">setup_file</span><span class="o">=</span><span class="s2">&quot;setup.mkm&quot;</span><span class="p">,</span> <span class="n">logger_level</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="docutils">
 <dt>Attributes:</dt>
-<dd><p class="first">decimal_precision (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Data precision, default value is 100</p>
-<p>perturbation_size (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Perturbation size for numerical jacobian matrix,
+<dd><p class="first">decimal_precision (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Data precision, default value is 100</p>
+<p>perturbation_size (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Perturbation size for numerical jacobian matrix,
 default value is 0.01</p>
-<p>perturbation_direction (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Direction of perturbation, <code class="xref py py-obj docutils literal notranslate"><span class="pre">left</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">right</span></code>,
+<p>perturbation_direction (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Direction of perturbation, <code class="xref py py-obj docutils literal notranslate"><span class="pre">left</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">right</span></code>,
 default is <code class="xref py py-obj docutils literal notranslate"><span class="pre">'right'</span></code></p>
-<p>archived_variables (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Archived variables. Possible values:
+<p>archived_variables (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Archived variables. Possible values:
 'initial_guess', 'steady_state_coverages', 'steady_state_error', 'rates',
 'net_rates', 'reversibilities', 'tofs'</p>
-<p>numerical_representation (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Numerical representation method,
+<p>numerical_representation (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Numerical representation method,
 value could be 'mpmath' or 'sympy'.</p>
-<p>rootfinding(<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Rootfinding iterator type, default value is 'MDNewton',
+<p>rootfinding(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Rootfinding iterator type, default value is 'MDNewton',
 possible value can be 'MDNewton' or 'ConstrainedNewton'</p>
-<p>tolerance (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Iteration tolerance, default is 1e-8</p>
-<p>max_rootfinding_iterations (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Max iteraction steps, default is 100</p>
-<p>ode_buffer_size (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Ode integration buffer size, default is 500</p>
-<p>ode_output_interval (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Ode ouptut interval, default is 200</p>
-<p>data_file (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Filename for data store, default is 'data.pkl'</p>
-<p>log_allowed (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): If log output is allowed, default is <cite>True</cite></p>
-<p>TOFs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Turnover frequencies calculated.</p>
-<p>reversibilities (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Reversibilities calculated.</p>
-<p class="last">error (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Residual errors after iterations.</p>
+<p>tolerance (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Iteration tolerance, default is 1e-8</p>
+<p>max_rootfinding_iterations (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Max iteraction steps, default is 100</p>
+<p>ode_buffer_size (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Ode integration buffer size, default is 500</p>
+<p>ode_output_interval (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Ode ouptut interval, default is 200</p>
+<p>data_file (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Filename for data store, default is 'data.pkl'</p>
+<p>log_allowed (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): If log output is allowed, default is <cite>True</cite></p>
+<p>TOFs (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Turnover frequencies calculated.</p>
+<p>reversibilities (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Reversibilities calculated.</p>
+<p class="last">error (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Residual errors after iterations.</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.clear_handlers">
-<code class="descname">clear_handlers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.clear_handlers" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.clear_handlers">
+<code class="descname">clear_handlers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.clear_handlers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear all handlers in logger.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.generate_absolute_energies_file">
-<code class="descname">generate_absolute_energies_file</code><span class="sig-paren">(</span><em>filename='abs_energy.py'</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.generate_absolute_energies_file" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.generate_absolute_energies_file">
+<code class="descname">generate_absolute_energies_file</code><span class="sig-paren">(</span><em>filename='abs_energy.py'</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.generate_absolute_energies_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a energy input file containing absolute energies
 for all species(including sites).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.generate_relative_energies_file">
-<code class="descname">generate_relative_energies_file</code><span class="sig-paren">(</span><em>filename='rel_energy.py'</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.generate_relative_energies_file" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.generate_relative_energies_file">
+<code class="descname">generate_relative_energies_file</code><span class="sig-paren">(</span><em>filename='rel_energy.py'</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.generate_relative_energies_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a energy input file containing relative energies for 
 all elementary reactions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/models/micro_kinetic_model.html#MicroKineticModel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.run" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/models/micro_kinetic_model.html#MicroKineticModel.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run function to solve Micro-kinetic model using Steady State Approxmiation
 to get steady state coverages and turnover frequencies (TOF).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -279,8 +279,8 @@ to get steady state coverages and turnover frequencies (TOF).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>init_cvgs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) -- Initial guess for coverages</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative energies for all elementary reactions.</li>
+<li><strong>init_cvgs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) -- Initial guess for coverages</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative energies for all elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -296,15 +296,15 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fsolve</strong> (<em>bool</em>) -- use scipy.optimize.fsolve to get low-precision root or not</li>
-<li><strong>coarse_guess</strong> (<em>bool</em>) -- use fsolve to do initial coverages preprocessing or not</li>
-<li><strong>XRC</strong> (<em>bool</em>) -- calculate degree of rate control or nor</li>
-<li><strong>epsilon</strong> (<em>float</em>) -- the change of energy for XRC calculation, default is 10-5.</li>
-<li><strong>product_name</strong> (<em>str</em>) -- Production name of the model. e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">'CH3OH_g'</span></code></li>
+<li><strong>fsolve</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- use scipy.optimize.fsolve to get low-precision root or not</li>
+<li><strong>coarse_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- use fsolve to do initial coverages preprocessing or not</li>
+<li><strong>XRC</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- calculate degree of rate control or nor</li>
+<li><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- the change of energy for XRC calculation, default is 10-5.</li>
+<li><strong>product_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Production name of the model. e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">'CH3OH_g'</span></code></li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -312,8 +312,8 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.set_corrector">
-<code class="descname">set_corrector</code><span class="sig-paren">(</span><em>corrector</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.set_corrector" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.set_corrector">
+<code class="descname">set_corrector</code><span class="sig-paren">(</span><em>corrector</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.set_corrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set corrector for current model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -326,23 +326,23 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.set_logger_level">
-<code class="descname">set_logger_level</code><span class="sig-paren">(</span><em>handler_type</em>, <em>level</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.set_logger_level" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.set_logger_level">
+<code class="descname">set_logger_level</code><span class="sig-paren">(</span><em>handler_type</em>, <em>level</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.set_logger_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the logging level of logger handler.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>handler_type</strong> (<em>str</em>) -- logger handler name</li>
-<li><strong>level</strong> (<em>int</em>) -- logging level</li>
+<li><strong>handler_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- logger handler name</li>
+<li><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Old logging level of the handler</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
 </td>
 </tr>
 </tbody>
@@ -350,8 +350,8 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.set_plotter">
-<code class="descname">set_plotter</code><span class="sig-paren">(</span><em>plotter</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.set_plotter" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.set_plotter">
+<code class="descname">set_plotter</code><span class="sig-paren">(</span><em>plotter</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.set_plotter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set plotter for current model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -364,8 +364,8 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.models.micro_kinetic_model.MicroKineticModel.set_solver">
-<code class="descname">set_solver</code><span class="sig-paren">(</span><em>solver</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.models.micro_kinetic_model.MicroKineticModel.set_solver" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.set_solver">
+<code class="descname">set_solver</code><span class="sig-paren">(</span><em>solver</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.set_solver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set solver for current model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -423,7 +423,7 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

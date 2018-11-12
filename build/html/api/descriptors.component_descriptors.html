@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>descriptors.component_descriptors &mdash; catynetics catynetics documentation</title>
+  <title>descriptors.component_descriptors &mdash; scaks scaks documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -178,19 +178,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-catynetics.descriptors.component_descriptors">
-<span id="descriptors-component-descriptors"></span><h1>descriptors.component_descriptors<a class="headerlink" href="#module-catynetics.descriptors.component_descriptors" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-scaks.descriptors.component_descriptors">
+<span id="descriptors-component-descriptors"></span><h1>descriptors.component_descriptors<a class="headerlink" href="#module-scaks.descriptors.component_descriptors" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="catynetics.descriptors.component_descriptors.Component">
-<em class="property">class </em><code class="descclassname">catynetics.descriptors.component_descriptors.</code><code class="descname">Component</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>candidates</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/descriptors/component_descriptors.html#Component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.descriptors.component_descriptors.Component" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="descriptors.descriptors.html#catynetics.descriptors.descriptors.AttrDescriptor" title="catynetics.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">catynetics.descriptors.descriptors.AttrDescriptor</span></code></a></p>
+<dt id="scaks.descriptors.component_descriptors.Component">
+<em class="property">class </em><code class="descclassname">scaks.descriptors.component_descriptors.</code><code class="descname">Component</code><span class="sig-paren">(</span><em>name</em>, <em>default</em>, <em>candidates</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/descriptors/component_descriptors.html#Component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.descriptors.component_descriptors.Component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="descriptors.descriptors.html#scaks.descriptors.descriptors.AttrDescriptor" title="scaks.descriptors.descriptors.AttrDescriptor"><code class="xref py py-class docutils literal notranslate"><span class="pre">scaks.descriptors.descriptors.AttrDescriptor</span></code></a></p>
 <p>Descriptor for kinetic model core components.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>str</em>) -- The attribute name</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The attribute name</li>
 <li><strong>default</strong> (<em>any</em>) -- The default value when calling __get__() method</li>
 <li><strong>candidates</strong> (<em>list of any</em>) -- All possible values of the attribute.</li>
 </ul>
@@ -244,7 +244,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -1,10 +1,10 @@
-[Animation] Run a job in catynetics-Hub
----------------------------------------
+[Animation] Run a job in scaks-Hub
+----------------------------------
 
 Here we use GIF animiation to show operations for running a job in
-catynetics-Hub.
+scaks-Hub.
 
--  File system in catynetics-Hub
+-  File system in scaks-Hub
 
 |image0|
 
@@ -16,8 +16,8 @@ catynetics-Hub.
 
 |image2|
 
--  Edit an existing reaction, catynetics-Hub can parse it and do
-   conservation check
+-  Edit an existing reaction, scaks-Hub can parse it and do conservation
+   check
 
 |image3|
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>parsers.rxn_parser &mdash; catynetics catynetics documentation</title>
+  <title>parsers.rxn_parser &mdash; scaks scaks documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -181,27 +181,27 @@
   <div class="section" id="parsers-rxn-parser">
 <h1>parsers.rxn_parser<a class="headerlink" href="#parsers-rxn-parser" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation">
-<em class="property">class </em><code class="descclassname">catynetics.parsers.rxn_parser.</code><code class="descname">RxnEquation</code><span class="sig-paren">(</span><em>rxn_equation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dt id="scaks.parsers.rxn_parser.RxnEquation">
+<em class="property">class </em><code class="descclassname">scaks.parsers.rxn_parser.</code><code class="descname">RxnEquation</code><span class="sig-paren">(</span><em>rxn_equation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class to create reaction equation object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_equation</strong> (<em>str</em>) -- Elementary reaction expression that follows <em>catynetics</em> reaction
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_equation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Elementary reaction expression that follows <em>scaks</em> reaction
 expression conventions</td>
 </tr>
 </tbody>
 </table>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">catynetics.parser.rxn_equation</span> <span class="k">import</span> <span class="n">RxnEquation</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scaks.parser.rxn_equation</span> <span class="k">import</span> <span class="n">RxnEquation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rxn</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="s1">&#39;O2_g + 2*_s &lt;-&gt; O-O_2s -&gt; 2O_s&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.adsorption_gases">
-<code class="descname">adsorption_gases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.adsorption_gases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.adsorption_gases" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.adsorption_gases">
+<code class="descname">adsorption_gases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.adsorption_gases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.adsorption_gases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the gas formula objects in initial state.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -209,15 +209,15 @@ expression conventions</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The gas species in initial state.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#catynetics.parsers.rxn_parser.ChemFormula" title="catynetics.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="#scaks.parsers.rxn_parser.ChemFormula" title="scaks.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.check_conservation">
-<code class="descname">check_conservation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.check_conservation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.check_conservation" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.check_conservation">
+<code class="descname">check_conservation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.check_conservation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.check_conservation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to check reaction equation conservation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -225,15 +225,15 @@ expression conventions</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Conservative or not</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.desorption_gases">
-<code class="descname">desorption_gases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.desorption_gases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.desorption_gases" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.desorption_gases">
+<code class="descname">desorption_gases</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.desorption_gases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.desorption_gases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the gas formula objects in final state.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -241,15 +241,15 @@ expression conventions</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The gas species in final state</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="#catynetics.parsers.rxn_parser.ChemFormula" title="catynetics.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="#scaks.parsers.rxn_parser.ChemFormula" title="scaks.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.revert">
-<code class="descname">revert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.revert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.revert" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.revert">
+<code class="descname">revert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.revert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.revert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Revert the reaction to its reverse RxnEquation object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -264,14 +264,14 @@ expression conventions</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.rxn_equation">
-<code class="descname">rxn_equation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.rxn_equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.rxn_equation" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.rxn_equation">
+<code class="descname">rxn_equation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.rxn_equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.rxn_equation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for reaction equation string.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.texen">
-<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.texen" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.texen">
+<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.texen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get tex string of a reaction equation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -279,21 +279,21 @@ expression conventions</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The LaTEX string for current reaction equation</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.to_formula_list">
-<code class="descname">to_formula_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.to_formula_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.to_formula_list" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.to_formula_list">
+<code class="descname">to_formula_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.to_formula_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.to_formula_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get list of formulas for the reaction equation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.RxnEquation.tolist">
-<code class="descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#RxnEquation.tolist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.RxnEquation.tolist" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.RxnEquation.tolist">
+<code class="descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#RxnEquation.tolist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.RxnEquation.tolist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert rxn_equation string to rxn_list (chem_state objects).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -301,7 +301,7 @@ expression conventions</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of chemical states</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">rxn_equation.ChemState</span></code></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">rxn_equation.ChemState</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -310,19 +310,19 @@ expression conventions</td>
 </dd></dl>
 
 <dl class="class">
-<dt id="catynetics.parsers.rxn_parser.ChemState">
-<em class="property">class </em><code class="descclassname">catynetics.parsers.rxn_parser.</code><code class="descname">ChemState</code><span class="sig-paren">(</span><em>chem_state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dt id="scaks.parsers.rxn_parser.ChemState">
+<em class="property">class </em><code class="descclassname">scaks.parsers.rxn_parser.</code><code class="descname">ChemState</code><span class="sig-paren">(</span><em>chem_state</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class to generate chemical state object.</p>
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.chem_state">
-<code class="descname">chem_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.chem_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.chem_state" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.chem_state">
+<code class="descname">chem_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.chem_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.chem_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for state string.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.conserve">
-<code class="descname">conserve</code><span class="sig-paren">(</span><em>another</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.conserve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.conserve" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.conserve">
+<code class="descname">conserve</code><span class="sig-paren">(</span><em>another</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.conserve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.conserve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to check state conservation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -332,162 +332,162 @@ expression conventions</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Conservative or not</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.get_elements_dict">
-<code class="descname">get_elements_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.get_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.get_elements_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.get_elements_dict">
+<code class="descname">get_elements_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.get_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.get_elements_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get element dictionary of the state.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.get_sites_dict">
-<code class="descname">get_sites_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.get_sites_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.get_sites_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.get_sites_dict">
+<code class="descname">get_sites_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.get_sites_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.get_sites_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get sites dictionary of the state.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.get_species_site_dict">
-<code class="descname">get_species_site_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.get_species_site_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.get_species_site_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.get_species_site_dict">
+<code class="descname">get_species_site_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.get_species_site_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.get_species_site_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get species_site dictionary of the state.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.get_species_site_list">
-<code class="descname">get_species_site_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.get_species_site_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.get_species_site_list" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.get_species_site_list">
+<code class="descname">get_species_site_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.get_species_site_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.get_species_site_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get species_site list of the state.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.split">
-<code class="descname">split</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.split" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.split">
+<code class="descname">split</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to split state to formula string list.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.texen">
-<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.texen" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.texen">
+<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.texen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get tex string.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemState.tolist">
-<code class="descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemState.tolist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemState.tolist" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemState.tolist">
+<code class="descname">tolist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemState.tolist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemState.tolist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to split state string to chemical formula list.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula">
-<em class="property">class </em><code class="descclassname">catynetics.parsers.rxn_parser.</code><code class="descname">ChemFormula</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dt id="scaks.parsers.rxn_parser.ChemFormula">
+<em class="property">class </em><code class="descclassname">scaks.parsers.rxn_parser.</code><code class="descname">ChemFormula</code><span class="sig-paren">(</span><em>formula</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class to generate chemical formula object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formula</strong> (<em>str</em>) -- A formula for a specific species</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formula</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- A formula for a specific species</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.conserve">
-<code class="descname">conserve</code><span class="sig-paren">(</span><em>another</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.conserve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.conserve" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.conserve">
+<code class="descname">conserve</code><span class="sig-paren">(</span><em>another</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.conserve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.conserve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to check conservation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>another</strong> (<a class="reference internal" href="#catynetics.parsers.rxn_parser.ChemFormula" title="catynetics.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a> instance.) -- Another chemical formula</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>another</strong> (<a class="reference internal" href="#scaks.parsers.rxn_parser.ChemFormula" title="scaks.parsers.rxn_parser.ChemFormula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChemFormula</span></code></a> instance.) -- Another chemical formula</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Conservative or not</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.formula">
-<code class="descname">formula</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.formula"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.formula" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.formula">
+<code class="descname">formula</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.formula"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.formula" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for formula string.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.get_elements_dict">
-<code class="descname">get_elements_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.get_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.get_elements_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.get_elements_dict">
+<code class="descname">get_elements_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.get_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.get_elements_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get elements dictionary of formula.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.get_sites_dict">
-<code class="descname">get_sites_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.get_sites_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.get_sites_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.get_sites_dict">
+<code class="descname">get_sites_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.get_sites_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.get_sites_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get site dictionary of formula.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.get_species_elements_dict">
-<code class="descname">get_species_elements_dict</code><span class="sig-paren">(</span><em>species=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.get_species_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.get_species_elements_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.get_species_elements_dict">
+<code class="descname">get_species_elements_dict</code><span class="sig-paren">(</span><em>species=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.get_species_elements_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.get_species_elements_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split elements of species to element dict.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>species</strong> (<em>str</em>) -- The species name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>species</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The species name.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The element of the species.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.nsite">
-<code class="descname">nsite</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.nsite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.nsite" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.nsite">
+<code class="descname">nsite</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.nsite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.nsite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for sites number.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.site">
-<code class="descname">site</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.site" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.site">
+<code class="descname">site</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.site" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for sites type.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.species">
-<code class="descname">species</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.species" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.species">
+<code class="descname">species</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.species" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for species name.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.species_site">
-<code class="descname">species_site</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.species_site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.species_site" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.species_site">
+<code class="descname">species_site</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.species_site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.species_site" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for string of species on site.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.stoichiometry">
-<code class="descname">stoichiometry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.stoichiometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.stoichiometry" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.stoichiometry">
+<code class="descname">stoichiometry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.stoichiometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.stoichiometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query function for stoichiometry number.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.texen">
-<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.texen" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.texen">
+<code class="descname">texen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.texen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.texen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get tex string of species.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.parsers.rxn_parser.ChemFormula.type">
-<code class="descname">type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/parsers/rxn_parser.html#ChemFormula.type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.parsers.rxn_parser.ChemFormula.type" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.parsers.rxn_parser.ChemFormula.type">
+<code class="descname">type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/rxn_parser.html#ChemFormula.type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.rxn_parser.ChemFormula.type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get species type:  'gas' | 'liquid' | 'adsorbate'</p>
 </dd></dl>
 
@@ -537,7 +537,7 @@ expression conventions</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

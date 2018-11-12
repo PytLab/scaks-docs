@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Solve a micro-kinetic model &mdash; catynetics catynetics documentation</title>
+  <title>Solve a micro-kinetic model &mdash; scaks scaks documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Solve model in catynetics-Hub" href="hub_job.html" />
+    <link rel="next" title="Solve model in scaks-Hub" href="hub_job.html" />
     <link rel="prev" title="Tutorial" href="index.html" /> 
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -93,10 +93,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#use-script-to-run-a-job">Use script to run a job</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="hub_job.html">Solve model in catynetics-Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_job.html">Solve model in scaks-Hub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rxn_parsing.html">Parse reaction expressions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_model.html">Build a model in catynetics-Hub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_animation.html">[Animation] Run a job in catynetics-Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_model.html">Build a model in scaks-Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_animation.html">[Animation] Run a job in scaks-Hub</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
@@ -114,7 +114,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -166,13 +166,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p>Perhaps the easiest way to get started with your own Micro-kinetic modeling is to have a quick look at a few usage examples. We will take a look at few examples from the simplest CO Oxidation reaction on Pt100 surface using both catynetics API and web GUI.</p>
+  <p>Perhaps the easiest way to get started with your own Micro-kinetic modeling is to have a quick look at a few usage examples. We will take a look at few examples from the simplest CO Oxidation reaction on Pt100 surface using both scaks API and web GUI.</p>
 <div class="section" id="solve-a-micro-kinetic-model">
 <h1>Solve a micro-kinetic model<a class="headerlink" href="#solve-a-micro-kinetic-model" title="Permalink to this headline">¶</a></h1>
-<p><cite>catynetics.models</cite> module provide different model classes for different kinetic model construction(only micro-kinetic model in current version). Model can constructed from either a setup dict data structure for running in interactive shell or a setup input file for submitting a computing job.</p>
+<p><cite>scaks.models</cite> module provide different model classes for different kinetic model construction(only micro-kinetic model in current version). Model can constructed from either a setup dict data structure for running in interactive shell or a setup input file for submitting a computing job.</p>
 <div class="section" id="using-setup-file">
 <h2>Using setup file<a class="headerlink" href="#using-setup-file" title="Permalink to this headline">¶</a></h2>
-<p>By providing a set of input files including model definition, energy information, script using catynetics API can parse all those files and run the model automatically.</p>
+<p>By providing a set of input files including model definition, energy information, script using scaks API can parse all those files and run the model automatically.</p>
 <ul>
 <li><p class="first"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pt-100.mkm</span></code>: Input file for micro-kinetic model information:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rxn_expressions</span> <span class="o">=</span> <span class="p">[</span>
@@ -226,8 +226,8 @@
 </div>
 </li>
 </ul>
-<p>With these input files prepared, we can use catynetics's API to construct a micro-kinetic model:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">catynetics.models.micro_kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
+<p>With these input files prepared, we can use scaks's API to construct a micro-kinetic model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scaks.models.micro_kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">MicroKineticModel</span><span class="p">(</span><span class="n">setup_file</span><span class="o">=</span><span class="s1">&#39;pt-100.mkm&#39;</span><span class="p">)</span>
 </pre></div>
@@ -246,7 +246,7 @@
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">rxn_expressions</span></code>: All elementary reaction expressions</li>
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">species_definitions</span></code>: Species information in reaction path such as gas name and partial pressure, adsorption site types and total coverages.</li>
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">temperature</span></code>: Reaction temperation in K</li>
-<li><code class="xref py py-obj docutils literal notranslate"><span class="pre">parser</span></code>: The parser name for data and input file parsing</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/parser.html#module-parser" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parser</span></code></a>: The parser name for data and input file parsing</li>
 </ul>
 <p>The model definition dict for CO oxidation on Pt(100) surface could be written as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -269,7 +269,7 @@
 </pre></div>
 </div>
 <p>Construct corresponding micro-kinetic model:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">catynetics.models.micro_kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scaks.models.micro_kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">MicroKineticModel</span><span class="p">(</span><span class="n">setup_dict</span><span class="o">=</span><span class="n">model_dict</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -278,7 +278,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">generate_absolute_energies_file</span><span class="p">(</span><span class="s1">&#39;./abs_energy.py&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then catynetics will parse all model information in reaction expressions to create a <code class="xref py py-obj docutils literal notranslate"><span class="pre">abs_energy.py</span></code> with below content in current directory:</p>
+<p>Then scaks will parse all model information in reaction expressions to create a <code class="xref py py-obj docutils literal notranslate"><span class="pre">abs_energy.py</span></code> with below content in current directory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Absolute energies for all species.</span>
 <span class="n">absolute_energies</span> <span class="o">=</span> <span class="p">{</span>
 
@@ -305,7 +305,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">generate_relative_energies_file</span><span class="p">(</span><span class="s1">&#39;./rel_energy.py&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then catynetics will parse all model information in reaction expressions to create a <code class="xref py py-obj docutils literal notranslate"><span class="pre">rel_energy.py</span></code> with below content in current directory:</p>
+<p>Then scaks will parse all model information in reaction expressions to create a <code class="xref py py-obj docutils literal notranslate"><span class="pre">rel_energy.py</span></code> with below content in current directory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Relative Energies for all elementary reactions.</span>
 <span class="n">Ga</span><span class="p">,</span> <span class="n">dG</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 
@@ -323,7 +323,7 @@
 </pre></div>
 </div>
 <p>After inputting energy data in the template file, you can instantialize solver explicitly and put it in micro-kinetic model:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">catynetics.solvers.steady_state_solver</span> <span class="k">import</span> <span class="n">SteadyStateSolver</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scaks.solvers.steady_state_solver</span> <span class="k">import</span> <span class="n">SteadyStateSolver</span>
 
 <span class="n">solver</span> <span class="o">=</span> <span class="n">SteadyStateSolver</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">set_solver</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
@@ -338,15 +338,15 @@
 </div>
 <div class="section" id="use-script-to-run-a-job">
 <h2>Use script to run a job<a class="headerlink" href="#use-script-to-run-a-job" title="Permalink to this headline">¶</a></h2>
-<p>Besides instantiate model using catynetics API, we provide a simple <code class="xref py py-obj docutils literal notranslate"><span class="pre">run.py</span></code> script to parse those input files and solve the micro-kinetic model automatically, the details of the script:</p>
+<p>Besides instantiate model using scaks API, we provide a simple <code class="xref py py-obj docutils literal notranslate"><span class="pre">run.py</span></code> script to parse those input files and solve the micro-kinetic model automatically, the details of the script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">from</span> <span class="nn">catynetics.compatutil</span> <span class="k">import</span> <span class="n">subprocess</span>
-<span class="kn">from</span> <span class="nn">catynetics.mpicommons</span> <span class="k">import</span> <span class="n">mpi</span>
-<span class="kn">from</span> <span class="nn">catynetics.models.micro_kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
-<span class="kn">from</span> <span class="nn">catynetics.utilities.format_utilities</span> <span class="k">import</span> <span class="n">convert_time</span>
+<span class="kn">from</span> <span class="nn">scaks.compatutil</span> <span class="k">import</span> <span class="n">subprocess</span>
+<span class="kn">from</span> <span class="nn">scaks.mpicommons</span> <span class="k">import</span> <span class="n">mpi</span>
+<span class="kn">from</span> <span class="nn">scaks.models.micro_kinetic_model</span> <span class="k">import</span> <span class="n">MicroKineticModel</span>
+<span class="kn">from</span> <span class="nn">scaks.utilities.format_utilities</span> <span class="k">import</span> <span class="n">convert_time</span>
 
 <span class="c1"># Custom parameters.</span>
 <span class="n">OdeInterval</span> <span class="o">=</span> <span class="mf">0.001</span>          <span class="c1"># ODE integration time interval.</span>
@@ -420,7 +420,7 @@
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">data.pkl</span></code>: Serialized result data such as turnover frequencies (TOF), steady state coverages and so on. Variable to be dumped is controlled in setup file.</li>
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_ode_coverages.py</span></code>: A python module file containing ODE integration data</li>
 </ul>
-<p>With ODE plotting script in catynetics package, the ODE integration trajectory can be visualized:</p>
+<p>With ODE plotting script in scaks package, the ODE integration trajectory can be visualized:</p>
 <div class="figure align-center" style="width: 100%">
 <a class="reference internal image-reference" href="../_images/ode_integration.png"><img alt="ODE integration" src="../_images/ode_integration.png" style="width: 758.4px; height: 538.1999999999999px;" /></a>
 </div>
@@ -435,7 +435,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="hub_job.html" class="btn btn-neutral float-right" title="Solve model in catynetics-Hub" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="hub_job.html" class="btn btn-neutral float-right" title="Solve model in scaks-Hub" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -469,7 +469,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

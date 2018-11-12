@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scaks.models.micro_kinetic_model &mdash; scaks scaks documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> scaks
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">scaks</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../scaks.html">scaks</a> &raquo;</li>
+        
+      <li>scaks.models.micro_kinetic_model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scaks.models.micro_kinetic_model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module for micro-kinetic model class definition.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">.kinetic_model</span> <span class="k">import</span> <span class="n">KineticModel</span>
+<span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="n">ParameterError</span>
+<span class="kn">from</span> <span class="nn">..mpicommons</span> <span class="k">import</span> <span class="n">mpi</span>
+<span class="kn">from</span> <span class="nn">..descriptors.descriptors</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..utilities.profiling_utitlities</span> <span class="k">import</span> <span class="n">do_cprofile</span>
+<span class="kn">from</span> <span class="nn">..compatutil</span> <span class="k">import</span> <span class="n">pickle</span>
+
+
+<div class="viewcode-block" id="MicroKineticModel"><a class="viewcode-back" href="../../../api/models.micro_kinetic_model.html#scaks.models.micro_kinetic_model.MicroKineticModel">[docs]</a><span class="k">class</span> <span class="nc">MicroKineticModel</span><span class="p">(</span><span class="n">KineticModel</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Class for micro-kinetic model.</span>
+<span class="sd">    </span>
+<span class="sd">    :param setup_file: kinetic model set up file</span>
+<span class="sd">    :type setup_file: int</span>
+
+
+<span class="sd">    :param setup_dict: A dictionary contains essential setup parameters for kinetic model.</span>
+<span class="sd">    :type setup_dict: dict</span>
+
+<span class="sd">    :param logger_level: logging level</span>
+<span class="sd">    :type logger_level: int</span>
+
+<span class="sd">    :param file_handler_level: logging level for file handler</span>
+<span class="sd">    :type file_handler_level: int</span>
+
+<span class="sd">    :param console_handler_level: logging level for console handler</span>
+<span class="sd">    :type console_handler_level: int</span>
+
+<span class="sd">    :returns: :obj:`None`</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; from scaks.models.kinetic_model import MicroKineticModel</span>
+<span class="sd">        &gt;&gt;&gt; model = MicroKineticModel(setup_file=&quot;setup.mkm&quot;, logger_level=30)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        decimal_precision (:obj:`int`): Data precision, default value is 100</span>
+
+<span class="sd">        perturbation_size (:obj:`float`): Perturbation size for numerical jacobian matrix,</span>
+<span class="sd">        default value is 0.01</span>
+
+<span class="sd">        perturbation_direction (:obj:`str`): Direction of perturbation, :obj:`left` or :obj:`right`,</span>
+<span class="sd">        default is :obj:`&#39;right&#39;`</span>
+
+<span class="sd">        archived_variables (:obj:`str`): Archived variables. Possible values:</span>
+<span class="sd">        &#39;initial_guess&#39;, &#39;steady_state_coverages&#39;, &#39;steady_state_error&#39;, &#39;rates&#39;,</span>
+<span class="sd">        &#39;net_rates&#39;, &#39;reversibilities&#39;, &#39;tofs&#39;</span>
+
+<span class="sd">        numerical_representation (:obj:`str`): Numerical representation method,</span>
+<span class="sd">        value could be &#39;mpmath&#39; or &#39;sympy&#39;.</span>
+
+<span class="sd">        rootfinding(:obj:`str`): Rootfinding iterator type, default value is &#39;MDNewton&#39;,</span>
+<span class="sd">        possible value can be &#39;MDNewton&#39; or &#39;ConstrainedNewton&#39;</span>
+
+<span class="sd">        tolerance (:obj:`float`): Iteration tolerance, default is 1e-8</span>
+
+<span class="sd">        max_rootfinding_iterations (:obj:`int`): Max iteraction steps, default is 100</span>
+
+<span class="sd">        ode_buffer_size (:obj:`int`): Ode integration buffer size, default is 500</span>
+
+<span class="sd">        ode_output_interval (:obj:`int`): Ode ouptut interval, default is 200</span>
+
+<span class="sd">        data_file (:obj:`str`): Filename for data store, default is &#39;data.pkl&#39;</span>
+
+<span class="sd">        log_allowed (:obj:`bool`): If log output is allowed, default is `True`</span>
+
+<span class="sd">        TOFs (:obj:`list` of :obj:`float`): Turnover frequencies calculated.</span>
+
+<span class="sd">        reversibilities (:obj:`list` of :obj:`float`): Reversibilities calculated.</span>
+
+<span class="sd">        error (:obj:`list` of :obj:`float`): Residual errors after iterations.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># {{{</span>
+    <span class="n">decimal_precision</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;decimal_precision&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">perturbation_size</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;perturbation_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="n">perturbation_direction</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;perturbation_direction&quot;</span><span class="p">,</span>
+                                    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+                                    <span class="n">candidates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">])</span>
+
+    <span class="n">archived_variables</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="s2">&quot;archive_data&quot;</span><span class="p">,</span>
+                                  <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;steady_state_coverages&quot;</span><span class="p">],</span>
+                                  <span class="n">entry_type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">numerical_representation</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;numerical_representation&quot;</span><span class="p">,</span>
+                                      <span class="n">default</span><span class="o">=</span><span class="s2">&quot;mpmath&quot;</span><span class="p">,</span>
+                                      <span class="n">candidates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mpmath&quot;</span><span class="p">,</span> <span class="s2">&quot;sympy&quot;</span><span class="p">])</span>
+
+    <span class="n">rootfinding</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="s2">&quot;rootfinding&quot;</span><span class="p">,</span>
+                         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;MDNewton&quot;</span><span class="p">,</span>
+                         <span class="n">candidates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MDNewton&quot;</span><span class="p">,</span> <span class="s2">&quot;ConstrainedNewton&quot;</span><span class="p">])</span>
+
+    <span class="n">tolerance</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;tolerance&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
+
+    <span class="n">max_rootfinding_iterations</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;max_rootfinding_iterations&quot;</span><span class="p">,</span>
+                                            <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">ode_buffer_size</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;ode_buffer_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+
+    <span class="n">ode_output_interval</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;ode_output_interval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+    <span class="c1"># Reference energies used to calculate formation energy.</span>
+    <span class="n">ref_energies</span> <span class="o">=</span> <span class="n">RefEnergies</span><span class="p">(</span><span class="s2">&quot;ref_energies&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+    <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MicroKineticModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Create data directory if need.</span>
+        <span class="k">if</span> <span class="n">mpi</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;./data&quot;</span><span class="p">):</span>
+            <span class="n">mpi</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">mpi</span><span class="o">.</span><span class="n">is_master</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;./data&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Model attributes definitions.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ss_cvgs</span> <span class="o">=</span> <span class="kc">None</span>          <span class="c1"># steady-state coverages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tofs</span> <span class="o">=</span> <span class="kc">None</span>              <span class="c1"># turn-over frequencies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__reversibilities</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># reversibilities</span>
+
+    <span class="k">def</span> <span class="nf">_set_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MicroKineticModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_set_logger</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="c1"># if not master processor, no INFO to console.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mpi</span><span class="o">.</span><span class="n">is_master</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_logger_level</span><span class="p">(</span><span class="s2">&quot;StreamHandler&quot;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MicroKineticModel.run"><a class="viewcode-back" href="../../../api/models.micro_kinetic_model.html#scaks.models.micro_kinetic_model.MicroKineticModel.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run function to solve Micro-kinetic model using Steady State Approxmiation</span>
+<span class="sd">        to get steady state coverages and turnover frequencies (TOF).</span>
+
+<span class="sd">        :param init_cvgs: Initial guess for coverages</span>
+<span class="sd">        :type init_cvgs: :obj:`list` of :obj:`float`</span>
+
+<span class="sd">        :param relative_energies: Relative energies for all elementary reactions.</span>
+<span class="sd">        :type relative_energies: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            keys :obj:`Gaf` and :obj:`Gar` must be in relative energies dict.</span>
+<span class="sd">            e.g. :obj:`{&quot;Gaf&quot;: [...], &quot;Gar&quot;: [...], &quot;dG&quot;: [...]}`</span>
+
+<span class="sd">        :param fsolve: use scipy.optimize.fsolve to get low-precision root or not</span>
+<span class="sd">        :type fsolve: bool</span>
+
+<span class="sd">        :param coarse_guess: use fsolve to do initial coverages preprocessing or not</span>
+<span class="sd">        :type coarse_guess: bool</span>
+
+<span class="sd">        :param XRC: calculate degree of rate control or nor</span>
+<span class="sd">        :type XRC: bool</span>
+
+<span class="sd">        :param epsilon: the change of energy for XRC calculation, default is 10-5.</span>
+<span class="sd">        :type epsilon: float</span>
+
+<span class="sd">        :param product_name: Production name of the model. e.g. :obj:`&#39;CH3OH_g&#39;`</span>
+<span class="sd">        :type product_name: str</span>
+
+<span class="sd">        :returns: :obj:`None`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Setup default parameters.</span>
+        <span class="n">init_cvgs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;init_cvgs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">relative_energies</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;relative_energies&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">fsolve</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fsolve&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">coarse_guess</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;coarse_guess&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">XRC</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;XRC&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;epsilon&quot;</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;product_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Found redundant keyword argument: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;--- Solve Micro-kinetic model ---&#39;</span><span class="p">)</span>
+
+        <span class="n">solver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span>
+
+        <span class="c1"># set initial guess(initial coverage)</span>
+        <span class="c1"># if there is converged coverage in current path,</span>
+        <span class="c1"># use it as initial guess</span>
+        <span class="k">if</span> <span class="n">init_cvgs</span><span class="p">:</span>
+            <span class="c1"># Check init_cvgs type.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init_cvgs</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;init_cvgs must be a list or tuple, but </span><span class="si">{}</span><span class="s2"> received.&quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">init_cvgs</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="c1"># Check coverages length.</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_cvgs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;init_cvgs must have </span><span class="si">{}</span><span class="s2"> elements, but </span><span class="si">{}</span><span class="s2"> is supplied&quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">init_cvgs</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;use user-defined coverages as initial guess...&#39;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">init_guess</span> <span class="o">=</span> <span class="s1">&#39;steady_state_coverage&#39;</span>
+            <span class="k">if</span> <span class="n">init_guess</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;use coverages in </span><span class="si">{}</span><span class="s1"> as initial guess...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="n">init_cvgs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">init_guess</span><span class="p">]</span>
+                <span class="n">coarse_guess</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Do ODE integration to get initial guess...&#39;</span><span class="p">)</span>
+                <span class="n">ode_traj</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve_ode</span><span class="p">()</span>
+                <span class="n">init_cvgs</span> <span class="o">=</span> <span class="n">ode_traj</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Do ODE integration to get initial guess...&#39;</span><span class="p">)</span>
+            <span class="n">ode_traj</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve_ode</span><span class="p">()</span>
+            <span class="n">init_cvgs</span> <span class="o">=</span> <span class="n">ode_traj</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Solve steady state coverages.</span>
+        <span class="c1"># Use scipy.optimize.fsolve or not (fast but low-precision).</span>
+        <span class="k">if</span> <span class="n">fsolve</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;using fsolve to get steady state coverages...&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__ss_cvgs</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">fsolve_steady_state_cvgs</span><span class="p">(</span><span class="n">c0</span><span class="o">=</span><span class="n">init_cvgs</span><span class="p">,</span>
+                                                             <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">coarse_guess</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;getting coarse steady state coverages...&#39;</span><span class="p">)</span>
+                <span class="n">init_cvgs</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">coarse_steady_state_cvgs</span><span class="p">(</span><span class="n">c0</span><span class="o">=</span><span class="n">init_cvgs</span><span class="p">,</span>
+                                                            <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;getting precise steady state coverages...&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__ss_cvgs</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_steady_state_cvgs</span><span class="p">(</span><span class="n">c0</span><span class="o">=</span><span class="n">init_cvgs</span><span class="p">,</span>
+                                                          <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+
+        <span class="c1"># Output rate constants for all elementary reactions.</span>
+        <span class="n">solver</span><span class="o">.</span><span class="n">get_rate_constants</span><span class="p">(</span><span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Get steady state rates for all elementary reactions.</span>
+        <span class="n">rf</span><span class="p">,</span> <span class="n">rr</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_rates</span><span class="p">(</span><span class="n">cvgs_tuple</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ss_cvgs</span><span class="p">,</span>
+                                  <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">,</span>
+                                  <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Get TOFs for gases.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tofs</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_tof</span><span class="p">(</span><span class="n">cvgs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__ss_cvgs</span><span class="p">,</span>
+                                     <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span>
+
+        <span class="c1"># Get reversibilities.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__reversibilities</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_reversibilities</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span> <span class="n">rr</span><span class="p">)</span>
+
+        <span class="c1"># Get residual error.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__error</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">error</span>
+
+        <span class="c1"># Calculate XRC.</span>
+        <span class="k">if</span> <span class="n">XRC</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">product_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ParameterError</span><span class="p">(</span><span class="s2">&quot;production name must be provided to get XRC.&quot;</span><span class="p">)</span>
+
+            <span class="n">solver</span><span class="o">.</span><span class="n">get_single_XRC</span><span class="p">(</span><span class="n">product_name</span><span class="p">,</span>
+                                  <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
+                                  <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">model_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a report dict containing model information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;gas_names&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gas_names</span>
+        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;adsorbate_names&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adsorbate_names</span>
+        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;steady_state_coverages&#39;</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">cvg</span><span class="p">)</span> <span class="k">for</span> <span class="n">cvg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steady_state_coverages</span><span class="p">]</span>
+        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;TOFs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">tof</span><span class="p">)</span> <span class="k">for</span> <span class="n">tof</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOFs</span><span class="p">]</span>
+        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;reversibilities&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reversibilities</span>
+        <span class="n">info</span><span class="p">[</span><span class="s1">&#39;rxn_expressions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxn_expressions</span>
+
+        <span class="k">return</span> <span class="n">info</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Get the name of file where serialzed data stored.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">mpi</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;data.pkl&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;./data/data_</span><span class="si">{}</span><span class="s2">.pkl&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mpi</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">log_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flag for if log output is allowed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># All processors can output log information.</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">steady_state_coverages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ss_cvgs</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Unsolved model has no steady state coverages.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">TOFs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tofs</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Unsolved model has no turnover frequencies.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">reversibilities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__reversibilities</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Unsolved model has no reversibilities.&quot;</span><span class="p">)</span>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__error</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Unsolved model has no error.&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'scaks',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

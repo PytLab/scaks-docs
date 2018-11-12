@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>solvers.MeanFieldSolver &mdash; catynetics catynetics documentation</title>
+  <title>solvers.MeanFieldSolver &mdash; scaks scaks documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -181,21 +181,21 @@
   <div class="section" id="solvers-meanfieldsolver">
 <h1>solvers.MeanFieldSolver<a class="headerlink" href="#solvers-meanfieldsolver" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver">
-<em class="property">class </em><code class="descclassname">catynetics.solvers.steady_state_solver.</code><code class="descname">SteadyStateSolver</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="solvers.mean_field_solver.html#catynetics.solvers.mean_field_solver.MeanFieldSolver" title="catynetics.solvers.mean_field_solver.MeanFieldSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">catynetics.solvers.mean_field_solver.MeanFieldSolver</span></code></a></p>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver">
+<em class="property">class </em><code class="descclassname">scaks.solvers.steady_state_solver.</code><code class="descname">SteadyStateSolver</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="solvers.mean_field_solver.html#scaks.solvers.mean_field_solver.MeanFieldSolver" title="scaks.solvers.mean_field_solver.MeanFieldSolver"><code class="xref py py-class docutils literal notranslate"><span class="pre">scaks.solvers.mean_field_solver.MeanFieldSolver</span></code></a></p>
 <p>MicroKinetic model solver using steady state approximation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel" title="catynetics.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#scaks.models.kinetic_model.KineticModel" title="scaks.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian">
-<code class="descname">analytical_jacobian</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.analytical_jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian">
+<code class="descname">analytical_jacobian</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.analytical_jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get analytical Jacobian matrix of the nonlinear equation system.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -230,8 +230,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_by_sym">
-<code class="descname">analytical_jacobian_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.analytical_jacobian_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_by_sym">
+<code class="descname">analytical_jacobian_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.analytical_jacobian_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the jacobian matrix of the dtheta/dt nonlinear equations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -246,21 +246,21 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_sym">
-<code class="descname">analytical_jacobian_sym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.analytical_jacobian_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_sym">
+<code class="descname">analytical_jacobian_sym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.analytical_jacobian_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.analytical_jacobian_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get the jacobian matrix symbol expressions of the dtheta/dt nonlinear equations.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.archive_data">
-<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.archive_data" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.archive_data">
+<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.archive_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update data dict and dump it to data file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data_name</strong> (<em>str</em>) -- key in data dict</li>
+<li><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- key in data dict</li>
 <li><strong>data</strong> (<em>any</em>) -- value in data dict</li>
 </ul>
 </td>
@@ -270,14 +270,14 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.boltzmann_coverages">
-<code class="descname">boltzmann_coverages</code><span class="sig-paren">(</span><em>include_empty_site=True</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.boltzmann_coverages" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.boltzmann_coverages">
+<code class="descname">boltzmann_coverages</code><span class="sig-paren">(</span><em>include_empty_site=True</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.boltzmann_coverages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get boltzmann coverages according to the formation energy of each adsorbate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>include_empty_site</strong> (<em>bool</em>) -- If the empty sites are included in bolztmann 
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>include_empty_site</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- If the empty sites are included in bolztmann 
 sum, Default value is True.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Coverages in order of adsorbates names.</td>
@@ -289,8 +289,8 @@ sum, Default value is True.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.classified_numerical_jacobian">
-<code class="descname">classified_numerical_jacobian</code><span class="sig-paren">(</span><em>f</em>, <em>x</em>, <em>h=1e-10</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.classified_numerical_jacobian" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.classified_numerical_jacobian">
+<code class="descname">classified_numerical_jacobian</code><span class="sig-paren">(</span><em>f</em>, <em>x</em>, <em>h=1e-10</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.classified_numerical_jacobian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Jacobian matrix of a function at the point x0.
 Modified from numerial_jacobian() in 'functions.py'.</p>
 <p>Not a general-purpose method, just used for given model</p>
@@ -300,8 +300,8 @@ diverging residual.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.coarse_steady_state_cvgs">
-<code class="descname">coarse_steady_state_cvgs</code><span class="sig-paren">(</span><em>c0</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.coarse_steady_state_cvgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.coarse_steady_state_cvgs" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.coarse_steady_state_cvgs">
+<code class="descname">coarse_steady_state_cvgs</code><span class="sig-paren">(</span><em>c0</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.coarse_steady_state_cvgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.coarse_steady_state_cvgs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use scipy.optimize.fsolve to solve non-linear equations with fast speed and low-precison.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -309,7 +309,7 @@ diverging residual.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>c0</strong> (<em>list of float</em>) -- initial coverages</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -333,8 +333,8 @@ diverging residual.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.fsolve_steady_state_cvgs">
-<code class="descname">fsolve_steady_state_cvgs</code><span class="sig-paren">(</span><em>c0</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.fsolve_steady_state_cvgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.fsolve_steady_state_cvgs" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.fsolve_steady_state_cvgs">
+<code class="descname">fsolve_steady_state_cvgs</code><span class="sig-paren">(</span><em>c0</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.fsolve_steady_state_cvgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.fsolve_steady_state_cvgs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use scipy.optimize.fsolve to get steady state coverages.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -342,7 +342,7 @@ diverging residual.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>c0</strong> (<em>list of float</em>) -- initial coverages</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -355,8 +355,8 @@ diverging residual.</p>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_TST_barrier_from_CT">
-<em class="property">static </em><code class="descname">get_TST_barrier_from_CT</code><span class="sig-paren">(</span><em>kCT</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_TST_barrier_from_CT" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_TST_barrier_from_CT">
+<em class="property">static </em><code class="descname">get_TST_barrier_from_CT</code><span class="sig-paren">(</span><em>kCT</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_TST_barrier_from_CT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static method to get TST barrier from the rate constant calculated 
 by Collision Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -364,8 +364,8 @@ by Collision Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>kCT</strong> (<em>float</em>) -- Rate constant calculated by Collision Theory</li>
-<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
+<li><strong>kCT</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Rate constant calculated by Collision Theory</li>
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Temperature(K)</li>
 </ul>
 </td>
 </tr>
@@ -374,16 +374,16 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_expression">
-<code class="descname">get_adsorbate_dtheta_dt_expression</code><span class="sig-paren">(</span><em>adsorbate_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_adsorbate_dtheta_dt_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_expression" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_expression">
+<code class="descname">get_adsorbate_dtheta_dt_expression</code><span class="sig-paren">(</span><em>adsorbate_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_adsorbate_dtheta_dt_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get dtheta/dt expression over all elementary reactions wrt an adsorbate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>adsorbate_name</strong> (<em>str</em>) -- The name of the adsorbate whose dtheta/dt expression would be returned.</li>
-<li><strong>dtheta_dt_expression</strong> (<em>str</em>) -- dtheta/dt expression</li>
+<li><strong>adsorbate_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of the adsorbate whose dtheta/dt expression would be returned.</li>
+<li><strong>dtheta_dt_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- dtheta/dt expression</li>
 </ul>
 </td>
 </tr>
@@ -392,28 +392,28 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_sym">
-<code class="descname">get_adsorbate_dtheta_dt_sym</code><span class="sig-paren">(</span><em>adsorbate_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_adsorbate_dtheta_dt_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_sym">
+<code class="descname">get_adsorbate_dtheta_dt_sym</code><span class="sig-paren">(</span><em>adsorbate_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_adsorbate_dtheta_dt_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_adsorbate_dtheta_dt_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get dtheta/dt for an adsorbate.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>adsorbate_name</strong> (<em>str</em>) -- The adsorbate name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>adsorbate_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The adsorbate name</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_data">
-<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_data" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get data from model.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_data_symbols">
-<code class="descname">get_data_symbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_data_symbols" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_data_symbols">
+<code class="descname">get_data_symbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_data_symbols" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get Sympy Symbol objects for P, G, coverage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -428,8 +428,8 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_expressions">
-<code class="descname">get_dtheta_dt_expressions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_dtheta_dt_expressions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_expressions" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_expressions">
+<code class="descname">get_dtheta_dt_expressions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_dtheta_dt_expressions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_expressions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get dtheta/dt expression strings for all adsorbatets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -444,22 +444,22 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_syms">
-<code class="descname">get_dtheta_dt_syms</code><span class="sig-paren">(</span><em>log_latex=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_dtheta_dt_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_syms">
+<code class="descname">get_dtheta_dt_syms</code><span class="sig-paren">(</span><em>log_latex=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_dtheta_dt_syms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_dtheta_dt_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get dtheta/dt expressions for all adsorbates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_latex</strong> (<em>bool</em>) -- Dump LaTEX log or not</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_latex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- Dump LaTEX log or not</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_expression">
-<code class="descname">get_elementary_dtheta_dt_expression</code><span class="sig-paren">(</span><em>adsorbate_name</em>, <em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_elementary_dtheta_dt_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_expression" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_expression">
+<code class="descname">get_elementary_dtheta_dt_expression</code><span class="sig-paren">(</span><em>adsorbate_name</em>, <em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_elementary_dtheta_dt_expression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get dtheta_dt of the corresponding adsorbate in single 
 elementary equation.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -467,8 +467,8 @@ elementary equation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>adsorbate_name</strong> (<em>str</em>) -- The adsorbate name whose coverage is derived wrt time, str.</li>
-<li><strong>rxn_expression</strong> (<em>str</em>) -- Elementary reaction expression</li>
+<li><strong>adsorbate_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The adsorbate name whose coverage is derived wrt time, str.</li>
+<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Elementary reaction expression</li>
 </ul>
 </td>
 </tr>
@@ -491,16 +491,16 @@ elementary equation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_sym">
-<code class="descname">get_elementary_dtheta_dt_sym</code><span class="sig-paren">(</span><em>adsorbate_name</em>, <em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_elementary_dtheta_dt_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_sym">
+<code class="descname">get_elementary_dtheta_dt_sym</code><span class="sig-paren">(</span><em>adsorbate_name</em>, <em>rxn_expression</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_elementary_dtheta_dt_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_dtheta_dt_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get dtheta/dt expression symbol for an adsorbate and an elementary reaction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>adsorbate_name</strong> (<em>str</em>) -- Name of adsorbate for calculating dtheta/dt</li>
-<li><strong>rxn_expression</strong> (<em>str</em>) -- Elementary reaction expression</li>
+<li><strong>adsorbate_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Name of adsorbate for calculating dtheta/dt</li>
+<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Elementary reaction expression</li>
 </ul>
 </td>
 </tr>
@@ -509,8 +509,8 @@ elementary equation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_expression">
-<code class="descname">get_elementary_rate_expression</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_expression" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_expression">
+<code class="descname">get_elementary_rate_expression</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get the rate calculation expression for an elementary reaction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -536,14 +536,14 @@ elementary equation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_sym">
-<code class="descname">get_elementary_rate_sym</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_sym">
+<code class="descname">get_elementary_rate_sym</code><span class="sig-paren">(</span><em>rxn_expression</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_elementary_rate_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate expression for an elementary reaction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_expression</strong> (<em>str</em>) -- An elementary expression</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- An elementary expression</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward and reverse rate expression</td>
 </tr>
@@ -554,8 +554,8 @@ elementary equation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_equilibrium_constant_syms">
-<code class="descname">get_equilibrium_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_equilibrium_constant_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_equilibrium_constant_syms">
+<code class="descname">get_equilibrium_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_equilibrium_constant_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get symbols of equilibrium constant.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -570,8 +570,8 @@ elementary equation.</p>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_kCT">
-<em class="property">static </em><code class="descname">get_kCT</code><span class="sig-paren">(</span><em>Ea</em>, <em>Auc</em>, <em>act_ratio</em>, <em>m</em>, <em>T</em>, <em>p=101325</em>, <em>f=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_kCT" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_kCT">
+<em class="property">static </em><code class="descname">get_kCT</code><span class="sig-paren">(</span><em>Ea</em>, <em>Auc</em>, <em>act_ratio</em>, <em>m</em>, <em>T</em>, <em>p=101325</em>, <em>f=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_kCT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static function to get rate constant/collision rate according to 
 Collision Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -579,15 +579,15 @@ Collision Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Ea</strong> (<em>float</em>) -- energy barrier( NOT free energy barrier )</li>
-<li><strong>Auc</strong> (<em>float</em>) -- area of unitcell (m^-2)</li>
-<li><strong>act_ratio</strong> (<em>float</em><em>(</em><em>&lt;=1.0</em><em>)</em>) -- area of active sites/area of unitcell</li>
-<li><strong>p</strong> (<em>float</em>) -- pressure of gas, default value is 101325 Pa (atm).</li>
-<li><strong>m</strong> (<em>float</em>) -- absolute mass of molecule (kg)</li>
-<li><strong>f</strong> (<em>float</em><em>(</em><em>&lt;= 1.0</em><em>)</em>) -- factor accounts for a further reduction in the sticking 
+<li><strong>Ea</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- energy barrier( NOT free energy barrier )</li>
+<li><strong>Auc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- area of unitcell (m^-2)</li>
+<li><strong>act_ratio</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>(</em><em>&lt;=1.0</em><em>)</em>) -- area of active sites/area of unitcell</li>
+<li><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- pressure of gas, default value is 101325 Pa (atm).</li>
+<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- absolute mass of molecule (kg)</li>
+<li><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>(</em><em>&lt;= 1.0</em><em>)</em>) -- factor accounts for a further reduction in the sticking 
 probability, if particle with certain initial states are not 
 efficiently steered along the MEP, and reflected by a higher barrier</li>
-<li><strong>T</strong> (<em>float</em>) -- temperature (K)</li>
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- temperature (K)</li>
 </ul>
 </td>
 </tr>
@@ -596,16 +596,16 @@ efficiently steered along the MEP, and reflected by a higher barrier</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_kTST">
-<code class="descname">get_kTST</code><span class="sig-paren">(</span><em>Ga</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_kTST" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_kTST">
+<code class="descname">get_kTST</code><span class="sig-paren">(</span><em>Ga</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_kTST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate rate constants according to Transition State Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Ga</strong> (<em>float</em>) -- Free energy barrier</li>
-<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
+<li><strong>Ga</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Free energy barrier</li>
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Temperature(K)</li>
 </ul>
 </td>
 </tr>
@@ -614,21 +614,21 @@ efficiently steered along the MEP, and reflected by a higher barrier</li>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_latex_strs">
-<em class="property">static </em><code class="descname">get_latex_strs</code><span class="sig-paren">(</span><em>part1</em>, <em>part2</em>, <em>symbols</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_latex_strs" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_latex_strs">
+<em class="property">static </em><code class="descname">get_latex_strs</code><span class="sig-paren">(</span><em>part1</em>, <em>part2</em>, <em>symbols</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_latex_strs" title="Permalink to this definition">¶</a></dt>
 <dd><p>part1 and part2 are parts of left string in equation string,
 symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_net_rate_syms">
-<code class="descname">get_net_rate_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_net_rate_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_net_rate_syms">
+<code class="descname">get_net_rate_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_net_rate_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get net rate symbols for all elementary expressions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_net_rates">
-<code class="descname">get_net_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_net_rates" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_net_rates">
+<code class="descname">get_net_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_net_rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get forward and reverse rates list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -636,7 +636,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs_tuple</strong> (<em>tuple of floats.</em>) -- coverages</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -659,14 +659,14 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_net_rates_by_sym">
-<code class="descname">get_net_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_net_rates_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_net_rates_by_sym">
+<code class="descname">get_net_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_net_rates_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get net rates for all elementary reactions by symbol derivation.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_constant_syms">
-<code class="descname">get_rate_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_constant_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_constant_syms">
+<code class="descname">get_rate_constant_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_constant_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fucntion to get rate constant expression symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -681,34 +681,34 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_constants_by_sym">
-<code class="descname">get_rate_constants_by_sym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_constants_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_constants_by_sym">
+<code class="descname">get_rate_constants_by_sym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_constants_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants values by back substitution to symbol expressions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_expressions">
-<code class="descname">get_rate_expressions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_expressions" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_expressions">
+<code class="descname">get_rate_expressions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_expressions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get rate expression for all elementary reactions in model.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_syms">
-<code class="descname">get_rate_syms</code><span class="sig-paren">(</span><em>log_latex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rate_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_syms">
+<code class="descname">get_rate_syms</code><span class="sig-paren">(</span><em>log_latex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rate_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get all rate expressions for all elementary reactions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_latex</strong> (<em>bool</em>) -- If dump latex equations or not</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_latex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- If dump latex equations or not</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rates">
-<code class="descname">get_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em>, <em>log=False</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rates" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rates">
+<code class="descname">get_rates</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em>, <em>log=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get forward and reverse rates list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -716,7 +716,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs_tuple</strong> (<em>tuple of floats.</em>) -- coverages</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -730,7 +730,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log</strong> (<em>bool</em>) -- Output log info or not, false by default</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- Output log info or not, false by default</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward rates and reverse rates</td>
 </tr>
@@ -741,8 +741,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rates_by_sym">
-<code class="descname">get_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rates_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rates_by_sym">
+<code class="descname">get_rates_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rates_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get forward and reverse rates for all elementary reactions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -757,8 +757,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_residual">
-<code class="descname">get_residual</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_residual" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_residual">
+<code class="descname">get_residual</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_residual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get residual value of equations(the max value of dthe/dt).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -766,7 +766,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs_tuple</strong> (<em>tuple of float</em>) -- Adsorbate coverages</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -789,8 +789,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_reversibilities">
-<code class="descname">get_reversibilities</code><span class="sig-paren">(</span><em>rfs</em>, <em>rrs</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_reversibilities" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_reversibilities">
+<code class="descname">get_reversibilities</code><span class="sig-paren">(</span><em>rfs</em>, <em>rrs</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_reversibilities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get reversibilities of given rates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -813,8 +813,8 @@ symbols is a iterable object e.g. list or tuple.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_CT">
-<code class="descname">get_rxn_rates_CT</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_CT" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_CT">
+<code class="descname">get_rxn_rates_CT</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_CT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants for an elementary reaction using 
 Collision Theory wrt adsorption process.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -822,9 +822,9 @@ Collision Theory wrt adsorption process.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
-<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
+<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- The flag for whether to include the actual gas pressure</li>
 </ul>
 </td>
 </tr>
@@ -839,8 +839,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_TST">
-<code class="descname">get_rxn_rates_TST</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_TST" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_TST">
+<code class="descname">get_rxn_rates_TST</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_rxn_rates_TST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants for an elementary reaction using 
 Transition State Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -848,9 +848,9 @@ Transition State Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
-<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
+<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- The flag for whether to include the actual gas pressure</li>
 </ul>
 </td>
 </tr>
@@ -865,17 +865,17 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_single_XRC">
-<code class="descname">get_single_XRC</code><span class="sig-paren">(</span><em>gas_name</em>, <em>epsilon=None</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_single_XRC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_single_XRC" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_single_XRC">
+<code class="descname">get_single_XRC</code><span class="sig-paren">(</span><em>gas_name</em>, <em>epsilon=None</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_single_XRC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_single_XRC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get XRC for one gas species.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>gas_name</strong> (<em>str</em>) -- The gas name whose XTRC would be calculated</li>
-<li><strong>epsilon</strong> (<em>float</em>) -- The perturbation size for numerical jacobian matrix</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative energies for calculation, if not provided, use model's relative energies, default is None</li>
+<li><strong>gas_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The gas name whose XTRC would be calculated</li>
+<li><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- The perturbation size for numerical jacobian matrix</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative energies for calculation, if not provided, use model's relative energies, default is None</li>
 </ul>
 </td>
 </tr>
@@ -884,8 +884,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_steady_state_cvgs">
-<code class="descname">get_steady_state_cvgs</code><span class="sig-paren">(</span><em>c0</em>, <em>single_pt=False</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.get_steady_state_cvgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_steady_state_cvgs" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_steady_state_cvgs">
+<code class="descname">get_steady_state_cvgs</code><span class="sig-paren">(</span><em>c0</em>, <em>single_pt=False</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.get_steady_state_cvgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_steady_state_cvgs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get steady state coverages.</p>
 <p>Expect an inital coverages tuple, use Newton Method to solving nonlinear equations, return steady state coverages, if converged.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -902,7 +902,7 @@ RATE CONSTANT by default.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</td>
 </tr>
 </tbody>
 </table>
@@ -913,8 +913,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_subs_dict">
-<code class="descname">get_subs_dict</code><span class="sig-paren">(</span><em>coverages=None</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_subs_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_subs_dict">
+<code class="descname">get_subs_dict</code><span class="sig-paren">(</span><em>coverages=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_subs_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get substitution dict for all symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -929,8 +929,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_tof">
-<code class="descname">get_tof</code><span class="sig-paren">(</span><em>cvgs</em>, <em>relative_energies=None</em>, <em>gas_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_tof" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_tof">
+<code class="descname">get_tof</code><span class="sig-paren">(</span><em>cvgs</em>, <em>relative_energies=None</em>, <em>gas_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_tof" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get the turnover frequencies(TOF) wrt all gas species.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -938,7 +938,7 @@ RATE CONSTANT by default.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs</strong> (<em>tuple of float</em>) -- Coverages of adsorbates on surface</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -952,20 +952,20 @@ RATE CONSTANT by default.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gas_name</strong> (<em>str</em>) -- The gas whose TOF will be returned</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gas_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The gas whose TOF will be returned</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If gas name is not specified, a list of TOF for all gas species would be returned.
 If gas name is specified, the TOF of the gas would be returned.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of float or float</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of float or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_tof_by_sym">
-<code class="descname">get_tof_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_tof_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_tof_by_sym">
+<code class="descname">get_tof_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_tof_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get TOFs for all gas species.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -978,32 +978,32 @@ If gas name is specified, the TOF of the gas would be returned.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.get_tof_syms">
-<code class="descname">get_tof_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.get_tof_syms" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.get_tof_syms">
+<code class="descname">get_tof_syms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.get_tof_syms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get TOF symbols for all elementary reactions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.log_latex">
-<code class="descname">log_latex</code><span class="sig-paren">(</span><em>latex_tup</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.log_latex" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.log_latex">
+<code class="descname">log_latex</code><span class="sig-paren">(</span><em>latex_tup</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.log_latex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append latex strings to 'formulas.tex'</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.modify_init_guess">
-<code class="descname">modify_init_guess</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.modify_init_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.modify_init_guess" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.modify_init_guess">
+<code class="descname">modify_init_guess</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.modify_init_guess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.modify_init_guess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use ODE integration to get new initial coverages guess.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.solve_ode">
-<code class="descname">solve_ode</code><span class="sig-paren">(</span><em>algo='lsoda'</em>, <em>time_start=0.0</em>, <em>time_end=100.0</em>, <em>time_span=0.1</em>, <em>initial_cvgs=None</em>, <em>relative_energies=None</em>, <em>traj_output=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.solve_ode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.solve_ode" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.solve_ode">
+<code class="descname">solve_ode</code><span class="sig-paren">(</span><em>algo='lsoda'</em>, <em>time_start=0.0</em>, <em>time_end=100.0</em>, <em>time_span=0.1</em>, <em>initial_cvgs=None</em>, <em>relative_energies=None</em>, <em>traj_output=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.solve_ode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.solve_ode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the steady state equations using ODE integration.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>algo</strong> (<em>str</em>) -- algorithm for ODE solving, optional,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>algo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- algorithm for ODE solving, optional,
 possible values: 'vode' | 'zvode' | 'lsoda' | 'dopri5' | 'dop853'</td>
 </tr>
 </tbody>
@@ -1018,11 +1018,11 @@ possible values: 'vode' | 'zvode' | 'lsoda' | 'dopri5' | 'dop853'</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>time_span</strong> (<em>float</em>) -- time span for each step, default to be 0.1</li>
-<li><strong>time_start</strong> (<em>float</em>) -- time when begin integration</li>
-<li><strong>time_end</strong> (<em>float</em>) -- time when stop integration</li>
+<li><strong>time_span</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- time span for each step, default to be 0.1</li>
+<li><strong>time_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- time when begin integration</li>
+<li><strong>time_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- time when stop integration</li>
 <li><strong>initial_cvgs</strong> (<em>tuple of float</em>) -- initial coverages at time_start</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative energies for calculation, if not provided, use model's relative energies, default is None</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative energies for calculation, if not provided, use model's relative energies, default is None</li>
 </ul>
 </td>
 </tr>
@@ -1036,11 +1036,11 @@ possible values: 'vode' | 'zvode' | 'lsoda' | 'dopri5' | 'dop853'</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>traj_output</strong> (<em>bool</em>) -- output ODE integration trajectory or not, default value is False.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>traj_output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- output ODE integration trajectory or not, default value is False.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the integrated time</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">integrated function values</td>
 </tr>
@@ -1058,8 +1058,8 @@ possible values: 'vode' | 'zvode' | 'lsoda' | 'dopri5' | 'dop853'</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.steady_state_function">
-<code class="descname">steady_state_function</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.steady_state_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.steady_state_function" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.steady_state_function">
+<code class="descname">steady_state_function</code><span class="sig-paren">(</span><em>cvgs_tuple</em>, <em>relative_energies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.steady_state_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.steady_state_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recieve a coverages tuple containing coverages of adsorbates, calculate 
 dtheta_dts of corresponding adsorbates.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1068,7 +1068,7 @@ dtheta_dts of corresponding adsorbates.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs_tuple</strong> (<em>tuple of float</em>) -- adsorbate coverages</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative energies for calculation, if not provided, use model's relative energies, default is None</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative energies for calculation, if not provided, use model's relative energies, default is None</li>
 </ul>
 </td>
 </tr>
@@ -1077,8 +1077,8 @@ dtheta_dts of corresponding adsorbates.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.steady_state_solver.SteadyStateSolver.steady_state_function_by_sym">
-<code class="descname">steady_state_function_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/steady_state_solver.html#SteadyStateSolver.steady_state_function_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.steady_state_solver.SteadyStateSolver.steady_state_function_by_sym" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.steady_state_solver.SteadyStateSolver.steady_state_function_by_sym">
+<code class="descname">steady_state_function_by_sym</code><span class="sig-paren">(</span><em>cvgs_tuple</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/steady_state_solver.html#SteadyStateSolver.steady_state_function_by_sym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.steady_state_solver.SteadyStateSolver.steady_state_function_by_sym" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recieve a coverages tuple containing coverages of adsorbates, return a tuple of dtheta_dts of corresponding adsorbates.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1136,7 +1136,7 @@ dtheta_dts of corresponding adsorbates.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

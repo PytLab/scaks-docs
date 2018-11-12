@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scaks.parsers.parser_base &mdash; scaks scaks documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> scaks
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">scaks</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../scaks.html">scaks</a> &raquo;</li>
+        
+      <li>scaks.parsers.parser_base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scaks.parsers.parser_base</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..descriptors.descriptors</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">ModelShell</span>
+<span class="kn">from</span> <span class="nn">..functions</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..database.elements_data</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.rxn_parser</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="ParserBase"><a class="viewcode-back" href="../../../api/parsers.parser_base.html#scaks.parsers.absolute_energy_parser.ParserBase">[docs]</a><span class="k">class</span> <span class="nc">ParserBase</span><span class="p">(</span><span class="n">ModelShell</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Base parser class to operate and analyse rxn equations and energy data.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        species_definition(:obj:`dict`): Definition for all species in kinetic model</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ParserBase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+
+        <span class="c1"># Set elementary parse regex(compiled)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__regex_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Parser&#39;s species definition</span>
+        <span class="c1"># NOTE: parser&#39;s species definitions is the reference of model&#39;s.</span>
+        <span class="n">attribute_name</span> <span class="o">=</span> <span class="n">mangled_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="s2">&quot;species_definitions&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__species_definitions</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">)</span>
+
+        <span class="c1"># Set logger.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;model.parser.ParserBase&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ParserBase.parse_elementary_rxns"><a class="viewcode-back" href="../../../api/parsers.parser_base.html#scaks.parsers.absolute_energy_parser.ParserBase.parse_elementary_rxns">[docs]</a>    <span class="k">def</span> <span class="nf">parse_elementary_rxns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elementary_rxns</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse all elementary rxn equations.</span>
+
+<span class="sd">        :param elementary_rxns: Elementary reactions</span>
+<span class="sd">        :type elementary_rxns: list of str</span>
+
+<span class="sd">        :return: A tuple of elementary related attributes: ( adsorbate_names,</span>
+<span class="sd">            gas_names, liquid_names, site_names, transition_state_names,</span>
+<span class="sd">            elementary_rxns_list)</span>
+
+<span class="sd">        Example::</span>
+<span class="sd">            &gt;&gt;&gt; elementary_rxns = [&#39;CO_g + *_s -&gt; CO_s&#39;,</span>
+<span class="sd">                                   &#39;O2_g + 2*_s -&gt; 2O_s&#39;,</span>
+<span class="sd">                                   &#39;CO_s + O_s &lt;-&gt; CO-O_2s -&gt; CO2_g + 2*_s&#39;]</span>
+<span class="sd">            &gt;&gt;&gt; parser.parse_elementary_rxns(elementary_rxns)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">elementary_rxns_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">adsorbate_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">gas_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">liquid_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">site_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">transition_state_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">equation_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">:</span>
+            <span class="c1"># debug info</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;parsing [ </span><span class="si">%s</span><span class="s1"> ]&#39;</span><span class="p">,</span> <span class="n">equation_str</span><span class="p">)</span>
+
+            <span class="c1"># Get RxnEquation object.</span>
+            <span class="n">equation</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="n">equation_str</span><span class="p">)</span>
+
+            <span class="c1"># Check conservation.</span>
+            <span class="n">equation</span><span class="o">.</span><span class="n">check_conservation</span><span class="p">()</span>
+
+            <span class="c1"># Gather all information for a reaction expression.</span>
+            <span class="n">rxn_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">state_list</span> <span class="o">=</span> <span class="n">equation</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+            <span class="c1"># For each state object.</span>
+            <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">state_list</span><span class="p">:</span>
+                <span class="n">rxn_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+                <span class="c1"># for each formula object.</span>
+                <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+                    <span class="n">site_dict</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_sites_dict</span><span class="p">()</span>
+                    <span class="n">species_site</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span>
+
+                    <span class="c1"># Gas.</span>
+                    <span class="k">if</span> <span class="s2">&quot;g&quot;</span> <span class="ow">in</span> <span class="n">site_dict</span><span class="p">:</span>
+                        <span class="n">gas_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+                    <span class="c1"># Liquid.</span>
+                    <span class="k">elif</span> <span class="s2">&quot;l&quot;</span> <span class="ow">in</span> <span class="n">site_dict</span><span class="p">:</span>
+                        <span class="n">liquid_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+                    <span class="c1"># Transition state.</span>
+                    <span class="k">elif</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">formula</span><span class="o">.</span><span class="n">species</span><span class="p">():</span>
+                        <span class="n">transition_state_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+                    <span class="c1"># If not empty site, then adsorbate.</span>
+                    <span class="k">elif</span> <span class="s2">&quot;*&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">formula</span><span class="o">.</span><span class="n">species</span><span class="p">():</span>
+                        <span class="n">adsorbate_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+
+                    <span class="c1"># Site names.</span>
+                    <span class="n">site_names</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;*_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                                       <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">site_dict</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">)])</span>
+
+            <span class="c1"># Append reaction list.</span>
+            <span class="n">elementary_rxns_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rxn_list</span><span class="p">)</span>
+
+        <span class="c1"># Merge duplicates in lists</span>
+        <span class="n">adsorbate_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">adsorbate_names</span><span class="p">))))</span>
+        <span class="n">gas_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">gas_names</span><span class="p">))))</span>
+        <span class="n">liquid_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">liquid_names</span><span class="p">))))</span>
+        <span class="n">site_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">site_names</span><span class="p">))))</span>
+        <span class="n">transition_state_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">transition_state_names</span><span class="p">))))</span>
+
+        <span class="c1"># Return.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">adsorbate_names</span><span class="p">,</span>
+                <span class="n">gas_names</span><span class="p">,</span>
+                <span class="n">liquid_names</span><span class="p">,</span>
+                <span class="n">site_names</span><span class="p">,</span>
+                <span class="n">transition_state_names</span><span class="p">,</span>
+                <span class="n">elementary_rxns_list</span><span class="p">)</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="ParserBase.get_stoichiometry_matrices"><a class="viewcode-back" href="../../../api/parsers.parser_base.html#scaks.parsers.absolute_energy_parser.ParserBase.get_stoichiometry_matrices">[docs]</a>    <span class="k">def</span> <span class="nf">get_stoichiometry_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Go through elementary_rxns_list, return sites stoichiometry matrix,</span>
+<span class="sd">        reactants and products stoichiometry matrix.</span>
+
+<span class="sd">        :returns site_matrix: coefficients matrix for intermediates, if species</span>
+<span class="sd">            is on the left of arrow, the entry will be positive, vice-versa.</span>
+<span class="sd">            row vector: :obj:`[self.adsorbate_names]`</span>
+<span class="sd">        :rtype: numpy.matrix</span>
+
+<span class="sd">        :returns reapro_matrix: coefficients matrix for reactants and product,</span>
+<span class="sd">            if species is on the left of arrow, the entry will be positive,</span>
+<span class="sd">            vice-versa.  row vector: :obj:`[self.gas_names]`</span>
+<span class="sd">        :rtype: numpy.matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Site and adsorbate names.</span>
+        <span class="n">sites_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">site_names</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">)</span>
+
+        <span class="c1"># Reactant and product names.</span>
+        <span class="n">reapro_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">gas_names</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">liquid_names</span><span class="p">)</span>
+
+        <span class="c1"># Initialize matrices.</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">elementary_rxns_list</span><span class="p">)</span>
+        <span class="n">n_s</span><span class="p">,</span> <span class="n">n_g</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sites_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">reapro_names</span><span class="p">)</span>
+        <span class="n">site_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n_s</span><span class="p">)))</span>
+        <span class="n">reapro_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n_g</span><span class="p">)))</span>
+
+        <span class="n">rxns_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">elementary_rxns_list</span>
+
+        <span class="c1"># Go through all elementary equations.</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rxn_list</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rxns_list</span><span class="p">):</span>
+            <span class="c1"># Initial state.</span>
+            <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">rxn_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">stoich</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+                <span class="n">species_site</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span>
+
+                <span class="c1"># Empty site.</span>
+                <span class="k">if</span> <span class="n">species_site</span> <span class="ow">in</span> <span class="n">sites_names</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">sites_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+                    <span class="n">site_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">stoich</span>
+
+                <span class="c1"># Adsorbate.</span>
+                <span class="k">if</span> <span class="n">species_site</span> <span class="ow">in</span> <span class="n">reapro_names</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">reapro_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+                    <span class="n">reapro_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">stoich</span>
+
+            <span class="c1"># Final state.</span>
+            <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">rxn_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">stoich</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+                <span class="n">species_site</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span>
+
+                <span class="c1"># Empty site.</span>
+                <span class="k">if</span> <span class="n">species_site</span> <span class="ow">in</span> <span class="n">sites_names</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">sites_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+                    <span class="n">site_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">stoich</span>
+
+                <span class="c1"># Adsorbate.</span>
+                <span class="k">if</span> <span class="n">species_site</span> <span class="ow">in</span> <span class="n">reapro_names</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">=</span> <span class="n">reapro_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">species_site</span><span class="p">)</span>
+                    <span class="n">reapro_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">stoich</span>
+
+        <span class="k">return</span> <span class="n">site_matrix</span><span class="p">,</span> <span class="n">reapro_matrix</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="ParserBase.get_total_rxn_equation"><a class="viewcode-back" href="../../../api/parsers.parser_base.html#scaks.parsers.absolute_energy_parser.ParserBase.get_total_rxn_equation">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_rxn_equation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to get total reaction expression of the kinetic model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">site_matrix</span><span class="p">,</span> <span class="n">reapro_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stoichiometry_matrices</span><span class="p">()</span>
+
+        <span class="c1"># Helper function to get null space of transposition of site_matrix.</span>
+        <span class="k">def</span> <span class="nf">null</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
+            <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">null_space</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;=</span> <span class="n">eps</span><span class="p">,</span> <span class="n">vh</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">null_space</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">null</span><span class="p">(</span><span class="n">site_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  <span class="c1"># basis of null space</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>  <span class="c1"># x is not empty</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Failed to get basis of nullspace.&#39;</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="c1">#convert entries of x to integer</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="n">min_x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">total_coefficients</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">reapro_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># cope with small differences between coeffs</span>
+        <span class="n">abs_total_coefficients</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">abs</span><span class="p">,</span> <span class="n">total_coefficients</span><span class="p">))</span>
+        <span class="n">min_coeff</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">abs_total_coefficients</span><span class="p">)</span>
+        <span class="n">total_coefficients</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="n">min_coeff</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">total_coefficients</span><span class="p">]</span>
+
+        <span class="c1"># create total rxn expression</span>
+        <span class="n">reactants_list</span><span class="p">,</span> <span class="n">products_list</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="n">reapro_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">gas_names</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">liquid_names</span>
+        <span class="k">for</span> <span class="n">sp_name</span> <span class="ow">in</span> <span class="n">reapro_names</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">reapro_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sp_name</span><span class="p">)</span>
+            <span class="n">coefficient</span> <span class="o">=</span> <span class="n">total_coefficients</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">coefficient</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># for products</span>
+                <span class="n">coefficient</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">coefficient</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">coefficient</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">coefficient</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">coefficient</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">coefficient</span><span class="p">)</span>
+                <span class="n">products_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefficient</span> <span class="o">+</span> <span class="n">sp_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># for reactants</span>
+                <span class="n">coefficient</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">coefficient</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">coefficient</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">coefficient</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">coefficient</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">coefficient</span><span class="p">)</span>
+                <span class="n">reactants_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefficient</span> <span class="o">+</span> <span class="n">sp_name</span><span class="p">)</span>
+
+        <span class="c1"># get total rxn list and set it as an attr of model</span>
+        <span class="n">total_rxn_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">reactants_list</span><span class="p">,</span> <span class="n">products_list</span><span class="p">]</span>
+        <span class="n">reactants_expr</span> <span class="o">=</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reactants_list</span><span class="p">)</span>
+        <span class="n">products_expr</span> <span class="o">=</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">products_list</span><span class="p">)</span>
+        <span class="n">total_rxn_equation</span> <span class="o">=</span> <span class="n">reactants_expr</span> <span class="o">+</span> <span class="s1">&#39; -&gt; &#39;</span> <span class="o">+</span> <span class="n">products_expr</span>
+
+        <span class="c1"># Check conservation.</span>
+        <span class="n">RxnEquation</span><span class="p">(</span><span class="n">total_rxn_equation</span><span class="p">)</span><span class="o">.</span><span class="n">check_conservation</span><span class="p">()</span>
+
+        <span class="c1"># If check passed, return.</span>
+        <span class="k">return</span> <span class="n">total_rxn_equation</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="ParserBase.get_molecular_mass"><a class="viewcode-back" href="../../../api/parsers.parser_base.html#scaks.parsers.absolute_energy_parser.ParserBase.get_molecular_mass">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_molecular_mass</span><span class="p">(</span><span class="n">species_name</span><span class="p">,</span> <span class="n">absolute</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Static function to get relative/absolute molecular mass.</span>
+
+<span class="sd">        :param species_name: name of the molecule species</span>
+<span class="sd">        :type sepcies_name: str</span>
+
+<span class="sd">        :param absolute: return absolute mass or not(default)</span>
+<span class="sd">        :type absolute: bool</span>
+
+<span class="sd">        Example::</span>
+<span class="sd">            &gt;&gt;&gt; m.parser.get_molecular_mass(&#39;CH4&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; 16.04246</span>
+<span class="sd">            &gt;&gt;&gt; m.parser.get_molecular_mass(&#39;CH4&#39;, absolute=True)</span>
+<span class="sd">            &gt;&gt;&gt; 2.6639131127638393e-26</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">string2symbols</span><span class="p">(</span><span class="n">species_name</span><span class="p">)</span>
+
+        <span class="c1"># get molecular total relative mass</span>
+        <span class="n">molecular_mass</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">chem_elements</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Element [ </span><span class="si">%s</span><span class="s1"> ] not in database&#39;</span> <span class="o">%</span> <span class="n">element</span>
+                <span class="k">raise</span> <span class="n">ElementSearchingError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">element_mass</span> <span class="o">=</span> <span class="n">chem_elements</span><span class="p">[</span><span class="n">element</span><span class="p">][</span><span class="s1">&#39;mass&#39;</span><span class="p">]</span>
+            <span class="n">molecular_mass</span> <span class="o">+=</span> <span class="n">element_mass</span>
+
+        <span class="k">if</span> <span class="n">absolute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">amu</span><span class="o">*</span><span class="n">molecular_mass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">molecular_mass</span></div>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">_get_state_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Protected helper function to get state energy.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        state: An object of ChemState.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Absolute free energy of the state, float.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Extract species info.</span>
+        <span class="n">species_site_dict</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get_species_site_dict</span><span class="p">()</span>
+        <span class="n">site_dict</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get_sites_dict</span><span class="p">()</span>
+        <span class="n">formula_list</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="n">abs_energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">absolute_energies</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">formula</span> <span class="ow">in</span> <span class="n">formula_list</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">stoichiometry</span><span class="p">()</span>
+            <span class="n">species_site</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">species_site</span><span class="p">()</span>
+            <span class="n">site</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">site</span><span class="p">()</span>
+
+            <span class="c1"># Adsorbate.</span>
+            <span class="k">if</span> <span class="s2">&quot;*&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">species_site</span><span class="p">:</span>
+                <span class="n">energy</span> <span class="o">+=</span> <span class="n">n</span><span class="o">*</span><span class="n">abs_energies</span><span class="p">[</span><span class="n">species_site</span><span class="p">]</span>
+            <span class="c1"># Site.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">energy</span> <span class="o">+=</span> <span class="n">n</span><span class="o">*</span><span class="n">abs_energies</span><span class="p">[</span><span class="s2">&quot;*_&quot;</span> <span class="o">+</span> <span class="n">site</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">energy</span>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">_get_single_relative_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rxn_expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get relative energies for an elementary reaction:</span>
+<span class="sd">            forward barrier,</span>
+<span class="sd">            reverse barrier,</span>
+<span class="sd">            reaction energy</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        rxn_expression: elementary reaction expression, str.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        f_barrier: forward barrier.</span>
+<span class="sd">        r_barrier: reverse barrier.</span>
+<span class="sd">        reaction_energy: reaction energy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Check.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">has_absolute_energy</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Absolute energie are needed for getting barriers.&quot;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Get RxnEquation object.</span>
+        <span class="n">rxn_equation</span> <span class="o">=</span> <span class="n">RxnEquation</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+
+        <span class="c1"># Get free energy for states</span>
+        <span class="n">G_IS</span><span class="p">,</span> <span class="n">G_TS</span><span class="p">,</span> <span class="n">G_FS</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+
+        <span class="c1"># State list.</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">rxn_equation</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># IS energy.</span>
+        <span class="n">G_IS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_energy</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># FS energy.</span>
+        <span class="n">G_FS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_energy</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># TS energy.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">G_TS</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">G_IS</span><span class="p">,</span> <span class="n">G_FS</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">G_TS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_energy</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Get relative energies.</span>
+        <span class="n">f_barrier</span> <span class="o">=</span> <span class="n">G_TS</span> <span class="o">-</span> <span class="n">G_IS</span>
+        <span class="n">r_barrier</span> <span class="o">=</span> <span class="n">G_TS</span> <span class="o">-</span> <span class="n">G_FS</span>
+        <span class="n">reaction_energy</span> <span class="o">=</span> <span class="n">G_FS</span> <span class="o">-</span> <span class="n">G_IS</span>
+
+        <span class="k">return</span> <span class="n">f_barrier</span><span class="p">,</span> <span class="n">r_barrier</span><span class="p">,</span> <span class="n">reaction_energy</span>
+        <span class="c1"># }}}</span>
+
+    <span class="k">def</span> <span class="nf">_get_relative_from_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to set relative energies from absolute energies.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="n">Gafs</span><span class="p">,</span> <span class="n">Gars</span><span class="p">,</span> <span class="n">dGs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">rxn_expression</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">rxn_expressions</span><span class="p">:</span>
+            <span class="n">Gaf</span><span class="p">,</span> <span class="n">Gar</span><span class="p">,</span> <span class="n">dG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_single_relative_energies</span><span class="p">(</span><span class="n">rxn_expression</span><span class="p">)</span>
+            <span class="n">Gafs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Gaf</span><span class="p">)</span>
+            <span class="n">Gars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Gar</span><span class="p">)</span>
+            <span class="n">dGs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dG</span><span class="p">)</span>
+
+        <span class="n">relative_energies</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Gar</span><span class="o">=</span><span class="n">Gars</span><span class="p">,</span> <span class="n">Gaf</span><span class="o">=</span><span class="n">Gafs</span><span class="p">,</span> <span class="n">dG</span><span class="o">=</span><span class="n">dGs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">relative_energies</span>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="ParserBase.regex_dict"><a class="viewcode-back" href="../../../api/parsers.parser_base.html#scaks.parsers.absolute_energy_parser.ParserBase.regex_dict">[docs]</a>    <span class="k">def</span> <span class="nf">regex_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Query function for regress expression dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__regex_dict</span></div>
+
+    <span class="nd">@Property</span>
+    <span class="k">def</span> <span class="nf">species_definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Query function for parser&#39;s species definitions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Use deep copy to avoid modification of the model&#39;s attribution.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__species_definitions</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'scaks',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

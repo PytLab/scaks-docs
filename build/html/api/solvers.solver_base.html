@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>solvers.SolverBase &mdash; catynetics catynetics documentation</title>
+  <title>solvers.SolverBase &mdash; scaks scaks documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -181,28 +181,28 @@
   <div class="section" id="solvers-solverbase">
 <h1>solvers.SolverBase<a class="headerlink" href="#solvers-solverbase" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="catynetics.solvers.solver_base.SolverBase">
-<em class="property">class </em><code class="descclassname">catynetics.solvers.solver_base.</code><code class="descname">SolverBase</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/solver_base.html#SolverBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.solver_base.SolverBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">catynetics.ModelShell</span></code></p>
+<dt id="scaks.solvers.solver_base.SolverBase">
+<em class="property">class </em><code class="descclassname">scaks.solvers.solver_base.</code><code class="descname">SolverBase</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/solver_base.html#SolverBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.solver_base.SolverBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scaks.ModelShell</span></code></p>
 <p>Abstract base class to be herited by other solver classes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel" title="catynetics.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#scaks.models.kinetic_model.KineticModel" title="scaks.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="catynetics.solvers.solver_base.SolverBase.archive_data">
-<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.solvers.solver_base.SolverBase.archive_data" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.solver_base.SolverBase.archive_data">
+<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.solvers.solver_base.SolverBase.archive_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update data dict and dump it to data file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data_name</strong> (<em>str</em>) -- key in data dict</li>
+<li><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- key in data dict</li>
 <li><strong>data</strong> (<em>any</em>) -- value in data dict</li>
 </ul>
 </td>
@@ -212,8 +212,8 @@
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="catynetics.solvers.solver_base.SolverBase.get_TST_barrier_from_CT">
-<em class="property">static </em><code class="descname">get_TST_barrier_from_CT</code><span class="sig-paren">(</span><em>kCT</em>, <em>T</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/solver_base.html#SolverBase.get_TST_barrier_from_CT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.solver_base.SolverBase.get_TST_barrier_from_CT" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.solver_base.SolverBase.get_TST_barrier_from_CT">
+<em class="property">static </em><code class="descname">get_TST_barrier_from_CT</code><span class="sig-paren">(</span><em>kCT</em>, <em>T</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/solver_base.html#SolverBase.get_TST_barrier_from_CT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.solver_base.SolverBase.get_TST_barrier_from_CT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static method to get TST barrier from the rate constant calculated 
 by Collision Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -221,8 +221,8 @@ by Collision Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>kCT</strong> (<em>float</em>) -- Rate constant calculated by Collision Theory</li>
-<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
+<li><strong>kCT</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Rate constant calculated by Collision Theory</li>
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Temperature(K)</li>
 </ul>
 </td>
 </tr>
@@ -231,8 +231,8 @@ by Collision Theory.</p>
 </dd></dl>
 
 <dl class="staticmethod">
-<dt id="catynetics.solvers.solver_base.SolverBase.get_kCT">
-<em class="property">static </em><code class="descname">get_kCT</code><span class="sig-paren">(</span><em>Ea</em>, <em>Auc</em>, <em>act_ratio</em>, <em>m</em>, <em>T</em>, <em>p=101325</em>, <em>f=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/solver_base.html#SolverBase.get_kCT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.solver_base.SolverBase.get_kCT" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.solver_base.SolverBase.get_kCT">
+<em class="property">static </em><code class="descname">get_kCT</code><span class="sig-paren">(</span><em>Ea</em>, <em>Auc</em>, <em>act_ratio</em>, <em>m</em>, <em>T</em>, <em>p=101325</em>, <em>f=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/solver_base.html#SolverBase.get_kCT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.solver_base.SolverBase.get_kCT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static function to get rate constant/collision rate according to 
 Collision Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -240,15 +240,15 @@ Collision Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Ea</strong> (<em>float</em>) -- energy barrier( NOT free energy barrier )</li>
-<li><strong>Auc</strong> (<em>float</em>) -- area of unitcell (m^-2)</li>
-<li><strong>act_ratio</strong> (<em>float</em><em>(</em><em>&lt;=1.0</em><em>)</em>) -- area of active sites/area of unitcell</li>
-<li><strong>p</strong> (<em>float</em>) -- pressure of gas, default value is 101325 Pa (atm).</li>
-<li><strong>m</strong> (<em>float</em>) -- absolute mass of molecule (kg)</li>
-<li><strong>f</strong> (<em>float</em><em>(</em><em>&lt;= 1.0</em><em>)</em>) -- factor accounts for a further reduction in the sticking 
+<li><strong>Ea</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- energy barrier( NOT free energy barrier )</li>
+<li><strong>Auc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- area of unitcell (m^-2)</li>
+<li><strong>act_ratio</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>(</em><em>&lt;=1.0</em><em>)</em>) -- area of active sites/area of unitcell</li>
+<li><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- pressure of gas, default value is 101325 Pa (atm).</li>
+<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- absolute mass of molecule (kg)</li>
+<li><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>(</em><em>&lt;= 1.0</em><em>)</em>) -- factor accounts for a further reduction in the sticking 
 probability, if particle with certain initial states are not 
 efficiently steered along the MEP, and reflected by a higher barrier</li>
-<li><strong>T</strong> (<em>float</em>) -- temperature (K)</li>
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- temperature (K)</li>
 </ul>
 </td>
 </tr>
@@ -257,16 +257,16 @@ efficiently steered along the MEP, and reflected by a higher barrier</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.solver_base.SolverBase.get_kTST">
-<code class="descname">get_kTST</code><span class="sig-paren">(</span><em>Ga</em>, <em>T</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/solver_base.html#SolverBase.get_kTST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.solver_base.SolverBase.get_kTST" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.solver_base.SolverBase.get_kTST">
+<code class="descname">get_kTST</code><span class="sig-paren">(</span><em>Ga</em>, <em>T</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/solver_base.html#SolverBase.get_kTST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.solver_base.SolverBase.get_kTST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate rate constants according to Transition State Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Ga</strong> (<em>float</em>) -- Free energy barrier</li>
-<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
+<li><strong>Ga</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Free energy barrier</li>
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Temperature(K)</li>
 </ul>
 </td>
 </tr>
@@ -275,8 +275,8 @@ efficiently steered along the MEP, and reflected by a higher barrier</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.solver_base.SolverBase.get_rxn_rates_CT">
-<code class="descname">get_rxn_rates_CT</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/solver_base.html#SolverBase.get_rxn_rates_CT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.solver_base.SolverBase.get_rxn_rates_CT" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.solver_base.SolverBase.get_rxn_rates_CT">
+<code class="descname">get_rxn_rates_CT</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/solver_base.html#SolverBase.get_rxn_rates_CT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.solver_base.SolverBase.get_rxn_rates_CT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants for an elementary reaction using 
 Collision Theory wrt adsorption process.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -284,9 +284,9 @@ Collision Theory wrt adsorption process.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
-<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
+<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- The flag for whether to include the actual gas pressure</li>
 </ul>
 </td>
 </tr>
@@ -301,8 +301,8 @@ RATE CONSTANT by default.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.solvers.solver_base.SolverBase.get_rxn_rates_TST">
-<code class="descname">get_rxn_rates_TST</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/solvers/solver_base.html#SolverBase.get_rxn_rates_TST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.solvers.solver_base.SolverBase.get_rxn_rates_TST" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.solvers.solver_base.SolverBase.get_rxn_rates_TST">
+<code class="descname">get_rxn_rates_TST</code><span class="sig-paren">(</span><em>rxn_expression</em>, <em>relative_energies</em>, <em>include_pressure=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/solvers/solver_base.html#SolverBase.get_rxn_rates_TST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.solvers.solver_base.SolverBase.get_rxn_rates_TST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get rate constants for an elementary reaction using 
 Transition State Theory.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -310,9 +310,9 @@ Transition State Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
-<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
-<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
+<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- The flag for whether to include the actual gas pressure</li>
 </ul>
 </td>
 </tr>
@@ -372,7 +372,7 @@ RATE CONSTANT by default.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

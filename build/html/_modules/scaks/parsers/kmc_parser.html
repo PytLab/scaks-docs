@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scaks.parsers.kmc_parser &mdash; scaks scaks documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> scaks
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">scaks</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../scaks.html">scaks</a> &raquo;</li>
+        
+      <li>scaks.parsers.kmc_parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scaks.parsers.kmc_parser</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">mul</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># KMCLibX.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">KMCLib</span> <span class="k">import</span> <span class="o">*</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!                                                   !!!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!          WARNING: KMCLib is not installed         !!!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Any kMC calculation using KMCLib will be disabled !!!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!                                                   !!!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">..compatutil</span> <span class="k">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">..database.thermo_data</span> <span class="k">import</span> <span class="n">kB_eV</span>
+<span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">..database.lattice_data</span> <span class="k">import</span> <span class="n">grid_neighbor_offsets</span>
+<span class="kn">from</span> <span class="nn">..functions</span> <span class="k">import</span> <span class="n">mangled_name</span>
+<span class="kn">from</span> <span class="nn">.rxn_parser</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.relative_energy_parser</span> <span class="k">import</span> <span class="n">RelativeEnergyParser</span>
+<span class="kn">from</span> <span class="nn">..utilities.check_utilities</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="KMCParser"><a class="viewcode-back" href="../../../api/parsers.kmc_parser.html#scaks.parsers.kmc_parser.KMCParser">[docs]</a><span class="k">class</span> <span class="nc">KMCParser</span><span class="p">(</span><span class="n">RelativeEnergyParser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Parser class for KMC simulation.</span>
+
+<span class="sd">    :param owner: The kinetic model that own this parser</span>
+<span class="sd">    :type owner: KineticModel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">KMCParser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+
+        <span class="c1"># Set logger.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;model.parsers.KMCParser&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KMCParser.parse_data"><a class="viewcode-back" href="../../../api/parsers.kmc_parser.html#scaks.parsers.kmc_parser.KMCParser.parse_data">[docs]</a>    <span class="k">def</span> <span class="nf">parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                   <span class="n">energy_file</span><span class="o">=</span><span class="s2">&quot;./rel_energy.py&quot;</span><span class="p">,</span>
+                   <span class="n">processes_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">configuration_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">sitesmap_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to get data from kMC input files, processes, configuration &amp; sitesmap.</span>
+
+<span class="sd">        :param processes_file: The name of processes definition file,  default name is &quot;kmc_processes.py&quot;.</span>
+<span class="sd">        :type process_file: str</span>
+
+<span class="sd">        :param configuration_file: The name of configuration definition file, default name is &quot;kmc_processes.py&quot;.</span>
+<span class="sd">        :type configuration_file: str</span>
+
+<span class="sd">        sitesmap_file: The name of sitesmap definition file, default name is &quot;kmc_processes.py&quot;.</span>
+<span class="sd">        :type sitesmap_file: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Basic parsing.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">KMCParser</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">parse_data</span><span class="p">(</span><span class="n">energy_file</span><span class="p">)</span>
+
+        <span class="c1"># kMC parsing.</span>
+        <span class="n">process_dicts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_processes</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">processes_file</span><span class="p">)</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_configuration</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">configuration_file</span><span class="p">)</span>
+        <span class="n">sitesmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_sitesmap</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">sitesmap_file</span><span class="p">)</span>
+
+        <span class="c1"># Pass data to model.</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;process_dicts&quot;</span><span class="p">,</span> <span class="s2">&quot;configuration&quot;</span><span class="p">,</span> <span class="s2">&quot;sitesmap&quot;</span><span class="p">]:</span>
+            <span class="n">model_var</span> <span class="o">=</span> <span class="n">mangled_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="n">model_var</span><span class="p">,</span> <span class="nb">locals</span><span class="p">()[</span><span class="n">var</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="KMCParser.construct_sitesmap"><a class="viewcode-back" href="../../../api/parsers.kmc_parser.html#scaks.parsers.kmc_parser.KMCParser.construct_sitesmap">[docs]</a>    <span class="k">def</span> <span class="nf">construct_sitesmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to read kmc_site file and create KMCLibSitesMap objects.</span>
+
+<span class="sd">        :param filename: The name of configuration file</span>
+<span class="sd">        :type filename: str</span>
+
+<span class="sd">        :return: A KMCSitesMap objects.</span>
+<span class="sd">        :rtype: :obj:`KMCSitesMap`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Load data.</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;kmc_sites.py&quot;</span>
+
+        <span class="n">possible_site_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">possible_site_types</span>
+
+        <span class="c1"># Get site number.</span>
+        <span class="n">repetitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">repetitions</span>
+        <span class="n">basis_sites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">basis_sites</span>
+        <span class="n">nsite</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">basis_sites</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">init_default_types</span><span class="p">():</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Nested function to get default site types according to</span>
+<span class="sd">            lattice repetitions and basis sites.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">default_type</span> <span class="o">=</span> <span class="n">possible_site_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">default_type</span><span class="p">]</span><span class="o">*</span><span class="n">nsite</span>
+
+        <span class="c1"># Get site types.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="n">site_types</span> <span class="o">=</span> <span class="n">init_default_types</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+            <span class="n">exec</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s2">&quot;site_types&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">locs</span><span class="p">:</span>
+                <span class="n">site_types</span> <span class="o">=</span> <span class="n">init_default_types</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">site_types</span> <span class="o">=</span> <span class="n">locs</span><span class="p">[</span><span class="s2">&quot;site_types&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Check length of site types.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">site_types</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nsite</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&#39;site_types&#39; must have </span><span class="si">{}</span><span class="s2"> elements.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nsite</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SetupError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Check element type.</span>
+        <span class="k">for</span> <span class="n">site_type</span> <span class="ow">in</span> <span class="n">site_types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">site_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">possible_site_types</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Element &#39;</span><span class="si">{}</span><span class="s2">&#39; not in possible_site_types &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">site_type</span><span class="p">,</span> <span class="n">possible_site_types</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">SetupError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># Construct lattice.</span>
+        <span class="n">lattice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_lattice</span><span class="p">()</span>
+
+        <span class="c1"># Construct sitemap.</span>
+        <span class="n">sitesmap</span> <span class="o">=</span> <span class="n">KMCSitesMap</span><span class="p">(</span><span class="n">lattice</span><span class="o">=</span><span class="n">lattice</span><span class="p">,</span>
+                               <span class="n">types</span><span class="o">=</span><span class="n">site_types</span><span class="p">,</span>
+                               <span class="n">possible_types</span><span class="o">=</span><span class="n">possible_site_types</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sitesmap</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="KMCParser.construct_lattice"><a class="viewcode-back" href="../../../api/parsers.kmc_parser.html#scaks.parsers.kmc_parser.KMCParser.construct_lattice">[docs]</a>    <span class="k">def</span> <span class="nf">construct_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Function to construct KMCLattice object.</span>
+
+<span class="sd">        :return: A kMC lattice grid</span>
+<span class="sd">        :rtype: :obj:`KMCLattice`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Construct unitcell.</span>
+        <span class="n">cell_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">cell_vectors</span><span class="p">)</span>
+        <span class="n">basis_sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">basis_sites</span><span class="p">)</span>
+        <span class="n">unit_cell</span> <span class="o">=</span> <span class="n">KMCUnitCell</span><span class="p">(</span><span class="n">cell_vectors</span><span class="o">=</span><span class="n">cell_vectors</span><span class="p">,</span> <span class="n">basis_points</span><span class="o">=</span><span class="n">basis_sites</span><span class="p">)</span>
+
+        <span class="c1"># Construct lattice.</span>
+        <span class="n">repetitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">repetitions</span>
+        <span class="n">periodic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">periodic</span>
+        <span class="n">lattice</span> <span class="o">=</span> <span class="n">KMCLattice</span><span class="p">(</span><span class="n">unit_cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">,</span>
+                             <span class="n">repetitions</span><span class="o">=</span><span class="n">repetitions</span><span class="p">,</span>
+                             <span class="n">periodic</span><span class="o">=</span><span class="n">periodic</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lattice</span></div>
+
+<div class="viewcode-block" id="KMCParser.parse_configuration"><a class="viewcode-back" href="../../../api/parsers.kmc_parser.html#scaks.parsers.kmc_parser.KMCParser.parse_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">parse_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to read configuration file and create KMCLibConfiguration objects.</span>
+
+<span class="sd">        :param filename: The name of configuration file</span>
+<span class="sd">        :type filename: str</span>
+
+<span class="sd">        :return: A kMC configuration</span>
+<span class="sd">        :rtype: :obj:`KMCConfiguration`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># {{{</span>
+        <span class="c1"># Inner function to initialize emtpy lattice.</span>
+        <span class="k">def</span> <span class="nf">init_empty_types</span><span class="p">():</span>
+            <span class="n">repetitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">repetitions</span>
+            <span class="n">basis_sites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">basis_sites</span>
+            <span class="n">nsite</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">mul</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">basis_sites</span><span class="p">)</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="n">empty_type</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsite</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="n">types</span>
+
+        <span class="n">possible_element_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">possible_element_types</span>
+
+        <span class="c1"># Check.</span>
+        <span class="n">empty_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">empty_type</span>
+        <span class="n">check_string</span><span class="p">(</span><span class="n">empty_type</span><span class="p">,</span> <span class="n">possible_element_types</span><span class="p">,</span> <span class="s2">&quot;empty_type&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Load types data in file.</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;kmc_configuration.py&quot;</span>
+
+        <span class="c1"># Use data in file.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+            <span class="n">exec</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;types&quot;</span> <span class="ow">in</span> <span class="n">locs</span><span class="p">:</span>
+                <span class="n">types</span> <span class="o">=</span> <span class="n">locs</span><span class="p">[</span><span class="s2">&quot;types&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">types</span> <span class="o">=</span> <span class="n">init_empty_types</span><span class="p">()</span>
+        <span class="c1"># Initialize as emtpy lattice.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="n">init_empty_types</span><span class="p">()</span>
+
+        <span class="c1"># Construct lattice.</span>
+        <span class="n">lattice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">construct_lattice</span><span class="p">()</span>
+
+        <span class="c1"># Instantialize KMCLattice object.</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">KMCConfiguration</span><span class="p">(</span><span class="n">lattice</span><span class="o">=</span><span class="n">lattice</span><span class="p">,</span>
+                                         <span class="n">types</span><span class="o">=</span><span class="n">types</span><span class="p">,</span>
+                                         <span class="n">possible_types</span><span class="o">=</span><span class="n">possible_element_types</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">configuration</span></div>
+        <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="KMCParser.parse_processes"><a class="viewcode-back" href="../../../api/parsers.kmc_parser.html#scaks.parsers.kmc_parser.KMCParser.parse_processes">[docs]</a>    <span class="k">def</span> <span class="nf">parse_processes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to read processes file and get process dicts.</span>
+
+<span class="sd">        :param filename: The name of processes file</span>
+<span class="sd">        :type filename: str</span>
+
+<span class="sd">        :return: Elementary processes for kMC</span>
+<span class="sd">        :rtype: list of dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;kmc_processes.py&quot;</span>
+
+        <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+        <span class="n">exec</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span><span class="p">)</span>
+
+        <span class="c1"># Get all possible process objects.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Total </span><span class="si">{}</span><span class="s2"> processes dicts read in.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">locs</span><span class="p">[</span><span class="s2">&quot;processes&quot;</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">locs</span><span class="p">[</span><span class="s2">&quot;processes&quot;</span><span class="p">]</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'scaks',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

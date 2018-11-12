@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Parse reaction expressions &mdash; catynetics catynetics documentation</title>
+  <title>Parse reaction expressions &mdash; scaks scaks documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Build a model in catynetics-Hub" href="hub_model.html" />
-    <link rel="prev" title="Solve model in catynetics-Hub" href="hub_job.html" /> 
+    <link rel="next" title="Build a model in scaks-Hub" href="hub_model.html" />
+    <link rel="prev" title="Solve model in scaks-Hub" href="hub_job.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -88,10 +88,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="model_construction.html">Solve a micro-kinetic model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_job.html">Solve model in catynetics-Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_job.html">Solve model in scaks-Hub</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Parse reaction expressions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#species-name-convetions-in-catynetics">Species name convetions in catynetics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#reaction-expression-conventions-in-catynetics">Reaction expression conventions in catynetics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species-name-convetions-in-scaks">Species name convetions in scaks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reaction-expression-conventions-in-scaks">Reaction expression conventions in scaks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#parse-an-elementary-reaction">Parse an elementary reaction</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#create-reaction-equation">Create reaction equation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#revert-equation">Revert equation</a></li>
@@ -101,8 +101,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#balance-a-set-of-elementary-reactions">Balance a set of elementary reactions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="hub_model.html">Build a model in catynetics-Hub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hub_animation.html">[Animation] Run a job in catynetics-Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_model.html">Build a model in scaks-Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_animation.html">[Animation] Run a job in scaks-Hub</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
@@ -120,7 +120,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -174,17 +174,17 @@
             
   <div class="section" id="parse-reaction-expressions">
 <h1>Parse reaction expressions<a class="headerlink" href="#parse-reaction-expressions" title="Permalink to this headline">¶</a></h1>
-<p>catynetics has built in a powerful reaction expression parser based on
+<p>scaks has built in a powerful reaction expression parser based on
 Python’s regular expression engines. With the help of reaction parser,
-you can check the site and mass conservation to make sure catynetics can
+you can check the site and mass conservation to make sure scaks can
 receive correct reaction expressions and solve correctly.</p>
-<div class="section" id="species-name-convetions-in-catynetics">
-<h2>Species name convetions in catynetics<a class="headerlink" href="#species-name-convetions-in-catynetics" title="Permalink to this headline">¶</a></h2>
-<p>All species expressions in catynetics consist of two parts connected
-with a underline <code class="docutils literal notranslate"><span class="pre">_</span></code>: species name and site name.</p>
+<div class="section" id="species-name-convetions-in-scaks">
+<h2>Species name convetions in scaks<a class="headerlink" href="#species-name-convetions-in-scaks" title="Permalink to this headline">¶</a></h2>
+<p>All species expressions in scaks consist of two parts connected with a
+underline <code class="docutils literal notranslate"><span class="pre">_</span></code>: species name and site name.</p>
 <p>For example, a <code class="docutils literal notranslate"><span class="pre">CO</span></code> gas molecule adsorbed on a site named <code class="docutils literal notranslate"><span class="pre">s</span></code> can be
 written as <code class="docutils literal notranslate"><span class="pre">CO_s</span></code>.</p>
-<p>For the transition state species in catynetics, it must have a <code class="docutils literal notranslate"><span class="pre">-</span></code>
+<p>For the transition state species in scaks, it must have a <code class="docutils literal notranslate"><span class="pre">-</span></code>
 character indicating a bond like <code class="docutils literal notranslate"><span class="pre">O-O_2s</span></code>.</p>
 <p>Below are some common species expression examples:</p>
 <ul class="simple">
@@ -193,8 +193,8 @@ character indicating a bond like <code class="docutils literal notranslate"><spa
 <li><code class="docutils literal notranslate"><span class="pre">O-O_2t</span></code> A transition state for O2 dissociation on two <code class="docutils literal notranslate"><span class="pre">s</span></code> sites</li>
 </ul>
 </div>
-<div class="section" id="reaction-expression-conventions-in-catynetics">
-<h2>Reaction expression conventions in catynetics<a class="headerlink" href="#reaction-expression-conventions-in-catynetics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="reaction-expression-conventions-in-scaks">
+<h2>Reaction expression conventions in scaks<a class="headerlink" href="#reaction-expression-conventions-in-scaks" title="Permalink to this headline">¶</a></h2>
 <p>Each elementary reaction expression consists of different states:
 initial state, transition state(optional), final state.</p>
 <p>For example, a CO adsorption on a single <code class="docutils literal notranslate"><span class="pre">s</span></code> process can be expressed
@@ -217,16 +217,16 @@ written as:</p>
 </div>
 <div class="section" id="parse-an-elementary-reaction">
 <h2>Parse an elementary reaction<a class="headerlink" href="#parse-an-elementary-reaction" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">catynetics.parser.rxn_parser</span></code> provide three main classes to represent
+<p><code class="docutils literal notranslate"><span class="pre">scaks.parser.rxn_parser</span></code> provide three main classes to represent
 different levels in a reaction expression: <code class="docutils literal notranslate"><span class="pre">RxnEquation</span></code> for reaction
 equation expression, <code class="docutils literal notranslate"><span class="pre">ChemState</span></code>for chemical state and
 <code class="docutils literal notranslate"><span class="pre">ChemFormula</span></code> for chemical formula.</p>
-<p>In this section, we use catynetics reaction parser API to parse
-elementary reaction expression using a O2 dissociation adsorption
-process as an example.</p>
+<p>In this section, we use scaks reaction parser API to parse elementary
+reaction expression using a O2 dissociation adsorption process as an
+example.</p>
 <div class="section" id="create-reaction-equation">
 <h3>Create reaction equation<a class="headerlink" href="#create-reaction-equation" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">catynetics.parsers.rxn_parser</span> <span class="k">import</span> <span class="n">RxnEquation</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scaks.parsers.rxn_parser</span> <span class="k">import</span> <span class="n">RxnEquation</span>
 
 <span class="n">rxn_expression</span> <span class="o">=</span> <span class="s1">&#39;O2_g + 2*_s &lt;-&gt; O-O_2s -&gt; 2O_s&#39;</span>
 
@@ -253,7 +253,7 @@ raised.</p>
 </div>
 <div class="section" id="balance-a-set-of-elementary-reactions">
 <h2>Balance a set of elementary reactions<a class="headerlink" href="#balance-a-set-of-elementary-reactions" title="Permalink to this headline">¶</a></h2>
-<p>Reaction parser in catynetics can help researchers to balance a set of
+<p>Reaction parser in scaks can help researchers to balance a set of
 elementary reactions to obtain the total reaction equation.</p>
 <p>Here we take CO Oxidation as an example, the elementary reactions are
 listed below:</p>
@@ -283,10 +283,10 @@ listed below:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="hub_model.html" class="btn btn-neutral float-right" title="Build a model in catynetics-Hub" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="hub_model.html" class="btn btn-neutral float-right" title="Build a model in scaks-Hub" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="hub_job.html" class="btn btn-neutral" title="Solve model in catynetics-Hub" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="hub_job.html" class="btn btn-neutral" title="Solve model in scaks-Hub" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -317,7 +317,7 @@ listed below:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

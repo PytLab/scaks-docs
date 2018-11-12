@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>correctors.ThermodynamicCorrector &mdash; catynetics catynetics documentation</title>
+  <title>correctors.ThermodynamicCorrector &mdash; scaks scaks documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> catynetics
+            <a href="../index.html" class="icon icon-home"> scaks
           
 
           
@@ -102,11 +102,11 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">correctors.ThermodynamicCorrector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-catynetics.utilities.format_utilities">utilities.format_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#module-scaks.utilities.format_utilities">utilities.format_utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-catynetics.database.thermo_data">datatabase.thermo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.lattice_data">datatabase.lattice_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database.elements_data.html#module-scaks.database.thermo_data">datatabase.thermo_data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
@@ -126,7 +126,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">catynetics</a>
+          <a href="../index.html">scaks</a>
         
       </nav>
 
@@ -181,28 +181,28 @@
   <div class="section" id="correctors-thermodynamiccorrector">
 <h1>correctors.ThermodynamicCorrector<a class="headerlink" href="#correctors-thermodynamiccorrector" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector">
-<em class="property">class </em><code class="descclassname">catynetics.correctors.thermodynamic_corrector.</code><code class="descname">ThermodynamicCorrector</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/correctors/thermodynamic_corrector.html#ThermodynamicCorrector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">catynetics.correctors.corrector_base.CorrectorBase</span></code></p>
+<dt id="scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector">
+<em class="property">class </em><code class="descclassname">scaks.correctors.thermodynamic_corrector.</code><code class="descname">ThermodynamicCorrector</code><span class="sig-paren">(</span><em>owner</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/correctors/thermodynamic_corrector.html#ThermodynamicCorrector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scaks.correctors.corrector_base.CorrectorBase</span></code></p>
 <p>Energy data corrector class</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#catynetics.models.kinetic_model.KineticModel" title="catynetics.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>owner</strong> (<a class="reference internal" href="models.kinetic_model.html#scaks.models.kinetic_model.KineticModel" title="scaks.models.kinetic_model.KineticModel"><em>KineticModel</em></a>) -- The kinetic model that own this solver</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.archive_data">
-<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.archive_data" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.archive_data">
+<code class="descname">archive_data</code><span class="sig-paren">(</span><em>data_name</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.archive_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update data dict and dump it to data file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data_name</strong> (<em>str</em>) -- key in data dict</li>
+<li><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- key in data dict</li>
 <li><strong>data</strong> (<em>any</em>) -- value in data dict</li>
 </ul>
 </td>
@@ -212,16 +212,16 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.correct_relative_energies">
-<code class="descname">correct_relative_energies</code><span class="sig-paren">(</span><em>relative_energies</em>, <em>method='shomate'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/correctors/thermodynamic_corrector.html#ThermodynamicCorrector.correct_relative_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.correct_relative_energies" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.correct_relative_energies">
+<code class="descname">correct_relative_energies</code><span class="sig-paren">(</span><em>relative_energies</em>, <em>method='shomate'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/correctors/thermodynamic_corrector.html#ThermodynamicCorrector.correct_relative_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.correct_relative_energies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to correct given relative energies.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative energies to be corrected</li>
-<li><strong>method</strong> (<em>str</em>) -- Energy correctness method name, could be 'shomate' or 'entropy'</li>
+<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative energies to be corrected</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Energy correctness method name, could be 'shomate' or 'entropy'</li>
 </ul>
 </td>
 </tr>
@@ -230,8 +230,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.entropy_correction">
-<code class="descname">entropy_correction</code><span class="sig-paren">(</span><em>gas_name</em>, <em>m=None</em>, <em>p=None</em>, <em>T=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/correctors/thermodynamic_corrector.html#ThermodynamicCorrector.entropy_correction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.entropy_correction" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.entropy_correction">
+<code class="descname">entropy_correction</code><span class="sig-paren">(</span><em>gas_name</em>, <em>m=None</em>, <em>p=None</em>, <em>T=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/correctors/thermodynamic_corrector.html#ThermodynamicCorrector.entropy_correction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.entropy_correction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get free energy constributions from translational and 
 internal modes of species in <strong>GAS</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -239,9 +239,9 @@ internal modes of species in <strong>GAS</strong>.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>gas_name</strong> (<em>str</em>) -- gas molecular formula</li>
-<li><strong>m</strong> (<em>float</em>) -- absolute molecular mass, species mass by default</li>
-<li><strong>p</strong> (<em>float</em>) -- partial pressure (<strong>bar</strong>), model's pressure by default</li>
+<li><strong>gas_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- gas molecular formula</li>
+<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- absolute molecular mass, species mass by default</li>
+<li><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- partial pressure (<strong>bar</strong>), model's pressure by default</li>
 <li><strong>T</strong> -- temperature, model's temperature by default</li>
 <li><strong>T</strong> -- float</li>
 </ul>
@@ -260,23 +260,23 @@ internal modes of species in <strong>GAS</strong>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.shomate_correction">
-<code class="descname">shomate_correction</code><span class="sig-paren">(</span><em>gas_name</em>, <em>T=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/catynetics/correctors/thermodynamic_corrector.html#ThermodynamicCorrector.shomate_correction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#catynetics.correctors.thermodynamic_corrector.ThermodynamicCorrector.shomate_correction" title="Permalink to this definition">¶</a></dt>
+<dt id="scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.shomate_correction">
+<code class="descname">shomate_correction</code><span class="sig-paren">(</span><em>gas_name</em>, <em>T=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/correctors/thermodynamic_corrector.html#ThermodynamicCorrector.shomate_correction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.correctors.thermodynamic_corrector.ThermodynamicCorrector.shomate_correction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to get energy correction dict for gas in model using Shomate equation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>gas_name</strong> (<em>str</em>) -- The species site name of gas species, e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">CO_g</span></code></li>
-<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
+<li><strong>gas_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The species site name of gas species, e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">CO_g</span></code></li>
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Temperature(K)</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The correction energy value</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></p>
 </td>
 </tr>
 </tbody>
@@ -336,7 +336,7 @@ internal modes of species in <strong>GAS</strong>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'catynetics',
+            VERSION:'scaks',
             LANGUAGE:'Python',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
