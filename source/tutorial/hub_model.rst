@@ -1,10 +1,9 @@
-Build a model in catynetics-Hub
--------------------------------
+Build a model in scaks-Hub
+--------------------------
 
 In this section, we introduce how to build a micro-kinetic model in
-catynetics-Hub. All information needed for model construction are input
-in model panel of catynetics-Hub. There are two main sub-panel in model
-panel:
+scaks-Hub. All information needed for model construction are input in
+model panel of scaks-Hub. There are two main sub-panel in model panel:
 
 1. Reaction Definition panel: input reaction and energy information
 2. Kinetic Model Definition panel: input model conditions and parameters
@@ -26,7 +25,7 @@ would pop up for inputing elementary reaction information.
 
 |image1|
 
-catynetics-Hub also can check the correctness of the input reaction
+scaks-Hub also can check the correctness of the input reaction
 expression and energy values.
 
 Energy barrier is less than reaction energy:

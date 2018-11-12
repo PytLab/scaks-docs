@@ -1,17 +1,17 @@
 Installation
 ============
 
-*catynetics* Installation
+*scaks* Installation
 -------------------------
 
-catynetics can be installed in different ways. In current version, catynetics
+scaks can be installed in different ways. In current version, scaks
 has no C or C++ backend code, therefore it can be easily installed even
 from source code.
 
 Prerequisite
 ~~~~~~~~~~~~
 
-As catynetics provides a higher level Message Passing Interfaces, you need
+As scaks provides a higher level Message Passing Interfaces, you need
 to install an implementation of MPI on your machine before installing
 mpi4py.
 
@@ -24,26 +24,26 @@ Via Pip (Recommended)
 
 .. code:: shell
 
-   pip install catynetics
+   pip install scaks
 
 From source
 ~~~~~~~~~~~
 
 .. code:: shell
 
-   git clone --recursive https://github.com/PytLab/catynetics.git
-   cd catynetics
+   git clone --recursive https://github.com/PytLab/scaks.git
+   cd scaks
    python setup.py install
 
 Installation check
 ~~~~~~~~~~~~~~~~~~
 
 To ensure you have installed correctly on your machine, try to import
-``catynetics`` in Python shell:
+``scaks`` in Python shell:
 
 .. code:: python
 
-   >>> import catynetics
+   >>> import scaks
 
 For developers
 ^^^^^^^^^^^^^^
@@ -53,27 +53,27 @@ repository, just
 
 .. code:: shell
 
-   cd catynetics/tests
-   python catynetics_test.py
+   cd scaks/tests
+   python scaks_test.py
 
-catynetics-Hub Installation
+scaks-Hub Installation
 ---------------------------
 
-Install and run catynetics-Hub example locally
+Install and run scaks-Hub example locally
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Clone the repository:
 
 .. code:: shell
 
-   git clone --recursive git@github.com:PytLab/catynetics-hub.git
+   git clone --recursive git@github.com:PytLab/scaks-hub.git
 
-Run the catynetics-hub:
+Run the scaks-hub:
 
 .. code:: shell
 
-   cd catynetics-hub/example
-   ../catynetics-hub runserver
+   cd scaks-hub/example
+   ../scaks-hub runserver
 
 Your browser will open automatically, if not, open your browser and
 visit http://localhost:5000

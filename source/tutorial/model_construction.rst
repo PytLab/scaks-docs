@@ -1,14 +1,14 @@
-Perhaps the easiest way to get started with your own Micro-kinetic modeling is to have a quick look at a few usage examples. We will take a look at few examples from the simplest CO Oxidation reaction on Pt100 surface using both catynetics API and web GUI.
+Perhaps the easiest way to get started with your own Micro-kinetic modeling is to have a quick look at a few usage examples. We will take a look at few examples from the simplest CO Oxidation reaction on Pt100 surface using both scaks API and web GUI.
 
 Solve a micro-kinetic model
 -----------------------------
 
-`catynetics.models` module provide different model classes for different kinetic model construction(only micro-kinetic model in current version). Model can constructed from either a setup dict data structure for running in interactive shell or a setup input file for submitting a computing job.
+`scaks.models` module provide different model classes for different kinetic model construction(only micro-kinetic model in current version). Model can constructed from either a setup dict data structure for running in interactive shell or a setup input file for submitting a computing job.
 
 Using setup file
 ****************
 
-By providing a set of input files including model definition, energy information, script using catynetics API can parse all those files and run the model automatically.
+By providing a set of input files including model definition, energy information, script using scaks API can parse all those files and run the model automatically.
 
 - :obj:`pt-100.mkm`: Input file for micro-kinetic model information::
 
@@ -59,9 +59,9 @@ By providing a set of input files including model definition, energy information
     Ga.append(0.39)
     dG.append(-0.46)
 
-With these input files prepared, we can use catynetics's API to construct a micro-kinetic model::
+With these input files prepared, we can use scaks's API to construct a micro-kinetic model::
 
-    from catynetics.models.micro_kinetic_model import MicroKineticModel
+    from scaks.models.micro_kinetic_model import MicroKineticModel
 
     model = MicroKineticModel(setup_file='pt-100.mkm')
 
@@ -104,7 +104,7 @@ The model definition dict for CO oxidation on Pt(100) surface could be written a
 
 Construct corresponding micro-kinetic model::
 
-    from catynetics.models.micro_kinetic_model import MicroKineticModel
+    from scaks.models.micro_kinetic_model import MicroKineticModel
     model = MicroKineticModel(setup_dict=model_dict)
 
 Use constructed model to generate file template for energy data input:
@@ -113,7 +113,7 @@ Use constructed model to generate file template for energy data input:
 
    model.generate_absolute_energies_file('./abs_energy.py')
 
-Then catynetics will parse all model information in reaction expressions to create a :obj:`abs_energy.py` with below content in current directory::
+Then scaks will parse all model information in reaction expressions to create a :obj:`abs_energy.py` with below content in current directory::
 
     # Absolute energies for all species.
     absolute_energies = {
@@ -140,7 +140,7 @@ Then catynetics will parse all model information in reaction expressions to crea
 
     model.generate_relative_energies_file('./rel_energy.py')
 
-Then catynetics will parse all model information in reaction expressions to create a :obj:`rel_energy.py` with below content in current directory::
+Then scaks will parse all model information in reaction expressions to create a :obj:`rel_energy.py` with below content in current directory::
 
     # Relative Energies for all elementary reactions.
     Ga, dG = [], []
@@ -159,7 +159,7 @@ Then catynetics will parse all model information in reaction expressions to crea
 
 After inputting energy data in the template file, you can instantialize solver explicitly and put it in micro-kinetic model::
 
-    from catynetics.solvers.steady_state_solver import SteadyStateSolver
+    from scaks.solvers.steady_state_solver import SteadyStateSolver
     
     solver = SteadyStateSolver(model)
     model.set_solver(solver)
@@ -173,16 +173,16 @@ With solver integrated, model can parse data and solve the model::
 Use script to run a job
 ***********************
 
-Besides instantiate model using catynetics API, we provide a simple :obj:`run.py` script to parse those input files and solve the micro-kinetic model automatically, the details of the script::
+Besides instantiate model using scaks API, we provide a simple :obj:`run.py` script to parse those input files and solve the micro-kinetic model automatically, the details of the script::
 
     import logging
     import sys
     import time
 
-    from catynetics.compatutil import subprocess
-    from catynetics.mpicommons import mpi
-    from catynetics.models.micro_kinetic_model import MicroKineticModel
-    from catynetics.utilities.format_utilities import convert_time
+    from scaks.compatutil import subprocess
+    from scaks.mpicommons import mpi
+    from scaks.models.micro_kinetic_model import MicroKineticModel
+    from scaks.utilities.format_utilities import convert_time
 
     # Custom parameters.
     OdeInterval = 0.001          # ODE integration time interval.
@@ -256,7 +256,7 @@ After the solving is finished, new output files are generated in current directo
 - :obj:`data.pkl`: Serialized result data such as turnover frequencies (TOF), steady state coverages and so on. Variable to be dumped is controlled in setup file.
 - :obj:`auto_ode_coverages.py`: A python module file containing ODE integration data
 
-With ODE plotting script in catynetics package, the ODE integration trajectory can be visualized:
+With ODE plotting script in scaks package, the ODE integration trajectory can be visualized:
 
 .. figure:: ../_static/ode_integration.png
    :scale: 60 %

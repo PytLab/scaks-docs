@@ -1,13 +1,13 @@
-Solve model in catynetics-Hub
------------------------------
+Solve model in scaks-Hub
+------------------------
 
-catynetics also has a web application named catynetics-Hub to help
-researcher build and solve micro-kinetic model more easily.
+scaks also has a web application named scaks-Hub to help researcher
+build and solve micro-kinetic model more easily.
 
 File system
 ~~~~~~~~~~~
 
-catynetics-Hub uses a file explorer as the main user interface
+scaks-Hub uses a file explorer as the main user interface
 
 |image0|
 
@@ -19,9 +19,9 @@ and energy data file have already existed.
 
 |image1|
 
-Then you can click the green button to open the job panel.
-catynetics-Hub will read all those files and fill the form in model
-panel automatically.
+Then you can click the green button to open the job panel. scaks-Hub
+will read all those files and fill the form in model panel
+automatically.
 
 |image2|
 
@@ -29,9 +29,9 @@ Run a job
 ~~~~~~~~~
 
 After all inputs prepared, you can click the green Run button to call
-catynetics core to solve current model. Then the running panel will be
-opened and all solving information will be continously updated and
-displayed in the code block.
+scaks core to solve current model. Then the running panel will be opened
+and all solving information will be continously updated and displayed in
+the code block.
 
 The job is running:
 
@@ -44,7 +44,7 @@ The job is finished:
 Generate job report
 ~~~~~~~~~~~~~~~~~~~
 
-As the log information is not very friendly for users, catynetics-Hub
+As the log information is not very friendly for users, scaks-Hub
 provides a report for each completed job. You can click the green
 Generate report buttong, then a report panel will be opened. All related
 results such as ODE integration trajectory, steady state coverages,
