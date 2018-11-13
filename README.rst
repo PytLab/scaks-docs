@@ -1,8 +1,8 @@
-MiKiAC Documentation
+SCAKS Documentation
 ====================
 
-Documentation for `Catynetics`_ (powered by `Sphinx`_)
+Documentation for `SCAKS`_ (powered by `Sphinx`_)
 
-.. _Catynetics: https://github.com/PytLab/catynetics
+.. _SCAKS: https://github.com/PytLab/scaks
 .. _Sphinx: http://www.sphinx-doc.org
 
