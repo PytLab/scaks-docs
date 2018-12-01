@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="Python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="Python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scaks.plugins.analysis &mdash; scaks scaks documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> scaks
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">scaks</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../scaks.html">scaks</a> &raquo;</li>
+        
+      <li>scaks.plugins.analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scaks.plugins.analysis</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">.metaclasses</span> <span class="k">import</span> <span class="n">AnalysisMeta</span>
+
+
+<div class="viewcode-block" id="OnTheFlyAnalysis"><a class="viewcode-back" href="../../../api/plugins.analysis.html#scaks.plugins.analysis.OnTheFlyAnalysis">[docs]</a><span class="k">class</span> <span class="nc">OnTheFlyAnalysis</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">AnalysisMeta</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Class for providing an interface to easily extend and customize the behavior of the on-the-fly analysis in Newton iteration.</span>
+
+<span class="sd">    Attribute:</span>
+
+<span class="sd">        interval(:obj:`int`): The analysis interval in evolution iteration, default </span>
+<span class="sd">                              value is 1 meaning analyze every Newton step.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Analysis interval.</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="OnTheFlyAnalysis.setup"><a class="viewcode-back" href="../../../api/plugins.analysis.html#scaks.plugins.analysis.OnTheFlyAnalysis.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">outer_counter</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Function called right before the start of a new Newton iteration to allow for custom setup of the analysis object.</span>
+
+<span class="sd">        :param model: current micro-kinetic model</span>
+<span class="sd">        :type model: :obj:`scaks.models.MicroKineticModel`</span>
+
+<span class="sd">        :param outer_counter: The outer count number (or the counter for current initial coverages)</span>
+<span class="sd">        :type outer_counter: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="OnTheFlyAnalysis.register_step"><a class="viewcode-back" href="../../../api/plugins.analysis.html#scaks.plugins.analysis.OnTheFlyAnalysis.register_step">[docs]</a>    <span class="k">def</span> <span class="nf">register_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">inner_counter</span><span class="p">,</span> <span class="n">outer_counter</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Function called in each iteration step.</span>
+
+<span class="sd">        :param model: current micro-kinetic model</span>
+<span class="sd">        :type model: :obj:`scaks.models.MicroKineticModel`</span>
+
+<span class="sd">        :param inner_counter: The inner count number (or the counter for current Newton step) :type inner_counter: int</span>
+
+<span class="sd">        :param outer_counter: The outer count number (or the counter for current initial coverages)</span>
+<span class="sd">        :type outer_counter: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="OnTheFlyAnalysis.finalize"><a class="viewcode-back" href="../../../api/plugins.analysis.html#scaks.plugins.analysis.OnTheFlyAnalysis.finalize">[docs]</a>    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">outer_counter</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Called after each Newton iteration to allow for custom finalization and post-processing of the collected data.</span>
+
+<span class="sd">        :param model: current micro-kinetic model</span>
+<span class="sd">        :type model: :obj:`scaks.models.MicroKineticModel`</span>
+
+<span class="sd">        :param outer_counter: The outer count number (or the counter for current initial coverages)</span>
+<span class="sd">        :type outer_counter: int</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zhengjiang Shao.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'scaks',
+            LANGUAGE:'Python',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

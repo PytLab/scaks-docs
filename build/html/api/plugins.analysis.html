@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; scaks scaks documentation</title>
+  <title>plugins.analysis &mdash; scaks scaks documentation</title>
   
 
   
@@ -28,8 +28,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="models.KineticModel" href="models.kinetic_model.html" />
-    <link rel="prev" title="Register hybrid method for Hybrid Newton iteration" href="../tutorial/hybrid_register.html" /> 
+    <link rel="prev" title="plugins.hybrid_methods" href="plugins.hybrid_methods.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -87,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
@@ -111,7 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins.hybrid_methods.html">plugins.hybrid_methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.analysis.html">plugins.analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">plugins.analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -159,13 +158,15 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>API</li>
+          <li><a href="index.html">API</a> &raquo;</li>
+        
+      <li>plugins.analysis</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/api/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/plugins.analysis.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -178,36 +179,77 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="api">
-<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="models.kinetic_model.html">models.KineticModel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="models.micro_kinetic_model.html">models.MicroKineticModel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parsers.rxn_parser.html">parsers.rxn_parser</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parsers.parser_base.html">parsers.ParserBase</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parsers.absolute_energy_parser.html">parsers.AbsoluteEnergyParser</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parsers.relative_energy_parser.html">parsers.RelativeEnergyParser</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parsers.kmc_parser.html">parsers.KMCParser</a></li>
-<li class="toctree-l1"><a class="reference internal" href="solvers.solver_base.html">solvers.SolverBase</a></li>
-<li class="toctree-l1"><a class="reference internal" href="solvers.mean_field_solver.html">solvers.MeanFieldSolver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="solvers.rootfinding_iterators.html">solvers.rootfinding_iterators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="solvers.steady_state_solver.html">solvers.MeanFieldSolver</a></li>
-<li class="toctree-l1"><a class="reference internal" href="correctors.thermodynamic_corrector.html">correctors.ThermodynamicCorrector</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotters.energy_profile_plotter.html">plotters.EnergyProfilePlotter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities.check_utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utilities.html#module-scaks.utilities.coordinate_utilities">utilities.coordinate_utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utilities.html#module-scaks.utilities.format_utilities">utilities.format_utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="database.elements_data.html">datatabase.elements_data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="database.elements_data.html#module-scaks.database.lattice_data">datatabase.lattice_data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="database.elements_data.html#module-scaks.database.thermo_data">datatabase.thermo_data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.hybrid_methods.html">plugins.hybrid_methods</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.analysis.html">plugins.analysis</a></li>
+  <div class="section" id="plugins-analysis">
+<h1>plugins.analysis<a class="headerlink" href="#plugins-analysis" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="scaks.plugins.analysis.OnTheFlyAnalysis">
+<em class="property">class </em><code class="descclassname">scaks.plugins.analysis.</code><code class="descname">OnTheFlyAnalysis</code><a class="reference internal" href="../_modules/scaks/plugins/analysis.html#OnTheFlyAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.plugins.analysis.OnTheFlyAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for providing an interface to easily extend and customize the behavior of the on-the-fly analysis in Newton iteration.</p>
+<p>Attribute:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>interval(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): The analysis interval in evolution iteration, default </dt>
+<dd>value is 1 meaning analyze every Newton step.</dd>
+</dl>
+</div></blockquote>
+<dl class="method">
+<dt id="scaks.plugins.analysis.OnTheFlyAnalysis.finalize">
+<code class="descname">finalize</code><span class="sig-paren">(</span><em>model</em>, <em>outer_counter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/plugins/analysis.html#OnTheFlyAnalysis.finalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.plugins.analysis.OnTheFlyAnalysis.finalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called after each Newton iteration to allow for custom finalization and post-processing of the collected data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.models.MicroKineticModel</span></code>) -- current micro-kinetic model</li>
+<li><strong>outer_counter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- The outer count number (or the counter for current initial coverages)</li>
 </ul>
-</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scaks.plugins.analysis.OnTheFlyAnalysis.register_step">
+<code class="descname">register_step</code><span class="sig-paren">(</span><em>model</em>, <em>inner_counter</em>, <em>outer_counter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/plugins/analysis.html#OnTheFlyAnalysis.register_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.plugins.analysis.OnTheFlyAnalysis.register_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function called in each iteration step.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.models.MicroKineticModel</span></code>) -- current micro-kinetic model</li>
+<li><strong>inner_counter</strong> -- The inner count number (or the counter for current Newton step) :type inner_counter: int</li>
+<li><strong>outer_counter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- The outer count number (or the counter for current initial coverages)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scaks.plugins.analysis.OnTheFlyAnalysis.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><em>model</em>, <em>outer_counter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/plugins/analysis.html#OnTheFlyAnalysis.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.plugins.analysis.OnTheFlyAnalysis.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function called right before the start of a new Newton iteration to allow for custom setup of the analysis object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.models.MicroKineticModel</span></code>) -- current micro-kinetic model</li>
+<li><strong>outer_counter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- The outer count number (or the counter for current initial coverages)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -218,10 +260,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="models.kinetic_model.html" class="btn btn-neutral float-right" title="models.KineticModel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="../tutorial/hybrid_register.html" class="btn btn-neutral" title="Register hybrid method for Hybrid Newton iteration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plugins.hybrid_methods.html" class="btn btn-neutral" title="plugins.hybrid_methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

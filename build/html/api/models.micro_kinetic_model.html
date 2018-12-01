@@ -110,6 +110,8 @@
 <li class="toctree-l2"><a class="reference internal" href="descriptors.descriptors.html">descriptors.descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="descriptors.component_descriptors.html">descriptors.component_descriptors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mpicommons.html">mpicommons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.hybrid_methods.html">plugins.hybrid_methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.analysis.html">plugins.analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -230,9 +232,24 @@ possible value can be 'MDNewton' or 'ConstrainedNewton'</p>
 <p>log_allowed (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): If log output is allowed, default is <cite>True</cite></p>
 <p>TOFs (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Turnover frequencies calculated.</p>
 <p>reversibilities (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Reversibilities calculated.</p>
-<p class="last">error (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Residual errors after iterations.</p>
+<p>error (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Residual errors after iterations.</p>
+<p class="last">analysis (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.plugins.analysis.OnTheFlyAnalysis</span></code>: On-the-fly analysis plugins</p>
 </dd>
 </dl>
+<dl class="method">
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.analysis_register">
+<code class="descname">analysis_register</code><span class="sig-paren">(</span><em>analysis_cls</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/models/micro_kinetic_model.html#MicroKineticModel.analysis_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.analysis_register" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator for analysis regsiter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>analysis_cls</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.plugin_interfaces.OnTheFlyAnalysis</span></code>) -- The analysis to be registered</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="scaks.models.micro_kinetic_model.MicroKineticModel.clear_handlers">
 <code class="descname">clear_handlers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.clear_handlers" title="Permalink to this definition">¶</a></dt>
@@ -264,6 +281,21 @@ all elementary reactions.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.hybrid_method_register">
+<code class="descname">hybrid_method_register</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/models/micro_kinetic_model.html#MicroKineticModel.hybrid_method_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.hybrid_method_register" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator for hybrid method function register to current model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>function</em>) -- A function cooperate with Newton's method to provide a hybrid
+iteration method.</td>
 </tr>
 </tbody>
 </table>

@@ -157,6 +157,7 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
 
 <span class="kn">from</span> <span class="nn">.kinetic_model</span> <span class="k">import</span> <span class="n">KineticModel</span>
 <span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="n">ParameterError</span>
@@ -164,6 +165,7 @@
 <span class="kn">from</span> <span class="nn">..descriptors.descriptors</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">..utilities.profiling_utitlities</span> <span class="k">import</span> <span class="n">do_cprofile</span>
 <span class="kn">from</span> <span class="nn">..compatutil</span> <span class="k">import</span> <span class="n">pickle</span>
+<span class="kn">from</span> <span class="nn">..plugins.analysis</span> <span class="k">import</span> <span class="n">OnTheFlyAnalysis</span>
 
 
 <div class="viewcode-block" id="MicroKineticModel"><a class="viewcode-back" href="../../../api/models.micro_kinetic_model.html#scaks.models.micro_kinetic_model.MicroKineticModel">[docs]</a><span class="k">class</span> <span class="nc">MicroKineticModel</span><span class="p">(</span><span class="n">KineticModel</span><span class="p">):</span>
@@ -228,6 +230,8 @@
 <span class="sd">        reversibilities (:obj:`list` of :obj:`float`): Reversibilities calculated.</span>
 
 <span class="sd">        error (:obj:`list` of :obj:`float`): Residual errors after iterations.</span>
+
+<span class="sd">        analysis (:obj:`list` of :obj:`scaks.plugins.analysis.OnTheFlyAnalysis`: On-the-fly analysis plugins</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># {{{</span>
@@ -254,7 +258,7 @@
     <span class="n">tolerance</span> <span class="o">=</span> <span class="n">Float</span><span class="p">(</span><span class="s2">&quot;tolerance&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
 
     <span class="n">max_rootfinding_iterations</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;max_rootfinding_iterations&quot;</span><span class="p">,</span>
-                                            <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+                                         <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
     <span class="n">ode_buffer_size</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="s2">&quot;ode_buffer_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 
@@ -262,6 +266,9 @@
 
     <span class="c1"># Reference energies used to calculate formation energy.</span>
     <span class="n">ref_energies</span> <span class="o">=</span> <span class="n">RefEnergies</span><span class="p">(</span><span class="s2">&quot;ref_energies&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+
+    <span class="c1"># On-the-fly analysis plugins</span>
+    <span class="n">analysis</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="s1">&#39;analysis&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[],</span> <span class="n">entry_type</span><span class="o">=</span><span class="n">OnTheFlyAnalysis</span><span class="p">)</span>
     <span class="c1"># }}}</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -422,6 +429,34 @@
                                   <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
                                   <span class="n">relative_energies</span><span class="o">=</span><span class="n">relative_energies</span><span class="p">)</span></div>
         <span class="c1"># }}}</span>
+
+<div class="viewcode-block" id="MicroKineticModel.hybrid_method_register"><a class="viewcode-back" href="../../../api/models.micro_kinetic_model.html#scaks.models.micro_kinetic_model.MicroKineticModel.hybrid_method_register">[docs]</a>    <span class="k">def</span> <span class="nf">hybrid_method_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; A decorator for hybrid method function register to current model</span>
+
+<span class="sd">        :param fn: A function cooperate with Newton&#39;s method to provide a hybrid</span>
+<span class="sd">                   iteration method.</span>
+<span class="sd">        :type fn: function</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">_hybrid_method</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">MicroKineticModel</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;model must be a MicroKineticModel object&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hybrid_method</span> <span class="o">=</span> <span class="n">_hybrid_method</span></div>
+
+<div class="viewcode-block" id="MicroKineticModel.analysis_register"><a class="viewcode-back" href="../../../api/models.micro_kinetic_model.html#scaks.models.micro_kinetic_model.MicroKineticModel.analysis_register">[docs]</a>    <span class="k">def</span> <span class="nf">analysis_register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_cls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; A decorator for analysis regsiter.</span>
+
+<span class="sd">        :param analysis_cls: The analysis to be registered</span>
+<span class="sd">        :type analysis_cls: :obj:`scaks.plugin_interfaces.OnTheFlyAnalysis`</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">analysis_cls</span><span class="p">,</span> <span class="n">OnTheFlyAnalysis</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;analysis class must be subclass of OnTheFlyAnalysis&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># Add analysis instance to model</span>
+        <span class="n">analysis</span> <span class="o">=</span> <span class="n">analysis_cls</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span></div>
 
     <span class="nd">@Property</span>
     <span class="k">def</span> <span class="nf">model_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

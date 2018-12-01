@@ -160,8 +160,8 @@
 <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">norm</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">fsolve</span>
 
-<span class="kn">from</span> <span class="nn">..descriptors.descriptors</span> <span class="k">import</span> <span class="n">Memoized</span><span class="p">,</span> <span class="n">Property</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">file_header</span>
+<span class="kn">from</span> <span class="nn">..descriptors.descriptors</span> <span class="k">import</span> <span class="n">Memoized</span><span class="p">,</span> <span class="n">Property</span>
 <span class="kn">from</span> <span class="nn">..errors.error</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">..utilities.format_utilities</span> <span class="k">import</span> <span class="n">get_list_string</span>
 <span class="kn">from</span> <span class="nn">..parsers.rxn_parser</span> <span class="k">import</span> <span class="o">*</span>
@@ -950,7 +950,7 @@
                 <span class="c1"># Good initial coverages.</span>
                 <span class="k">if</span> <span class="n">f_resid</span><span class="p">(</span><span class="n">c0</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">tolerance</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">single_pt</span><span class="p">:</span>
                     <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span> <span class="o">=</span> <span class="n">c0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span> <span class="o">=</span> <span class="n">c0</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Good initial guess: </span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c0</span><span class="p">]))</span>
 
@@ -1007,6 +1007,10 @@
                                        <span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;residual&#39;</span><span class="p">,</span> <span class="s1">&#39;norm&#39;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
 
+                <span class="c1"># Setup analysis plugins</span>
+                <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">analysis</span><span class="p">:</span>
+                    <span class="n">ap</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="n">icvg_counter</span><span class="p">)</span>
+
                 <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">fx</span> <span class="ow">in</span> <span class="n">newton_iterator</span><span class="p">:</span>  <span class="c1"># inner loop</span>
                     <span class="n">nt_counter</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">resid</span> <span class="o">=</span> <span class="n">f_resid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -1034,7 +1038,7 @@
                                                        <span class="n">nt_counter</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">resid</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
                                 <span class="c1"># log steady state coverages</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">__log_sscvg</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">)</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span> <span class="o">=</span> <span class="n">x</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span> <span class="o">=</span> <span class="n">x</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_error</span> <span class="o">=</span> <span class="n">error</span>
                                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;error = </span><span class="si">%e</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">resid</span><span class="p">))</span>
@@ -1061,50 +1065,57 @@
                         <span class="n">cancel</span> <span class="o">=</span> <span class="kc">False</span>
                         <span class="k">break</span>
 
-                    <span class="c1"># residual is almost stagnated</span>
-<span class="c1">#                     elif abs(error - old_error) &lt; self._stable_criterion:</span>
-<span class="c1">#                         if self._owner.log_allowed:</span>
-<span class="c1">#                             self.__logger.info(&#39;%-10s%10d%23.10e%23.10e&#39;, &#39;stable&#39;,</span>
-<span class="c1">#                                                nt_counter, float(resid), float(error))</span>
-<span class="c1">#                             self.__logger.warning(&#39;stable root: %s&#39;, str(map(float, x)))</span>
-<span class="c1">#                             self.__logger.debug(&#39; difference: %-24.16e&#39;, abs(error - old_error))</span>
-<span class="c1">#                         # Jump out of loop for this c0.</span>
-<span class="c1">#                         cancel = False</span>
-<span class="c1">#                         break</span>
-
                     <span class="n">old_error</span> <span class="o">=</span> <span class="n">error</span>  <span class="c1"># set old error to be compared in next loop</span>
-                    <span class="c1">#self._coverage = x</span>
-                    <span class="c1">#self._error = error</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span> <span class="o">=</span> <span class="n">x</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error</span> <span class="o">=</span> <span class="n">error</span>
 
-                    <span class="c1"># archive data every 100 steps</span>
-<span class="c1">#                    if nt_counter % 100 == 0:</span>
-<span class="c1">#                        self.archive_data(&#39;iter_coverage&#39;, x)</span>
-<span class="c1">#                        self.archive_data(&#39;iter_error&#39;, error)</span>
+                    <span class="c1"># On-the-fly analysis plugins</span>
+                    <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">analysis</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">inner_counter</span> <span class="o">%</span> <span class="n">ap</span><span class="o">.</span><span class="n">interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">ap</span><span class="o">.</span><span class="n">register_step</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span>
+                                             <span class="n">inner_counter</span><span class="p">,</span>
+                                             <span class="n">outer_counter</span><span class="p">)</span>
+
                 <span class="c1">#####    Sub loop for a c0 END    #####</span>
 
                 <span class="c1"># Change the initial guess(c0).</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">cancel</span><span class="p">:</span>
                     <span class="c1"># get a new initial guess coverage</span>
-                    <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modify_init_guess</span><span class="p">()</span>
-                    <span class="n">icvg_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="c1">#c0 = self.modify_init_guess()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">hybrid_method</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;No hybrid method registered for hybrid iteration&#39;</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">hybrid_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="n">icvg_counter</span><span class="p">)</span>
+                        <span class="n">icvg_counter</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="c1"># }}}</span>
             <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;ZeroDivisionError is catched !&quot;</span><span class="p">)</span>
-                <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modify_init_guess</span><span class="p">()</span>
-                <span class="n">icvg_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1">#c0 = self.modify_init_guess()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">hybrid_method</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;No hybrid method registered for hybrid iteration&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">hybrid_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="n">icvg_counter</span><span class="p">)</span>
+                    <span class="n">icvg_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">analysis</span><span class="p">:</span>
+                    <span class="n">ap</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">icvg_counter</span><span class="p">)</span>
 
         <span class="c1">##############    main loop end   #################</span>
 
         <span class="k">if</span> <span class="n">converged</span><span class="p">:</span>
             <span class="c1"># Archive converged root and error.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data</span><span class="p">(</span><span class="s1">&#39;steady_state_coverages&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">archive_data</span><span class="p">(</span><span class="s1">&#39;steady_state_coverages&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">archive_data</span><span class="p">(</span><span class="s1">&#39;steady_state_error&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_good_guess</span> <span class="o">=</span> <span class="n">c0</span>
 
             <span class="c1"># Archive initial guess.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">archive_data</span><span class="p">(</span><span class="s1">&#39;initial_guess&#39;</span><span class="p">,</span> <span class="n">c0</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span></div>
     <span class="c1"># }}}</span>
 
     <span class="k">def</span> <span class="nf">__log_sscvg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cvgs_tuple</span><span class="p">,</span> <span class="n">ads_names</span><span class="p">):</span>
@@ -1210,8 +1221,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">55</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Get original TOF for the gas speices.</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_coverage&quot;</span><span class="p">):</span>
-            <span class="n">init_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverage</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_coverages&quot;</span><span class="p">):</span>
+            <span class="n">init_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Converged coverages are needed to calculate XRC, &quot;</span> <span class="o">+</span>
                    <span class="s2">&quot;so try to get steady state coverages first.&quot;</span><span class="p">)</span>
@@ -1514,7 +1525,6 @@
         <span class="sd">&quot;&quot;&quot; Query function for good initial coverages.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_good_guess</span></div>
-
 </pre></div>
 
            </div>

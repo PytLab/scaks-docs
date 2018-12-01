@@ -22,4 +22,6 @@ API
    descriptors.descriptors
    descriptors.component_descriptors
    mpicommons
+   plugins.hybrid_methods
+   plugins.analysis
 

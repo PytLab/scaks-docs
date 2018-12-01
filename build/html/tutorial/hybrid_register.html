@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>[Animation] Run a job in scaks-Hub &mdash; scaks scaks documentation</title>
+  <title>Register hybrid method for Hybrid Newton iteration &mdash; scaks scaks documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Register hybrid method for Hybrid Newton iteration" href="hybrid_register.html" />
-    <link rel="prev" title="Build a model in scaks-Hub" href="hub_model.html" /> 
+    <link rel="next" title="API" href="../api/index.html" />
+    <link rel="prev" title="[Animation] Run a job in scaks-Hub" href="hub_animation.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -91,8 +91,8 @@
 <li class="toctree-l2"><a class="reference internal" href="hub_job.html">Solve model in scaks-Hub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rxn_parsing.html">Parse reaction expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hub_model.html">Build a model in scaks-Hub</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">[Animation] Run a job in scaks-Hub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hybrid_register.html">Register hybrid method for Hybrid Newton iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hub_animation.html">[Animation] Run a job in scaks-Hub</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Register hybrid method for Hybrid Newton iteration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
@@ -143,13 +143,13 @@
         
           <li><a href="index.html">Tutorial</a> &raquo;</li>
         
-      <li>[Animation] Run a job in scaks-Hub</li>
+      <li>Register hybrid method for Hybrid Newton iteration</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorial/hub_animation.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/tutorial/hybrid_register.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -162,35 +162,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="animation-run-a-job-in-scaks-hub">
-<h1>[Animation] Run a job in scaks-Hub<a class="headerlink" href="#animation-run-a-job-in-scaks-hub" title="Permalink to this headline">¶</a></h1>
-<p>Here we use GIF animiation to show operations for running a job in
-scaks-Hub.</p>
-<ul class="simple">
-<li>File system in scaks-Hub</li>
-</ul>
-<p><img alt="image0" src="../_images/file_system.gif" /></p>
-<ul class="simple">
-<li>Open an existing job and edit reactions in Reaction Definition panel</li>
-</ul>
-<p><img alt="image1" src="../_images/reaction_panel.gif" /></p>
-<ul class="simple">
-<li>Visualize energy profile for different elementary reaction set</li>
-</ul>
-<p><img alt="image2" src="../_images/energy_profile.gif" /></p>
-<ul class="simple">
-<li>Edit an existing reaction, scaks-Hub can parse it and do conservation
-check</li>
-</ul>
-<p><img alt="image3" src="../_images/reaction_parsing.gif" /></p>
-<ul class="simple">
-<li>Set all model parameters and run a job to solve the model</li>
-</ul>
-<p><img alt="image4" src="../_images/run_job.gif" /></p>
-<ul class="simple">
-<li>After the job is completed, generate a job report for that run</li>
-</ul>
-<p><img alt="image5" src="../_images/report.gif" /></p>
+  <div class="section" id="register-hybrid-method-for-hybrid-newton-iteration">
+<h1>Register hybrid method for Hybrid Newton iteration<a class="headerlink" href="#register-hybrid-method-for-hybrid-newton-iteration" title="Permalink to this headline">¶</a></h1>
+<p>SCAKS supports more Pythonic way to register your own hybrid method to
+our Hybrid Newton iteration flow.</p>
+<p>SCAKS provides a <code class="docutils literal notranslate"><span class="pre">hybrid_method_register</span></code> Python decorator for you to
+define and register your custom hybrid method to generate new initial
+coverages for next Newton’s iteration. For example, if you have create a
+micro-kinetc model <code class="docutils literal notranslate"><span class="pre">model</span></code>, you can</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@model</span><span class="o">.</span><span class="n">hybrid_method_register</span>
+<span class="k">def</span> <span class="nf">ODE_integration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Use ODE integration to get new initial coverages...&#39;</span><span class="p">)</span>
+
+    <span class="n">end</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">span</span> <span class="o">=</span> <span class="mf">1e-2</span>
+    <span class="n">init_cvgs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">coverages</span>
+
+    <span class="n">new_cvgs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">solve_ode</span><span class="p">(</span><span class="n">time_end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+                                      <span class="n">time_span</span><span class="o">=</span><span class="n">span</span><span class="p">,</span>
+                                      <span class="n">initial_cvgs</span><span class="o">=</span><span class="n">init_cvgs</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;generate new initial coverages - success&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_cvgs</span>
+</pre></div>
+</div>
+<p>Here there are two arguments for any hybrid method:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">model</span></code>: current micro-kinetic model instance You can obtain
+different components like parser, solver … to give you essential data
+for new coverages guess.</li>
+<li><code class="docutils literal notranslate"><span class="pre">N</span></code>: hybrid method attemp times Sometimes the coverages guess is
+related to the guess attemp time, e.g.&nbsp;the ODE integration strategy,
+<code class="docutils literal notranslate"><span class="pre">N</span></code> could be used for this purpose.</li>
+</ol>
+<p>The return value must be a list containing new coverages guess.</p>
+<p>Then when the model starts to run, the registered hybrid method would be
+invoked everytime the Newton’s method fails to converge.</p>
 </div>
 
 
@@ -201,10 +211,10 @@ check</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="hybrid_register.html" class="btn btn-neutral float-right" title="Register hybrid method for Hybrid Newton iteration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="hub_model.html" class="btn btn-neutral" title="Build a model in scaks-Hub" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="hub_animation.html" class="btn btn-neutral" title="[Animation] Run a job in scaks-Hub" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

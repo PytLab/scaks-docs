@@ -9,4 +9,5 @@ Tutorial
    rxn_parsing
    hub_model
    hub_animation
+   hybrid_register
 
