@@ -192,15 +192,15 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>setup_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- kinetic model set up file</li>
-<li><strong>setup_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- A dictionary contains essential setup parameters for kinetic model.</li>
-<li><strong>logger_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level</li>
-<li><strong>file_handler_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level for file handler</li>
-<li><strong>console_handler_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level for console handler</li>
+<li><strong>setup_file</strong> (<em>int</em>) -- kinetic model set up file</li>
+<li><strong>setup_dict</strong> (<em>dict</em>) -- A dictionary contains essential setup parameters for kinetic model.</li>
+<li><strong>logger_level</strong> (<em>int</em>) -- logging level</li>
+<li><strong>file_handler_level</strong> (<em>int</em>) -- logging level for file handler</li>
+<li><strong>console_handler_level</strong> (<em>int</em>) -- logging level for console handler</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -212,28 +212,29 @@
 </div>
 <dl class="docutils">
 <dt>Attributes:</dt>
-<dd><p class="first">decimal_precision (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Data precision, default value is 100</p>
-<p>perturbation_size (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Perturbation size for numerical jacobian matrix,
+<dd><p class="first">decimal_precision (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Data precision, default value is 100</p>
+<p>perturbation_size (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Perturbation size for numerical jacobian matrix,
 default value is 0.01</p>
-<p>perturbation_direction (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Direction of perturbation, <code class="xref py py-obj docutils literal notranslate"><span class="pre">left</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">right</span></code>,
+<p>perturbation_direction (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Direction of perturbation, <code class="xref py py-obj docutils literal notranslate"><span class="pre">left</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">right</span></code>,
 default is <code class="xref py py-obj docutils literal notranslate"><span class="pre">'right'</span></code></p>
-<p>archived_variables (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Archived variables. Possible values:
+<p>archived_variables (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Archived variables. Possible values:
 'initial_guess', 'steady_state_coverages', 'steady_state_error', 'rates',
 'net_rates', 'reversibilities', 'tofs'</p>
-<p>numerical_representation (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Numerical representation method,
+<p>numerical_representation (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Numerical representation method,
 value could be 'mpmath' or 'sympy'.</p>
-<p>rootfinding(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Rootfinding iterator type, default value is 'MDNewton',
+<p>rootfinding(<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Rootfinding iterator type, default value is 'MDNewton',
 possible value can be 'MDNewton' or 'ConstrainedNewton'</p>
-<p>tolerance (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Iteration tolerance, default is 1e-8</p>
-<p>max_rootfinding_iterations (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Max iteraction steps, default is 100</p>
-<p>ode_buffer_size (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Ode integration buffer size, default is 500</p>
-<p>ode_output_interval (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Ode ouptut interval, default is 200</p>
-<p>data_file (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Filename for data store, default is 'data.pkl'</p>
-<p>log_allowed (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): If log output is allowed, default is <cite>True</cite></p>
-<p>TOFs (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Turnover frequencies calculated.</p>
-<p>reversibilities (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Reversibilities calculated.</p>
-<p>error (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Residual errors after iterations.</p>
-<p class="last">analysis (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.plugins.analysis.OnTheFlyAnalysis</span></code>: On-the-fly analysis plugins</p>
+<p>tolerance (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Iteration tolerance, default is 1e-8</p>
+<p>max_rootfinding_iterations (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Max iteraction steps, default is 100</p>
+<p>ode_buffer_size (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Ode integration buffer size, default is 500</p>
+<p>ode_output_interval (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): Ode ouptut interval, default is 200</p>
+<p>data_file (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Filename for data store, default is 'data.pkl'</p>
+<p>log_allowed (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): If log output is allowed, default is <cite>True</cite></p>
+<p>TOFs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Turnover frequencies calculated.</p>
+<p>reversibilities (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Reversibilities calculated.</p>
+<p>error (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Residual errors after iterations.</p>
+<p>hybrid_method (<code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code>): Hybrid function for initial coverages guess.</p>
+<p class="last">analysis (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <a class="reference internal" href="plugins.analysis.html#scaks.plugins.analysis.OnTheFlyAnalysis" title="scaks.plugins.analysis.OnTheFlyAnalysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.plugins.analysis.OnTheFlyAnalysis</span></code></a>: On-the-fly analysis plugins</p>
 </dd>
 </dl>
 <dl class="method">
@@ -265,7 +266,7 @@ for all species(including sites).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
 </tr>
 </tbody>
 </table>
@@ -280,7 +281,25 @@ all elementary reactions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="scaks.models.micro_kinetic_model.MicroKineticModel.hybrid_method">
+<em class="property">static </em><code class="descname">hybrid_method</code><span class="sig-paren">(</span><em>model</em>, <em>N</em><span class="sig-paren">)</span><a class="headerlink" href="#scaks.models.micro_kinetic_model.MicroKineticModel.hybrid_method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hybrid method using ODE integration</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.models.MicroKineticModel</span></code>) -- current micro-kinetic model</li>
+<li><strong>N</strong> (<em>int</em>) -- ODE integration attemp times</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -311,8 +330,8 @@ to get steady state coverages and turnover frequencies (TOF).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>init_cvgs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) -- Initial guess for coverages</li>
-<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative energies for all elementary reactions.</li>
+<li><strong>init_cvgs</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) -- Initial guess for coverages</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative energies for all elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -328,15 +347,15 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fsolve</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- use scipy.optimize.fsolve to get low-precision root or not</li>
-<li><strong>coarse_guess</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- use fsolve to do initial coverages preprocessing or not</li>
-<li><strong>XRC</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- calculate degree of rate control or nor</li>
-<li><strong>epsilon</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- the change of energy for XRC calculation, default is 10-5.</li>
-<li><strong>product_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- Production name of the model. e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">'CH3OH_g'</span></code></li>
+<li><strong>fsolve</strong> (<em>bool</em>) -- use scipy.optimize.fsolve to get low-precision root or not</li>
+<li><strong>coarse_guess</strong> (<em>bool</em>) -- use fsolve to do initial coverages preprocessing or not</li>
+<li><strong>XRC</strong> (<em>bool</em>) -- calculate degree of rate control or nor</li>
+<li><strong>epsilon</strong> (<em>float</em>) -- the change of energy for XRC calculation, default is 10-5.</li>
+<li><strong>product_name</strong> (<em>str</em>) -- Production name of the model. e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre">'CH3OH_g'</span></code></li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -366,15 +385,15 @@ e.g. <code class="xref py py-obj docutils literal notranslate"><span class="pre"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>handler_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- logger handler name</li>
-<li><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level</li>
+<li><strong>handler_type</strong> (<em>str</em>) -- logger handler name</li>
+<li><strong>level</strong> (<em>int</em>) -- logging level</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Old logging level of the handler</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
 </td>
 </tr>
 </tbody>

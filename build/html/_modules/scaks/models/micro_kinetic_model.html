@@ -166,6 +166,7 @@
 <span class="kn">from</span> <span class="nn">..utilities.profiling_utitlities</span> <span class="k">import</span> <span class="n">do_cprofile</span>
 <span class="kn">from</span> <span class="nn">..compatutil</span> <span class="k">import</span> <span class="n">pickle</span>
 <span class="kn">from</span> <span class="nn">..plugins.analysis</span> <span class="k">import</span> <span class="n">OnTheFlyAnalysis</span>
+<span class="kn">from</span> <span class="nn">..plugins.hybrid_methods</span> <span class="k">import</span> <span class="n">ODE_integration</span>
 
 
 <div class="viewcode-block" id="MicroKineticModel"><a class="viewcode-back" href="../../../api/models.micro_kinetic_model.html#scaks.models.micro_kinetic_model.MicroKineticModel">[docs]</a><span class="k">class</span> <span class="nc">MicroKineticModel</span><span class="p">(</span><span class="n">KineticModel</span><span class="p">):</span>
@@ -231,6 +232,8 @@
 
 <span class="sd">        error (:obj:`list` of :obj:`float`): Residual errors after iterations.</span>
 
+<span class="sd">        hybrid_method (:obj:`function`): Hybrid function for initial coverages guess.</span>
+
 <span class="sd">        analysis (:obj:`list` of :obj:`scaks.plugins.analysis.OnTheFlyAnalysis`: On-the-fly analysis plugins</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -266,6 +269,8 @@
 
     <span class="c1"># Reference energies used to calculate formation energy.</span>
     <span class="n">ref_energies</span> <span class="o">=</span> <span class="n">RefEnergies</span><span class="p">(</span><span class="s2">&quot;ref_energies&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+
+    <span class="n">hybrid_method</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">ODE_integration</span><span class="p">)</span>
 
     <span class="c1"># On-the-fly analysis plugins</span>
     <span class="n">analysis</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="s1">&#39;analysis&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[],</span> <span class="n">entry_type</span><span class="o">=</span><span class="n">OnTheFlyAnalysis</span><span class="p">)</span>
@@ -380,9 +385,7 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_allowed</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Do ODE integration to get initial guess...&#39;</span><span class="p">)</span>
-            <span class="n">ode_traj</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve_ode</span><span class="p">()</span>
-            <span class="n">init_cvgs</span> <span class="o">=</span> <span class="n">ode_traj</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Use model</span><span class="se">\&#39;</span><span class="s1">s hybrid method to guess initial coverages&#39;</span><span class="p">)</span>
 
         <span class="c1"># Solve steady state coverages.</span>
         <span class="c1"># Use scipy.optimize.fsolve or not (fast but low-precision).</span>

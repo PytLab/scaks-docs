@@ -97,6 +97,8 @@
 <li class="toctree-l2"><a class="reference internal" href="rxn_parsing.html">Parse reaction expressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hub_model.html">Build a model in scaks-Hub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hub_animation.html">[Animation] Run a job in scaks-Hub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid_register.html">Register hybrid method for Hybrid Newton iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Define your own on-the-fly analysis plugin</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
@@ -246,7 +248,7 @@
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">rxn_expressions</span></code>: All elementary reaction expressions</li>
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">species_definitions</span></code>: Species information in reaction path such as gas name and partial pressure, adsorption site types and total coverages.</li>
 <li><code class="xref py py-obj docutils literal notranslate"><span class="pre">temperature</span></code>: Reaction temperation in K</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/parser.html#module-parser" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parser</span></code></a>: The parser name for data and input file parsing</li>
+<li><code class="xref py py-obj docutils literal notranslate"><span class="pre">parser</span></code>: The parser name for data and input file parsing</li>
 </ul>
 <p>The model definition dict for CO oxidation on Pt(100) surface could be written as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>

@@ -908,7 +908,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coarse_steady_state_cvgs</span><span class="p">(</span><span class="n">c0</span><span class="p">,</span> <span class="n">relative_energies</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SteadyStateSolver.get_steady_state_cvgs"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_steady_state_cvgs">[docs]</a>    <span class="k">def</span> <span class="nf">get_steady_state_cvgs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">single_pt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SteadyStateSolver.get_steady_state_cvgs"><a class="viewcode-back" href="../../../api/solvers.steady_state_solver.html#scaks.solvers.steady_state_solver.SteadyStateSolver.get_steady_state_cvgs">[docs]</a>    <span class="k">def</span> <span class="nf">get_steady_state_cvgs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">single_pt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">relative_energies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Function to get steady state coverages.</span>
 
 <span class="sd">        Expect an inital coverages tuple, use Newton Method to solving nonlinear equations, return steady state coverages, if converged.</span>
@@ -927,6 +927,8 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># {{{</span>
+        <span class="k">if</span> <span class="n">c0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">hybrid_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="c1"># Intial coverage must have physical meaning.</span>
         <span class="n">c0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__constrain_coverages</span><span class="p">(</span><span class="n">c0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__initial_guess</span> <span class="o">=</span> <span class="n">c0</span>
@@ -1071,10 +1073,10 @@
 
                     <span class="c1"># On-the-fly analysis plugins</span>
                     <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">analysis</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">inner_counter</span> <span class="o">%</span> <span class="n">ap</span><span class="o">.</span><span class="n">interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">nt_counter</span> <span class="o">%</span> <span class="n">ap</span><span class="o">.</span><span class="n">interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="n">ap</span><span class="o">.</span><span class="n">register_step</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span>
-                                             <span class="n">inner_counter</span><span class="p">,</span>
-                                             <span class="n">outer_counter</span><span class="p">)</span>
+                                             <span class="n">nt_counter</span><span class="p">,</span>
+                                             <span class="n">icvg_counter</span><span class="p">)</span>
 
                 <span class="c1">#####    Sub loop for a c0 END    #####</span>
 
@@ -1102,7 +1104,7 @@
                     <span class="n">icvg_counter</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">finally</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">ap</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">analysis</span><span class="p">:</span>
-                    <span class="n">ap</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">icvg_counter</span><span class="p">)</span>
+                    <span class="n">ap</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="p">,</span> <span class="n">icvg_counter</span><span class="p">)</span>
 
         <span class="c1">##############    main loop end   #################</span>
 
@@ -1518,7 +1520,10 @@
     <span class="k">def</span> <span class="nf">coverages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Query function for converaged coverages.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coverages</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">adsorbate_names</span><span class="p">)</span>
 
     <span class="nd">@Property</span>
     <span class="k">def</span> <span class="nf">good_guess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

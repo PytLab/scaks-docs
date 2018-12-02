@@ -191,11 +191,11 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>setup_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- kinetic model set up file</li>
-<li><strong>setup_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- A dictionary contains essential setup parameters for kinetic model</li>
-<li><strong>logger_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level for logger</li>
-<li><strong>file_handler_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level for file handler</li>
-<li><strong>console_handler_level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level for console handler</li>
+<li><strong>setup_file</strong> (<em>str</em>) -- kinetic model set up file</li>
+<li><strong>setup_dict</strong> (<em>dict</em>) -- A dictionary contains essential setup parameters for kinetic model</li>
+<li><strong>logger_level</strong> (<em>int</em>) -- logging level for logger</li>
+<li><strong>file_handler_level</strong> (<em>int</em>) -- logging level for file handler</li>
+<li><strong>console_handler_level</strong> (<em>int</em>) -- logging level for console handler</li>
 </ul>
 </td>
 </tr>
@@ -208,24 +208,24 @@
 </div>
 <dl class="docutils">
 <dt>Attributes:</dt>
-<dd><p class="first">setup_file(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): kinetic model setup file</p>
-<p>setup_dict(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): A dictionary contains essnetial setup parameters for kinetic model</p>
-<p>logger_level(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): The logging level for built-in logger</p>
-<p>file_handler_level(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): The logging level for file handler</p>
-<p>console_handler_level(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): The logging level for console handler</p>
-<p>parser(<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a>): Kinetic Model parser,
+<dd><p class="first">setup_file(<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): kinetic model setup file</p>
+<p>setup_dict(<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): A dictionary contains essnetial setup parameters for kinetic model</p>
+<p>logger_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for built-in logger</p>
+<p>file_handler_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for file handler</p>
+<p>console_handler_level(<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The logging level for console handler</p>
+<p>parser(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model parser,
 possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.parsers.RelativeEnergyParser</span></code>,
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.parsers.AbsoluteEnergyParser</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.parsers.KMCParser</span></code></p>
-<p>solver(<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a>): Kinetic Model solver,
+<p>solver(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model solver,
 possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.solvers.SteadyStateSolver</span></code>,
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">scaks.solvers.KMCSolver</span></code></p>
-<p>corrector(<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a>): Kinetic Model data corrector,
+<p>corrector(<code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code>): Kinetic Model data corrector,
 possible type could be <code class="xref py py-obj docutils literal notranslate"><span class="pre">ThermodynamicCorrector</span></code></p>
-<p>temperature(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Environment temperature in K, default is 298.0K</p>
-<p>rxn_expressions(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Reaction expressions for elementary reactions,
+<p>temperature(<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>): Environment temperature in K, default is 298.0K</p>
+<p>rxn_expressions(<code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code> of <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Reaction expressions for elementary reactions,
 default is []</p>
-<p>species_definitions(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): All species definition in kinetic model after parsing</p>
-<p class="last">rate_algo(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Algorithm for rate calculation, could be 'TST' for
+<p>species_definitions(<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): All species definition in kinetic model after parsing</p>
+<p class="last">rate_algo(<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Algorithm for rate calculation, could be 'TST' for
 transition state theory or 'CT' for collision theory, default value is 'TST'</p>
 </dd>
 </dl>
@@ -256,7 +256,7 @@ for all species(including sites).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of absolute energy input file, default value is 'abs_energy.py'.</td>
 </tr>
 </tbody>
 </table>
@@ -271,7 +271,7 @@ all elementary reactions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) -- The name of relative input file, default value is 'rel_energy.py'.</td>
 </tr>
 </tbody>
 </table>
@@ -306,15 +306,15 @@ all elementary reactions.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>handler_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- logger handler name</li>
-<li><strong>level</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) -- logging level</li>
+<li><strong>handler_type</strong> (<em>str</em>) -- logger handler name</li>
+<li><strong>level</strong> (<em>int</em>) -- logging level</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Old logging level of the handler</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
 </td>
 </tr>
 </tbody>

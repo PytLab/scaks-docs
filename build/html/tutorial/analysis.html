@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Build a model in scaks-Hub &mdash; scaks scaks documentation</title>
+  <title>Define your own on-the-fly analysis plugin &mdash; scaks scaks documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="[Animation] Run a job in scaks-Hub" href="hub_animation.html" />
-    <link rel="prev" title="Parse reaction expressions" href="rxn_parsing.html" /> 
+    <link rel="next" title="API" href="../api/index.html" />
+    <link rel="prev" title="Register hybrid method for Hybrid Newton iteration" href="hybrid_register.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -90,19 +90,10 @@
 <li class="toctree-l2"><a class="reference internal" href="model_construction.html">Solve a micro-kinetic model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hub_job.html">Solve model in scaks-Hub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rxn_parsing.html">Parse reaction expressions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Build a model in scaks-Hub</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#reaction-definition-panel">Reaction Definition panel</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#add-new-elementary-reaction">Add new elementary reaction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#edit-an-existing-reaction">Edit an existing reaction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#visualize-energy-profile">Visualize energy profile</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#kinetic-definition-panel">Kinetic Definition panel</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="hub_model.html">Build a model in scaks-Hub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hub_animation.html">[Animation] Run a job in scaks-Hub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hybrid_register.html">Register hybrid method for Hybrid Newton iteration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html">Define your own on-the-fly analysis plugin</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Define your own on-the-fly analysis plugin</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
@@ -153,13 +144,13 @@
         
           <li><a href="index.html">Tutorial</a> &raquo;</li>
         
-      <li>Build a model in scaks-Hub</li>
+      <li>Define your own on-the-fly analysis plugin</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorial/hub_model.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/tutorial/analysis.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,54 +163,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="build-a-model-in-scaks-hub">
-<h1>Build a model in scaks-Hub<a class="headerlink" href="#build-a-model-in-scaks-hub" title="Permalink to this headline">¶</a></h1>
-<p>In this section, we introduce how to build a micro-kinetic model in
-scaks-Hub. All information needed for model construction are input in
-model panel of scaks-Hub. There are two main sub-panel in model panel:</p>
+  <div class="section" id="define-your-own-on-the-fly-analysis-plugin">
+<h1>Define your own on-the-fly analysis plugin<a class="headerlink" href="#define-your-own-on-the-fly-analysis-plugin" title="Permalink to this headline">¶</a></h1>
+<p>For more flexible analysis the iteration process, SCAKS provides a
+plugin mechanism that allow users to be able to define their own plugins
+and register them to the model. With this, we can output or dump any
+data before, during or after the Newton iteration.</p>
+<p>It’s pretty easy for you to define your own plugin. Here we write a
+on-the-fly analysis plugin to dump the errors during the Newton
+iteration for visualization or other purpose.</p>
 <ol class="arabic simple">
-<li>Reaction Definition panel: input reaction and energy information</li>
-<li>Kinetic Model Definition panel: input model conditions and parameters
-such as temperature, algorithm type and so on.</li>
+<li>create a ’MicroKinetcModel<code class="docutils literal notranslate"><span class="pre">name</span></code>model` as we described in
+other tutorial</li>
+<li>Inherit the <code class="docutils literal notranslate"><span class="pre">scaks.plugins.analysis.OnTheFlyAnalysis</span></code> class to
+define custom analysis class</li>
 </ol>
-<div class="section" id="reaction-definition-panel">
-<h2>Reaction Definition panel<a class="headerlink" href="#reaction-definition-panel" title="Permalink to this headline">¶</a></h2>
-<p>You can add, edit, hide and delete elementary reaction and energy
-information in Reaction Definition panel</p>
-<p><img alt="image0" src="../_images/reaction_panel.png" /></p>
-<div class="section" id="add-new-elementary-reaction">
-<h3>Add new elementary reaction<a class="headerlink" href="#add-new-elementary-reaction" title="Permalink to this headline">¶</a></h3>
-<p>Click the <strong>+ New</strong> button on upper left, a reaction definition modal
-would pop up for inputing elementary reaction information.</p>
-<p><img alt="image1" src="../_images/add_reaction.png" /></p>
-<p>scaks-Hub also can check the correctness of the input reaction
-expression and energy values.</p>
-<p>Energy barrier is less than reaction energy:</p>
-<p><img alt="image2" src="../_images/invalid_energy.png" /></p>
-<p>Input invalid reaction expression:</p>
-<p><img alt="image3" src="../_images/invalid_reaction.png" /></p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scaks.plugins.analysis</span> <span class="k">import</span> <span class="n">OnTheFlyAnalysis</span>
+
+<span class="nd">@model</span><span class="o">.</span><span class="n">analysis_register</span>
+<span class="k">class</span> <span class="nc">DumpTrajectory</span><span class="p">(</span><span class="n">OnTheFlyAnalysis</span><span class="p">):</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">outer_counter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">register_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">inner_counter</span><span class="p">,</span> <span class="n">outer_coutner</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">error</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">outer_counter</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;newton_traj.py&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;errors = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Dump newton iteration trajectory to newton_traj.py&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="edit-an-existing-reaction">
-<h3>Edit an existing reaction<a class="headerlink" href="#edit-an-existing-reaction" title="Permalink to this headline">¶</a></h3>
-<p>If you want to edit an existing reaction, just select its select box at
-the beginning of the reaction information line and click the <strong>Edit</strong>
-button, a similar modal with reaction addition will appears.</p>
-<p><img alt="image4" src="../_images/select_reaction.png" /></p>
-</div>
-<div class="section" id="visualize-energy-profile">
-<h3>Visualize energy profile<a class="headerlink" href="#visualize-energy-profile" title="Permalink to this headline">¶</a></h3>
-<p>Besides operating elementary reactions, you can also visualize the
-energy profile for selected reactions:</p>
-<p><img alt="image5" src="../_images/energy_profile.png" /></p>
-</div>
-</div>
-<div class="section" id="kinetic-definition-panel">
-<h2>Kinetic Definition panel<a class="headerlink" href="#kinetic-definition-panel" title="Permalink to this headline">¶</a></h2>
-<p>Kinetic Definition panel is used to input model related parameters such
-as temperatures, partial pressures for gases, total coverage and solving
-iteration related parameters</p>
-<p><img alt="image6" src="../_images/model_definition_panel.png" /></p>
-</div>
+<ol class="arabic simple" start="3">
+<li>Just run the model, your analysis methods in plugin will be invoked
+automatically. Enjoy it!</li>
+</ol>
 </div>
 
 
@@ -230,10 +211,10 @@ iteration related parameters</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="hub_animation.html" class="btn btn-neutral float-right" title="[Animation] Run a job in scaks-Hub" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rxn_parsing.html" class="btn btn-neutral" title="Parse reaction expressions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="hybrid_register.html" class="btn btn-neutral" title="Register hybrid method for Hybrid Newton iteration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

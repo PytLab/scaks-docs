@@ -205,7 +205,7 @@ it is not functional on its own.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- key in data dict</li>
+<li><strong>data_name</strong> (<em>str</em>) -- key in data dict</li>
 <li><strong>data</strong> (<em>any</em>) -- value in data dict</li>
 </ul>
 </td>
@@ -222,7 +222,7 @@ it is not functional on its own.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>include_empty_site</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- If the empty sites are included in bolztmann 
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>include_empty_site</strong> (<em>bool</em>) -- If the empty sites are included in bolztmann 
 sum, Default value is True.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Coverages in order of adsorbates names.</td>
@@ -254,8 +254,8 @@ by Collision Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>kCT</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Rate constant calculated by Collision Theory</li>
-<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Temperature(K)</li>
+<li><strong>kCT</strong> (<em>float</em>) -- Rate constant calculated by Collision Theory</li>
+<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
 </ul>
 </td>
 </tr>
@@ -320,7 +320,7 @@ by Collision Theory.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- An elementary expression</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rxn_expression</strong> (<em>str</em>) -- An elementary expression</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward and reverse rate expression</td>
 </tr>
@@ -356,15 +356,15 @@ Collision Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Ea</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- energy barrier( NOT free energy barrier )</li>
-<li><strong>Auc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- area of unitcell (m^-2)</li>
-<li><strong>act_ratio</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>(</em><em>&lt;=1.0</em><em>)</em>) -- area of active sites/area of unitcell</li>
-<li><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- pressure of gas, default value is 101325 Pa (atm).</li>
-<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- absolute mass of molecule (kg)</li>
-<li><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>(</em><em>&lt;= 1.0</em><em>)</em>) -- factor accounts for a further reduction in the sticking 
+<li><strong>Ea</strong> (<em>float</em>) -- energy barrier( NOT free energy barrier )</li>
+<li><strong>Auc</strong> (<em>float</em>) -- area of unitcell (m^-2)</li>
+<li><strong>act_ratio</strong> (<em>float</em><em>(</em><em>&lt;=1.0</em><em>)</em>) -- area of active sites/area of unitcell</li>
+<li><strong>p</strong> (<em>float</em>) -- pressure of gas, default value is 101325 Pa (atm).</li>
+<li><strong>m</strong> (<em>float</em>) -- absolute mass of molecule (kg)</li>
+<li><strong>f</strong> (<em>float</em><em>(</em><em>&lt;= 1.0</em><em>)</em>) -- factor accounts for a further reduction in the sticking 
 probability, if particle with certain initial states are not 
 efficiently steered along the MEP, and reflected by a higher barrier</li>
-<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- temperature (K)</li>
+<li><strong>T</strong> (<em>float</em>) -- temperature (K)</li>
 </ul>
 </td>
 </tr>
@@ -381,8 +381,8 @@ efficiently steered along the MEP, and reflected by a higher barrier</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>Ga</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Free energy barrier</li>
-<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) -- Temperature(K)</li>
+<li><strong>Ga</strong> (<em>float</em>) -- Free energy barrier</li>
+<li><strong>T</strong> (<em>float</em>) -- Temperature(K)</li>
 </ul>
 </td>
 </tr>
@@ -413,7 +413,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs_tuple</strong> (<em>tuple of floats.</em>) -- coverages</li>
-<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -477,7 +477,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_latex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- If dump latex equations or not</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_latex</strong> (<em>bool</em>) -- If dump latex equations or not</td>
 </tr>
 </tbody>
 </table>
@@ -493,7 +493,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs_tuple</strong> (<em>tuple of floats.</em>) -- coverages</li>
-<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -507,7 +507,7 @@ symbols is a iterable object e.g. list or tuple.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- Output log info or not, false by default</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log</strong> (<em>bool</em>) -- Output log info or not, false by default</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Forward rates and reverse rates</td>
 </tr>
@@ -567,9 +567,9 @@ Collision Theory wrt adsorption process.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The expression of an elementary reaction</li>
-<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- The relative energies for all elementary reactions.</li>
-<li><strong>include_pressure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- The flag for whether to include the actual gas pressure</li>
+<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
 </ul>
 </td>
 </tr>
@@ -593,9 +593,9 @@ Transition State Theory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rxn_expression</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The expression of an elementary reaction</li>
-<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- The relative energies for all elementary reactions.</li>
-<li><strong>include_pressure</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- The flag for whether to include the actual gas pressure</li>
+<li><strong>rxn_expression</strong> (<em>str</em>) -- The expression of an elementary reaction</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- The relative energies for all elementary reactions.</li>
+<li><strong>include_pressure</strong> (<em>bool</em>) -- The flag for whether to include the actual gas pressure</li>
 </ul>
 </td>
 </tr>
@@ -635,7 +635,7 @@ RATE CONSTANT by default.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cvgs</strong> (<em>tuple of float</em>) -- Coverages of adsorbates on surface</li>
-<li><strong>relative_energies</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) -- Relative eneriges of elementary reactions.</li>
+<li><strong>relative_energies</strong> (<em>dict</em>) -- Relative eneriges of elementary reactions.</li>
 </ul>
 </td>
 </tr>
@@ -649,12 +649,12 @@ RATE CONSTANT by default.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gas_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The gas whose TOF will be returned</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gas_name</strong> (<em>str</em>) -- The gas whose TOF will be returned</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If gas name is not specified, a list of TOF for all gas species would be returned.
 If gas name is specified, the TOF of the gas would be returned.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of float or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of float or float</td>
 </tr>
 </tbody>
 </table>

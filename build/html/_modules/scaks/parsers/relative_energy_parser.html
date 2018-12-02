@@ -221,26 +221,29 @@
         <span class="k">return</span> <span class="n">relative_energies</span>
         <span class="c1"># }}}</span>
 
-<div class="viewcode-block" id="RelativeEnergyParser.parse_data"><a class="viewcode-back" href="../../../api/parsers.relative_energy_parser.html#scaks.parsers.relative_energy_parser.RelativeEnergyParser.parse_data">[docs]</a>    <span class="k">def</span> <span class="nf">parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./rel_energy.py&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="RelativeEnergyParser.parse_data"><a class="viewcode-back" href="../../../api/parsers.relative_energy_parser.html#scaks.parsers.relative_energy_parser.RelativeEnergyParser.parse_data">[docs]</a>    <span class="k">def</span> <span class="nf">parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./rel_energy.py&quot;</span><span class="p">,</span> <span class="n">energy_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Parse relative energy data and model information to add essential</span>
 <span class="sd">        data to its owner, the kinetic model</span>
 
 <span class="sd">        :param filename: The filename of relative energies data.</span>
 <span class="sd">        :type filename: str</span>
+
+<span class="sd">        :param energy_data: Relative energy data</span>
+<span class="sd">        :type energy_data: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># {{{</span>
         <span class="c1"># Read relative energy data file.</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
-            <span class="n">exec</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">globs</span><span class="p">,</span> <span class="n">locs</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+            <span class="n">globs</span><span class="p">,</span> <span class="n">energy_data</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+            <span class="n">exec</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">globs</span><span class="p">,</span> <span class="n">energy_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">energy_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is not found.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
 
         <span class="c1"># Check data shape.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__chk_data_validity</span><span class="p">(</span><span class="n">locs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__chk_data_validity</span><span class="p">(</span><span class="n">energy_data</span><span class="p">)</span>
 
         <span class="c1"># Get relative energies and pass it to model.</span>
-        <span class="n">relative_energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_relative_energies</span><span class="p">(</span><span class="n">locs</span><span class="p">)</span>
+        <span class="n">relative_energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_relative_energies</span><span class="p">(</span><span class="n">energy_data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_owner</span><span class="o">.</span><span class="n">_relative_energies</span> <span class="o">=</span> <span class="n">relative_energies</span>
 
         <span class="c1"># Set flags in model.</span>

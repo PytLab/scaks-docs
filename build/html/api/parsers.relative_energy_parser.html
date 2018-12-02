@@ -204,7 +204,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- key in data dict</li>
+<li><strong>data_name</strong> (<em>str</em>) -- key in data dict</li>
 <li><strong>data</strong> (<em>any</em>) -- value in data dict</li>
 </ul>
 </td>
@@ -223,7 +223,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>species_name</strong> -- name of the molecule species</li>
-<li><strong>absolute</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) -- return absolute mass or not(default)</li>
+<li><strong>absolute</strong> (<em>bool</em>) -- return absolute mass or not(default)</li>
 </ul>
 </td>
 </tr>
@@ -276,14 +276,18 @@ vice-versa.  row vector: <code class="xref py py-obj docutils literal notranslat
 
 <dl class="method">
 <dt id="scaks.parsers.relative_energy_parser.RelativeEnergyParser.parse_data">
-<code class="descname">parse_data</code><span class="sig-paren">(</span><em>filename='./rel_energy.py'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/relative_energy_parser.html#RelativeEnergyParser.parse_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.relative_energy_parser.RelativeEnergyParser.parse_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">parse_data</code><span class="sig-paren">(</span><em>filename='./rel_energy.py'</em>, <em>energy_data=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scaks/parsers/relative_energy_parser.html#RelativeEnergyParser.parse_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scaks.parsers.relative_energy_parser.RelativeEnergyParser.parse_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse relative energy data and model information to add essential
 data to its owner, the kinetic model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) -- The filename of relative energies data.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> (<em>str</em>) -- The filename of relative energies data.</li>
+<li><strong>energy_data</strong> (<em>dict</em>) -- Relative energy data</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
